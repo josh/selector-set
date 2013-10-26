@@ -1,0 +1,16 @@
+{
+  "name": "selector-set",
+  "version": "0.1.0",
+  "main": "./selector-set.js",
+  "devDependencies": {
+    "bower": "~1.2.7",
+    "grunt": "~0.4.1",
+    "grunt-contrib-jshint": "~0.7.0",
+    "grunt-contrib-qunit": "~0.3.0",
+    "grunt-contrib-watch": "~0.5.3"
+  },
+  "scripts": {
+    "install": "bower install",
+    "test": "grunt test"
+  }
+}
