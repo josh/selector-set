@@ -1,52 +1,32 @@
-"use strict";
-
 module.exports = function(grunt) {
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
     jshint: {
-      options: {
-        camelcase: true,
-        eqeqeq: true,
-        indent: 2,
-        strict: true,
-        trailing: true,
-        boss: true,
-        browser: true,
-        node: true
+      src: {
+        options: {
+          jshintrc: '.jshintrc'
+        },
+        src: ['selector-set.js']
       },
-      files: ['Gruntfile.js', 'selector-set.js'],
       tests: {
         options: {
-          devel: true,
-          globals: {
-            SelectorSet: true,
-            QUnit: true,
-            module: true,
-            test: true,
-            asyncTest: true,
-            expect: true,
-            start: true,
-            stop: true,
-            ok: true,
-            equal: true,
-            notEqual: true,
-            deepEqual: true,
-            notDeepEqual: true,
-            strictEqual: true,
-            notStrictEqual: true
-          }
+          jshintrc: 'test/.jshintrc'
         },
-        files: {
-          src: ['test/*.js']
-        }
+        src: ['test/*.js']
       }
     },
     qunit: {
       all: ['test/index.html']
     },
     watch: {
-      files: ['<%= jshint.files %>', 'test/*'],
-      tasks: ['jshint', 'qunit']
+      src: {
+        files: ['<%= jshint.src.src %>'],
+        tasks: ['jshint:src', 'qunit']
+      },
+      tests: {
+        files: ['<%= jshint.tests.src %>', 'test/*.html'],
+        tasks: ['jshint:tests', 'qunit']
+      }
     }
   });
 
