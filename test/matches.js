@@ -9,6 +9,8 @@
   test("id", function() {
     var set = new SelectorSet();
     set.add("#foo");
+    set.add("#bar");
+    set.add("#baz");
 
     var el = fixture1.querySelector("#foo");
     var results = set.matches(el);
@@ -23,6 +25,8 @@
   test("id with tag", function() {
     var set = new SelectorSet();
     set.add("div#foo");
+    set.add("span#foo");
+    set.add("div#bar");
 
     var el = fixture1.querySelector("div#foo");
     var results = set.matches(el);
@@ -37,6 +41,8 @@
   test("class", function() {
     var set = new SelectorSet();
     set.add(".foo");
+    set.add(".bar");
+    set.add(".baz");
 
     var el = fixture1.querySelector(".foo");
     var results = set.matches(el);
@@ -51,6 +57,8 @@
   test("class with tag", function() {
     var set = new SelectorSet();
     set.add("div.foo");
+    set.add("span.foo");
+    set.add("div.bar");
 
     var el = fixture1.querySelector("div.foo");
     var results = set.matches(el);
@@ -65,6 +73,8 @@
   test("tag", function() {
     var set = new SelectorSet();
     set.add("foo");
+    set.add("bar");
+    set.add("baz");
 
     var el = fixture1.querySelector("foo");
     var results = set.matches(el);
@@ -79,6 +89,7 @@
   test("attribute", function() {
     var set = new SelectorSet();
     set.add("[foo=bar]");
+    set.add("[foo=baz]");
 
     var el = fixture1.querySelector("[foo=bar]");
     var results = set.matches(el);
@@ -89,7 +100,9 @@
   test("id and class", function() {
     var set = new SelectorSet();
     set.add("#foo");
+    set.add("#bar");
     set.add(".foo");
+    set.add(".bar");
 
     var el = fixture1.querySelector("#foo");
     var results = set.matches(el);
@@ -109,7 +122,9 @@
   test("multiple id and class match", function() {
     var set = new SelectorSet();
     set.add("#foo");
+    set.add("#bar");
     set.add(".foo");
+    set.add(".bar");
 
     var el = fixture2.querySelector("foo");
     var results = set.matches(el);
@@ -121,7 +136,9 @@
   test("multiple id and class match reverse", function() {
     var set = new SelectorSet();
     set.add(".foo");
+    set.add(".bar");
     set.add("#foo");
+    set.add("#bar");
 
     var el = fixture2.querySelector("foo");
     var results = set.matches(el);
@@ -133,8 +150,11 @@
   test("multiple id, class and tag match", function() {
     var set = new SelectorSet();
     set.add("#foo");
+    set.add("#bar");
     set.add(".foo");
+    set.add(".bar");
     set.add("foo");
+    set.add("bar");
 
     var el = fixture2.querySelector("foo");
     var results = set.matches(el);
@@ -147,8 +167,11 @@
   test("multiple id, class and tag match reverse", function() {
     var set = new SelectorSet();
     set.add("foo");
+    set.add("bar");
     set.add(".foo");
+    set.add(".bar");
     set.add("#foo");
+    set.add("#bar");
 
     var el = fixture2.querySelector("foo");
     var results = set.matches(el);
