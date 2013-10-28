@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Test Suite</title>
+  <link rel="stylesheet" href="../bower_components/qunit/qunit/qunit.css">
+</head>
+<body>
+  <div id="qunit"></div>
+  <div id="qunit-fixture">
+    <div id="fixture1">
+      <foo></foo>
+      <div id="foo"></div>
+      <div class="foo"></div>
+      <div foo="bar"></div>
+    </div>
+
+    <div id="fixture2">
+      <foo id="foo" class="foo" foo="bar"></foo>
+    </div>
+  </div>
+
+  <script src="../bower_components/qunit/qunit/qunit.js"></script>
+  <script src="../selector-set.js"></script>
+  <script src="./index.js"></script>
+  <script src="./matches.js"></script>
+  <script src="./queryselectorall.js"></script>
+</body>
+</html>
