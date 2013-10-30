@@ -97,6 +97,16 @@
     equal(results[0].selector, "[foo=bar]");
   });
 
+  test("universal", function() {
+    var set = new SelectorSet();
+    set.add("*");
+
+    var el = fixture1.querySelector("*");
+    var results = set.matches(el);
+    equal(results.length, 1);
+    equal(results[0].selector, "*");
+  });
+
   test("id and class", function() {
     var set = new SelectorSet();
     set.add("#foo");
