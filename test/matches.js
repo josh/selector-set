@@ -147,7 +147,7 @@
     equal(results[1].selector, "#foo");
   });
 
-  test("component id and class match", function() {
+  test("compound id and class match", function() {
     var set = new SelectorSet();
     set.add(".foo, .bar");
     set.add("#foo, #bar");
@@ -159,7 +159,7 @@
     equal(results.length, 3);
     equal(results[0].selector, ".foo, .bar");
     equal(results[1].selector, "#foo, #bar");
-    equal(results[2].selector, "#foo, .bar");
+    equal(results[2].selector, "#foo, .foo");
   });
 
   test("multiple id, class and tag match", function() {
