@@ -147,6 +147,21 @@
     equal(results[1].selector, "#foo");
   });
 
+  test("component id and class match", function() {
+    var set = new SelectorSet();
+    set.add(".foo, .bar");
+    set.add("#foo, #bar");
+    set.add("#foo, .foo");
+    set.add("#bar, .bar");
+
+    var el = fixture2.querySelector("foo");
+    var results = set.matches(el);
+    equal(results.length, 3);
+    equal(results[0].selector, ".foo, .bar");
+    equal(results[1].selector, "#foo, #bar");
+    equal(results[2].selector, "#foo, .bar");
+  });
+
   test("multiple id, class and tag match", function() {
     var set = new SelectorSet();
     set.add("#foo");
