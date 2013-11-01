@@ -75,8 +75,15 @@
     };
   }
 
+
+  var docElem = document.documentElement;
+  var matches = (docElem.webkitMatchesSelector ||
+                  docElem.mozMatchesSelector ||
+                  docElem.oMatchesSelector ||
+                  docElem.msMatchesSelector);
+
   SelectorSet.matches = function(el, selector) {
-    return el.webkitMatchesSelector(selector);
+    return matches.call(el, selector);
   };
 
   SelectorSet.querySelectorAll = function(el, selector) {
