@@ -34,7 +34,6 @@ module.exports = function(grunt) {
       },
       tests: {
         options: {
-          devel: true,
           globals: {
             'SelectorSet': false,
             'QUnit': false,
