@@ -67,6 +67,12 @@
   function SelectorSet() {
     this.uid = 0;
     this.selectors = [];
+    this._selectors = {
+      "ID": {},
+      "CLASS": {},
+      "TAG": {},
+      "UNIVERSAL": []
+    };
   }
 
   SelectorSet.matches = function(el, selector) {
@@ -78,14 +84,35 @@
   };
 
   SelectorSet.prototype.add = function(selector, data) {
-    if (typeof selector === "string") {
-      getSelectorGroups(selector);
+    var self = this;
 
-      this.selectors.push({
+    if (typeof selector === "string") {
+      var obj = {
         id: this.uid++,
         selector: selector,
         data: data
+      };
+
+      getSelectorGroups(selector).forEach(function(g) {
+        var values;
+        if (g.key) {
+          values = self._selectors[g.type][g.key];
+          if (!values) {
+            values = [];
+            self._selectors[g.type][g.key] = values;
+          }
+        } else {
+          values = self._selectors[g.type];
+          if (!values) {
+            values = [];
+            self._selectors[g.type] = values;
+          }
+
+        }
+        values.push(obj);
       });
+
+      this.selectors.push(obj);
     }
   };
 
@@ -105,18 +132,70 @@
     return matches;
   };
 
+  // SelectorSet.prototype.matches = function(el) {
+  //   var matches = [];
+  //   this.selectors.forEach(function(obj) {
+  //     if (el && SelectorSet.matches(el, obj.selector)) {
+  //       matches.push({
+  //         id: obj.id,
+  //         selector: obj.selector,
+  //         data: obj.data
+  //       });
+  //     }
+  //   });
+  //   return matches;
+  // };
+
   SelectorSet.prototype.matches = function(el) {
-    var matches = [];
-    this.selectors.forEach(function(obj) {
+    var selectors, matches = {};
+
+    if (!el) {
+      return [];
+    }
+
+    function matchSelectors(obj) {
       if (el && SelectorSet.matches(el, obj.selector)) {
-        matches.push({
+        matches[obj.id] = {
           id: obj.id,
           selector: obj.selector,
           data: obj.data
-        });
+        };
       }
+    }
+
+    selectors = this._selectors["ID"][el.id];
+    if (selectors) {
+      selectors.forEach(matchSelectors);
+    }
+
+    var classNames = el.className.split(" ");
+    for (var j = 0; j < classNames.length; j++) {
+      selectors = this._selectors["CLASS"][classNames[j]];
+      if (selectors) {
+        selectors.forEach(matchSelectors);
+      }
+    }
+
+    selectors = this._selectors["TAG"][el.nodeName];
+    if (selectors) {
+      selectors.forEach(matchSelectors);
+    }
+
+    selectors = this._selectors["UNIVERSAL"];
+    if (selectors) {
+      selectors.forEach(matchSelectors);
+    }
+
+    var ary = [];
+    for (var id in matches) {
+      ary.push(matches[id]);
+    }
+
+    ary.sort(function(a, b) {
+      return a.id - b.id;
     });
-    return matches;
+
+    return ary;
   };
 
   window.SelectorSet = SelectorSet;
