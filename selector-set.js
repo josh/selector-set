@@ -140,48 +140,76 @@
   };
 
   SelectorSet.prototype.matches = function(el) {
-    var selectors, matches = {};
-
     if (!el) {
       return [];
     }
 
-    function matchSelectors(obj) {
-      if (el && SelectorSet.matches(el, obj.selector)) {
-        matches[obj.id] = {
-          id: obj.id,
-          selector: obj.selector,
-          data: obj.data
-        };
-      }
-    }
+    var selectorGroup, matches = {};
 
-    selectors = this._selectors.ID[el.id];
-    if (selectors) {
-      selectors.forEach(matchSelectors);
-    }
+    var selectors = this._selectors;
+    var i, j, len, len2, obj;
 
-    var className = el.className;
-    if (className) {
-      var classSelectors = this._selectors.CLASS;
-      var classNames = className.split(' ');
-      var j, len;
-      for (j = 0, len = classNames.length; j < len; j++) {
-        selectors = classSelectors[classNames[j]];
-        if (selectors) {
-          selectors.forEach(matchSelectors);
+    selectorGroup = selectors.ID[el.id];
+    if (selectorGroup) {
+      for (i = 0, len = selectorGroup.length; i < len; i++) {
+        obj = selectorGroup[i];
+        if (SelectorSet.matches(el, obj.selector)) {
+          matches[obj.id] = {
+            id: obj.id,
+            selector: obj.selector,
+            data: obj.data
+          };
         }
       }
     }
 
-    selectors = this._selectors.TAG[el.nodeName];
-    if (selectors) {
-      selectors.forEach(matchSelectors);
+    var className = el.className;
+    if (className) {
+      var classSelectors = selectors.CLASS;
+      var classNames = className.split(' ');
+      for (j = 0, len2 = classNames.length; j < len2; j++) {
+        selectorGroup = classSelectors[classNames[j]];
+        if (selectorGroup) {
+          for (i = 0, len = selectorGroup.length; i < len; i++) {
+            obj = selectorGroup[i];
+            if (SelectorSet.matches(el, obj.selector)) {
+              matches[obj.id] = {
+                id: obj.id,
+                selector: obj.selector,
+                data: obj.data
+              };
+            }
+          }
+        }
+      }
     }
 
-    selectors = this._selectors.UNIVERSAL;
-    if (selectors) {
-      selectors.forEach(matchSelectors);
+    selectorGroup = selectors.TAG[el.nodeName];
+    if (selectorGroup) {
+      for (i = 0, len = selectorGroup.length; i < len; i++) {
+        obj = selectorGroup[i];
+        if (SelectorSet.matches(el, obj.selector)) {
+          matches[obj.id] = {
+            id: obj.id,
+            selector: obj.selector,
+            data: obj.data
+          };
+        }
+      }
+    }
+
+    selectorGroup = selectors.UNIVERSAL;
+    if (selectorGroup) {
+      for (i = 0, len = selectorGroup.length; i < len; i++) {
+        obj = selectorGroup[i];
+        if (SelectorSet.matches(el, obj.selector)) {
+          matches[obj.id] = {
+            id: obj.id,
+            selector: obj.selector,
+            data: obj.data
+          };
+        }
+      }
     }
 
     var ary = [];
