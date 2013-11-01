@@ -1,4 +1,6 @@
 module.exports = function(grunt) {
+  "use strict";
+
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
     jshint: {
@@ -19,30 +21,38 @@ module.exports = function(grunt) {
         eqnull: true,
         browser: true
       },
+      grunt: {
+        src: ['Gruntfile.js'],
+        options: {
+          globals: {
+            "module": false
+          }
+        }
+      },
       src: {
         src: ['selector-set.js']
       },
       tests: {
         options: {
           devel: true,
-          predef: [
-            "SelectorSet",
-            "QUnit",
-            "module",
-            "test",
-            "asyncTest",
-            "expect",
-            "start",
-            "stop",
-            "ok",
-            "equal",
-            "notEqual",
-            "deepEqual",
-            "notDeepEqual",
-            "strictEqual",
-            "notStrictEqual",
-            "throws"
-          ]
+          globals: {
+            "SelectorSet": false,
+            "QUnit": false,
+            "module": false,
+            "test": false,
+            "asyncTest": false,
+            "expect": false,
+            "start": false,
+            "stop": false,
+            "ok": false,
+            "equal": false,
+            "notEqual": false,
+            "deepEqual": false,
+            "notDeepEqual": false,
+            "strictEqual": false,
+            "notStrictEqual": false,
+            "throws": false
+          }
         },
         src: ['test/*.js']
       }
