@@ -2,15 +2,47 @@ module.exports = function(grunt) {
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
     jshint: {
+      options: {
+        curly: true,
+        eqeqeq: true,
+        immed: true,
+        indent: 2,
+        latedef: true,
+        newcap: true,
+        noarg: true,
+        sub: true,
+        undef: true,
+        unused: true,
+        strict: true,
+        trailing: true,
+        boss: true,
+        eqnull: true,
+        browser: true
+      },
       src: {
-        options: {
-          jshintrc: '.jshintrc'
-        },
         src: ['selector-set.js']
       },
       tests: {
         options: {
-          jshintrc: 'test/.jshintrc'
+          devel: true,
+          predef: [
+            "SelectorSet",
+            "QUnit",
+            "module",
+            "test",
+            "asyncTest",
+            "expect",
+            "start",
+            "stop",
+            "ok",
+            "equal",
+            "notEqual",
+            "deepEqual",
+            "notDeepEqual",
+            "strictEqual",
+            "notStrictEqual",
+            "throws"
+          ]
         },
         src: ['test/*.js']
       }
