@@ -38,22 +38,25 @@
   }
 
   function getSelectorGroups(selectors) {
-    var selector, tokens, result, m;
+    var selector, tokens, lastToken, result, m;
 
     result = [];
     selectors = selectors.split(/\s*,\s*/);
 
     for (var i = 0; i < selectors.length; i++) {
-      selector = selectors[0];
+      selector = selectors[i];
       tokens = parse(selector);
+      lastToken = tokens[tokens.length-1];
 
-      if (tokens[0]) {
-        if (m = tokens[0].match(match.ID)) {
+      if (lastToken) {
+        if (m = lastToken.match(match.ID)) {
           result.push({ type: "ID", key: m[0].slice(1) });
-        } else if (m = tokens[0].match(match.CLASS)) {
+        } else if (m = lastToken.match(match.CLASS)) {
           result.push({ type: "CLASS", key: m[0].slice(1) });
-        } else if (m = tokens[0].match(match.TAG)) {
+        } else if (m = lastToken.match(match.TAG)) {
           result.push({ type: "TAG", key: m[0].toUpperCase() });
+        } else {
+          result.push({ type: "UNIVERSAL" });
         }
       }
     }
