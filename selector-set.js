@@ -139,20 +139,6 @@
     return matches;
   };
 
-  // SelectorSet.prototype.matches = function(el) {
-  //   var matches = [];
-  //   this.selectors.forEach(function(obj) {
-  //     if (el && SelectorSet.matches(el, obj.selector)) {
-  //       matches.push({
-  //         id: obj.id,
-  //         selector: obj.selector,
-  //         data: obj.data
-  //       });
-  //     }
-  //   });
-  //   return matches;
-  // };
-
   SelectorSet.prototype.matches = function(el) {
     var selectors, matches = {};
 
@@ -204,6 +190,20 @@
 
     return ary;
   };
+
+  // SelectorSet.prototype.matches = function(el) {
+  //   var matches = [];
+  //   this.selectors.forEach(function(obj) {
+  //     if (el && SelectorSet.matches(el, obj.selector)) {
+  //       matches.push({
+  //         id: obj.id,
+  //         selector: obj.selector,
+  //         data: obj.data
+  //       });
+  //     }
+  //   });
+  //   return matches;
+  // };
 
   window.SelectorSet = SelectorSet;
 })();
