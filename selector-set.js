@@ -91,11 +91,8 @@
 
   SelectorSet.prototype.querySelectorAll = function(el) {
     var matches = [];
-
-    for (var i = 0; i < this.selectors.length; i++) {
-      var obj = this.selectors[i];
+    this.selectors.forEach(function(obj) {
       var elements = SelectorSet.querySelectorAll(el, obj.selector);
-
       if (elements.length > 0) {
         matches.push({
           id: obj.id,
@@ -104,30 +101,21 @@
           elements: elements
         });
       }
-    }
-
+    });
     return matches;
   };
 
   SelectorSet.prototype.matches = function(el) {
     var matches = [];
-
-    if (!el) {
-      return matches;
-    }
-
-    for (var i = 0; i < this.selectors.length; i++) {
-      var obj = this.selectors[i];
-
-      if (SelectorSet.matches(el, obj.selector)) {
+    this.selectors.forEach(function(obj) {
+      if (el && SelectorSet.matches(el, obj.selector)) {
         matches.push({
           id: obj.id,
           selector: obj.selector,
           data: obj.data
         });
       }
-    }
-
+    });
     return matches;
   };
 
