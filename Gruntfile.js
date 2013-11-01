@@ -13,7 +13,7 @@ module.exports = function(grunt) {
         newcap: true,
         noarg: true,
         sub: true,
-        quotmark: 'single',
+        quotmark: true,
         undef: true,
         unused: true,
         strict: true,
