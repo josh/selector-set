@@ -1,5 +1,5 @@
 (function() {
-  "use strict";
+  'use strict';
 
   // From Sizzle
   //   https://github.com/jquery/sizzle/blob/master/sizzle.js
@@ -24,7 +24,7 @@
     var m, rest = selector, parts = [];
 
     do {
-      chunker.exec("");
+      chunker.exec('');
       if (m = chunker.exec(rest)) {
         rest = m[3];
         parts.push(m[1]);
@@ -50,13 +50,13 @@
 
       if (lastToken) {
         if (m = lastToken.match(match.ID)) {
-          result.push({ type: "ID", key: m[0].slice(1) });
+          result.push({ type: 'ID', key: m[0].slice(1) });
         } else if (m = lastToken.match(match.CLASS)) {
-          result.push({ type: "CLASS", key: m[0].slice(1) });
+          result.push({ type: 'CLASS', key: m[0].slice(1) });
         } else if (m = lastToken.match(match.TAG)) {
-          result.push({ type: "TAG", key: m[0].toUpperCase() });
+          result.push({ type: 'TAG', key: m[0].toUpperCase() });
         } else {
-          result.push({ type: "UNIVERSAL" });
+          result.push({ type: 'UNIVERSAL' });
         }
       }
     }
@@ -68,10 +68,10 @@
     this.uid = 0;
     this.selectors = [];
     this._selectors = {
-      "ID": {},
-      "CLASS": {},
-      "TAG": {},
-      "UNIVERSAL": []
+      'ID': {},
+      'CLASS': {},
+      'TAG': {},
+      'UNIVERSAL': []
     };
   }
 
@@ -93,7 +93,7 @@
   SelectorSet.prototype.add = function(selector, data) {
     var self = this;
 
-    if (typeof selector === "string") {
+    if (typeof selector === 'string') {
       var obj = {
         id: this.uid++,
         selector: selector,
@@ -156,15 +156,15 @@
       }
     }
 
-    selectors = this._selectors["ID"][el.id];
+    selectors = this._selectors['ID'][el.id];
     if (selectors) {
       selectors.forEach(matchSelectors);
     }
 
     var className = el.className;
     if (className) {
-      var classSelectors = this._selectors["CLASS"];
-      var classNames = className.split(" ");
+      var classSelectors = this._selectors['CLASS'];
+      var classNames = className.split(' ');
       var j, len;
       for (j = 0, len = classNames.length; j < len; j++) {
         selectors = classSelectors[classNames[j]];
@@ -174,12 +174,12 @@
       }
     }
 
-    selectors = this._selectors["TAG"][el.nodeName];
+    selectors = this._selectors['TAG'][el.nodeName];
     if (selectors) {
       selectors.forEach(matchSelectors);
     }
 
-    selectors = this._selectors["UNIVERSAL"];
+    selectors = this._selectors['UNIVERSAL'];
     if (selectors) {
       selectors.forEach(matchSelectors);
     }

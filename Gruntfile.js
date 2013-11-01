@@ -1,5 +1,5 @@
 module.exports = function(grunt) {
-  "use strict";
+  'use strict';
 
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
@@ -13,6 +13,7 @@ module.exports = function(grunt) {
         newcap: true,
         noarg: true,
         sub: true,
+        quotmark: 'single',
         undef: true,
         unused: true,
         strict: true,
@@ -25,7 +26,7 @@ module.exports = function(grunt) {
         src: ['Gruntfile.js'],
         options: {
           globals: {
-            "module": false
+            'module': false
           }
         }
       },
@@ -36,22 +37,22 @@ module.exports = function(grunt) {
         options: {
           devel: true,
           globals: {
-            "SelectorSet": false,
-            "QUnit": false,
-            "module": false,
-            "test": false,
-            "asyncTest": false,
-            "expect": false,
-            "start": false,
-            "stop": false,
-            "ok": false,
-            "equal": false,
-            "notEqual": false,
-            "deepEqual": false,
-            "notDeepEqual": false,
-            "strictEqual": false,
-            "notStrictEqual": false,
-            "throws": false
+            'SelectorSet': false,
+            'QUnit': false,
+            'module': false,
+            'test': false,
+            'asyncTest': false,
+            'expect': false,
+            'start': false,
+            'stop': false,
+            'ok': false,
+            'equal': false,
+            'notEqual': false,
+            'deepEqual': false,
+            'notDeepEqual': false,
+            'strictEqual': false,
+            'notStrictEqual': false,
+            'throws': false
           }
         },
         src: ['test/*.js']

@@ -1,9 +1,9 @@
 (function() {
-  "use strict";
+  'use strict';
 
-  module("index");
+  module('index');
 
-  test("ignores non string selector", function() {
+  test('ignores non string selector', function() {
     var set = new SelectorSet();
     set.add();
     set.add({});

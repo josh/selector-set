@@ -1,208 +1,208 @@
 (function() {
-  "use strict";
+  'use strict';
 
-  module("matches");
+  module('matches');
 
-  var fixture1 = document.getElementById("fixture1");
-  var fixture2 = document.getElementById("fixture2");
+  var fixture1 = document.getElementById('fixture1');
+  var fixture2 = document.getElementById('fixture2');
 
-  test("id", function() {
+  test('id', function() {
     var set = new SelectorSet();
-    set.add("#foo");
-    set.add("#bar");
-    set.add("#baz");
+    set.add('#foo');
+    set.add('#bar');
+    set.add('#baz');
 
-    var el = fixture1.querySelector("#foo");
+    var el = fixture1.querySelector('#foo');
     var results = set.matches(el);
     equal(results.length, 1);
-    equal(results[0].selector, "#foo");
+    equal(results[0].selector, '#foo');
 
-    el = fixture1.querySelector(".foo");
+    el = fixture1.querySelector('.foo');
     results = set.matches(el);
     equal(results.length, 0);
   });
 
-  test("id with tag", function() {
+  test('id with tag', function() {
     var set = new SelectorSet();
-    set.add("div#foo");
-    set.add("span#foo");
-    set.add("div#bar");
+    set.add('div#foo');
+    set.add('span#foo');
+    set.add('div#bar');
 
-    var el = fixture1.querySelector("div#foo");
+    var el = fixture1.querySelector('div#foo');
     var results = set.matches(el);
     equal(results.length, 1);
-    equal(results[0].selector, "div#foo");
+    equal(results[0].selector, 'div#foo');
 
-    el = fixture1.querySelector("div.foo");
+    el = fixture1.querySelector('div.foo');
     results = set.matches(el);
     equal(results.length, 0);
   });
 
-  test("class", function() {
+  test('class', function() {
     var set = new SelectorSet();
-    set.add(".foo");
-    set.add(".bar");
-    set.add(".baz");
+    set.add('.foo');
+    set.add('.bar');
+    set.add('.baz');
 
-    var el = fixture1.querySelector(".foo");
+    var el = fixture1.querySelector('.foo');
     var results = set.matches(el);
     equal(results.length, 1);
-    equal(results[0].selector, ".foo");
+    equal(results[0].selector, '.foo');
 
-    el = fixture1.querySelector("#foo");
+    el = fixture1.querySelector('#foo');
     results = set.matches(el);
     equal(results.length, 0);
   });
 
-  test("class with tag", function() {
+  test('class with tag', function() {
     var set = new SelectorSet();
-    set.add("div.foo");
-    set.add("span.foo");
-    set.add("div.bar");
+    set.add('div.foo');
+    set.add('span.foo');
+    set.add('div.bar');
 
-    var el = fixture1.querySelector("div.foo");
+    var el = fixture1.querySelector('div.foo');
     var results = set.matches(el);
     equal(results.length, 1);
-    equal(results[0].selector, "div.foo");
+    equal(results[0].selector, 'div.foo');
 
-    el = fixture1.querySelector("div#foo");
+    el = fixture1.querySelector('div#foo');
     results = set.matches(el);
     equal(results.length, 0);
   });
 
-  test("tag", function() {
+  test('tag', function() {
     var set = new SelectorSet();
-    set.add("foo");
-    set.add("bar");
-    set.add("baz");
+    set.add('foo');
+    set.add('bar');
+    set.add('baz');
 
-    var el = fixture1.querySelector("foo");
+    var el = fixture1.querySelector('foo');
     var results = set.matches(el);
     equal(results.length, 1);
-    equal(results[0].selector, "foo");
+    equal(results[0].selector, 'foo');
 
-    el = fixture1.querySelector("bar");
+    el = fixture1.querySelector('bar');
     results = set.matches(el);
     equal(results.length, 0);
   });
 
-  test("attribute", function() {
+  test('attribute', function() {
     var set = new SelectorSet();
-    set.add("[foo=bar]");
-    set.add("[foo=baz]");
+    set.add('[foo=bar]');
+    set.add('[foo=baz]');
 
-    var el = fixture1.querySelector("[foo=bar]");
+    var el = fixture1.querySelector('[foo=bar]');
     var results = set.matches(el);
     equal(results.length, 1);
-    equal(results[0].selector, "[foo=bar]");
+    equal(results[0].selector, '[foo=bar]');
   });
 
-  test("universal", function() {
+  test('universal', function() {
     var set = new SelectorSet();
-    set.add("*");
+    set.add('*');
 
-    var el = fixture1.querySelector("*");
+    var el = fixture1.querySelector('*');
     var results = set.matches(el);
     equal(results.length, 1);
-    equal(results[0].selector, "*");
+    equal(results[0].selector, '*');
   });
 
-  test("id and class", function() {
+  test('id and class', function() {
     var set = new SelectorSet();
-    set.add("#foo");
-    set.add("#bar");
-    set.add(".foo");
-    set.add(".bar");
+    set.add('#foo');
+    set.add('#bar');
+    set.add('.foo');
+    set.add('.bar');
 
-    var el = fixture1.querySelector("#foo");
+    var el = fixture1.querySelector('#foo');
     var results = set.matches(el);
     equal(results.length, 1);
-    equal(results[0].selector, "#foo");
+    equal(results[0].selector, '#foo');
 
-    el = fixture1.querySelector(".foo");
+    el = fixture1.querySelector('.foo');
     results = set.matches(el);
     equal(results.length, 1);
-    equal(results[0].selector, ".foo");
+    equal(results[0].selector, '.foo');
 
-    el = fixture1.querySelector("foo");
+    el = fixture1.querySelector('foo');
     results = set.matches(el);
     equal(results.length, 0);
   });
 
-  test("multiple id and class match", function() {
+  test('multiple id and class match', function() {
     var set = new SelectorSet();
-    set.add("#foo");
-    set.add("#bar");
-    set.add(".foo");
-    set.add(".bar");
+    set.add('#foo');
+    set.add('#bar');
+    set.add('.foo');
+    set.add('.bar');
 
-    var el = fixture2.querySelector("foo");
+    var el = fixture2.querySelector('foo');
     var results = set.matches(el);
     equal(results.length, 2);
-    equal(results[0].selector, "#foo");
-    equal(results[1].selector, ".foo");
+    equal(results[0].selector, '#foo');
+    equal(results[1].selector, '.foo');
   });
 
-  test("multiple id and class match reverse", function() {
+  test('multiple id and class match reverse', function() {
     var set = new SelectorSet();
-    set.add(".foo");
-    set.add(".bar");
-    set.add("#foo");
-    set.add("#bar");
+    set.add('.foo');
+    set.add('.bar');
+    set.add('#foo');
+    set.add('#bar');
 
-    var el = fixture2.querySelector("foo");
+    var el = fixture2.querySelector('foo');
     var results = set.matches(el);
     equal(results.length, 2);
-    equal(results[0].selector, ".foo");
-    equal(results[1].selector, "#foo");
+    equal(results[0].selector, '.foo');
+    equal(results[1].selector, '#foo');
   });
 
-  test("compound id and class match", function() {
+  test('compound id and class match', function() {
     var set = new SelectorSet();
-    set.add(".foo, .bar");
-    set.add("#foo, #bar");
-    set.add("#foo, .foo");
-    set.add("#bar, .bar");
+    set.add('.foo, .bar');
+    set.add('#foo, #bar');
+    set.add('#foo, .foo');
+    set.add('#bar, .bar');
 
-    var el = fixture2.querySelector("foo");
+    var el = fixture2.querySelector('foo');
     var results = set.matches(el);
     equal(results.length, 3);
-    equal(results[0].selector, ".foo, .bar");
-    equal(results[1].selector, "#foo, #bar");
-    equal(results[2].selector, "#foo, .foo");
+    equal(results[0].selector, '.foo, .bar');
+    equal(results[1].selector, '#foo, #bar');
+    equal(results[2].selector, '#foo, .foo');
   });
 
-  test("multiple id, class and tag match", function() {
+  test('multiple id, class and tag match', function() {
     var set = new SelectorSet();
-    set.add("#foo");
-    set.add("#bar");
-    set.add(".foo");
-    set.add(".bar");
-    set.add("foo");
-    set.add("bar");
+    set.add('#foo');
+    set.add('#bar');
+    set.add('.foo');
+    set.add('.bar');
+    set.add('foo');
+    set.add('bar');
 
-    var el = fixture2.querySelector("foo");
+    var el = fixture2.querySelector('foo');
     var results = set.matches(el);
     equal(results.length, 3);
-    equal(results[0].selector, "#foo");
-    equal(results[1].selector, ".foo");
-    equal(results[2].selector, "foo");
+    equal(results[0].selector, '#foo');
+    equal(results[1].selector, '.foo');
+    equal(results[2].selector, 'foo');
   });
 
-  test("multiple id, class and tag match reverse", function() {
+  test('multiple id, class and tag match reverse', function() {
     var set = new SelectorSet();
-    set.add("foo");
-    set.add("bar");
-    set.add(".foo");
-    set.add(".bar");
-    set.add("#foo");
-    set.add("#bar");
+    set.add('foo');
+    set.add('bar');
+    set.add('.foo');
+    set.add('.bar');
+    set.add('#foo');
+    set.add('#bar');
 
-    var el = fixture2.querySelector("foo");
+    var el = fixture2.querySelector('foo');
     var results = set.matches(el);
     equal(results.length, 3);
-    equal(results[0].selector, "foo");
-    equal(results[1].selector, ".foo");
-    equal(results[2].selector, "#foo");
+    equal(results[0].selector, 'foo');
+    equal(results[1].selector, '.foo');
+    equal(results[2].selector, '#foo');
   });
 })();
