@@ -61,6 +61,10 @@ module.exports = function(grunt) {
       all: ['test/index.html']
     },
     watch: {
+      grunt: {
+        files: ['<%= jshint.grunt.src %>'],
+        tasks: ['jshint:grunt']
+      },
       src: {
         files: ['<%= jshint.src.src %>'],
         tasks: ['jshint:src', 'qunit']
