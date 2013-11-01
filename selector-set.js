@@ -144,84 +144,60 @@
       return [];
     }
 
-    var selectorGroup, matches = {};
-
     var selectors = this._selectors;
-    var i, j, len, len2, obj;
+    var i, j, len, len2;
 
-    selectorGroup = selectors.ID[el.id];
-    if (selectorGroup) {
+    var selectorGroup, possibleMatches = [];
+
+    if (selectorGroup = selectors.ID[el.id]) {
       for (i = 0, len = selectorGroup.length; i < len; i++) {
-        obj = selectorGroup[i];
-        if (SelectorSet.matches(el, obj.selector)) {
-          matches[obj.id] = {
-            id: obj.id,
-            selector: obj.selector,
-            data: obj.data
-          };
-        }
+        possibleMatches.push(selectorGroup[i]);
       }
     }
 
     var className = el.className;
     if (className) {
       var classSelectors = selectors.CLASS;
-      var classNames = className.split(' ');
+      var classNames = className.split(/\s/);
       for (j = 0, len2 = classNames.length; j < len2; j++) {
-        selectorGroup = classSelectors[classNames[j]];
-        if (selectorGroup) {
+        if (selectorGroup = classSelectors[classNames[j]]) {
           for (i = 0, len = selectorGroup.length; i < len; i++) {
-            obj = selectorGroup[i];
-            if (SelectorSet.matches(el, obj.selector)) {
-              matches[obj.id] = {
-                id: obj.id,
-                selector: obj.selector,
-                data: obj.data
-              };
-            }
+            possibleMatches.push(selectorGroup[i]);
           }
         }
       }
     }
 
-    selectorGroup = selectors.TAG[el.nodeName];
-    if (selectorGroup) {
+    if (selectorGroup = selectors.TAG[el.nodeName]) {
       for (i = 0, len = selectorGroup.length; i < len; i++) {
-        obj = selectorGroup[i];
-        if (SelectorSet.matches(el, obj.selector)) {
-          matches[obj.id] = {
-            id: obj.id,
-            selector: obj.selector,
-            data: obj.data
-          };
-        }
+        possibleMatches.push(selectorGroup[i]);
       }
     }
 
-    selectorGroup = selectors.UNIVERSAL;
-    if (selectorGroup) {
+    if (selectorGroup = selectors.UNIVERSAL) {
       for (i = 0, len = selectorGroup.length; i < len; i++) {
-        obj = selectorGroup[i];
-        if (SelectorSet.matches(el, obj.selector)) {
-          matches[obj.id] = {
-            id: obj.id,
-            selector: obj.selector,
-            data: obj.data
-          };
-        }
+        possibleMatches.push(selectorGroup[i]);
       }
     }
 
-    var ary = [];
-    for (var id in matches) {
-      ary.push(matches[id]);
+    var obj, ids = {}, matches = [];
+    for (i = 0, len = possibleMatches.length; i < len; i++) {
+      obj = possibleMatches[i];
+      if (!ids[obj.id] && SelectorSet.matches(el, obj.selector)) {
+        ids[obj.id] = true;
+        matches.push({
+          id: obj.id,
+          selector: obj.selector,
+          data: obj.data
+        });
+      }
     }
 
-    ary.sort(function(a, b) {
+    matches.sort(function(a, b) {
       return a.id - b.id;
     });
 
-    return ary;
+    return matches;
   };
 
   // SelectorSet.prototype.matches = function(el) {
