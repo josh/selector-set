@@ -161,11 +161,16 @@
       selectors.forEach(matchSelectors);
     }
 
-    var classNames = el.className.split(" ");
-    for (var j = 0; j < classNames.length; j++) {
-      selectors = this._selectors["CLASS"][classNames[j]];
-      if (selectors) {
-        selectors.forEach(matchSelectors);
+    var className = el.className;
+    if (className) {
+      var classSelectors = this._selectors["CLASS"];
+      var classNames = className.split(" ");
+      var j, len;
+      for (j = 0, len = classNames.length; j < len; j++) {
+        selectors = classSelectors[classNames[j]];
+        if (selectors) {
+          selectors.forEach(matchSelectors);
+        }
       }
     }
 
