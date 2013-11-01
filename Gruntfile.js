@@ -12,7 +12,6 @@ module.exports = function(grunt) {
         latedef: true,
         newcap: true,
         noarg: true,
-        sub: true,
         quotmark: true,
         undef: true,
         unused: true,

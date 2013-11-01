@@ -156,14 +156,14 @@
       }
     }
 
-    selectors = this._selectors['ID'][el.id];
+    selectors = this._selectors.ID[el.id];
     if (selectors) {
       selectors.forEach(matchSelectors);
     }
 
     var className = el.className;
     if (className) {
-      var classSelectors = this._selectors['CLASS'];
+      var classSelectors = this._selectors.CLASS;
       var classNames = className.split(' ');
       var j, len;
       for (j = 0, len = classNames.length; j < len; j++) {
@@ -174,12 +174,12 @@
       }
     }
 
-    selectors = this._selectors['TAG'][el.nodeName];
+    selectors = this._selectors.TAG[el.nodeName];
     if (selectors) {
       selectors.forEach(matchSelectors);
     }
 
-    selectors = this._selectors['UNIVERSAL'];
+    selectors = this._selectors.UNIVERSAL;
     if (selectors) {
       selectors.forEach(matchSelectors);
     }
