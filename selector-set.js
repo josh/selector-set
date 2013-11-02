@@ -166,21 +166,16 @@
   //
   // selectors - CSS selector String.
   //
-  // Returns an two dimensional Array of Strings.
+  // Returns an Array of Strings.
   function parseSelector(selectors) {
-    var parts, part, rest = selectors, m;
-
-    part = [];
-    parts = [part];
+    var m, rest = selectors, parts = [];
 
     do {
       chunker.exec('');
       if (m = chunker.exec(rest)) {
         rest = m[3];
-        part.push(m[1]);
-        if (m[2]) {
-          part = [];
-          parts.push(part);
+        if (m[2] || !rest) {
+          parts.push(m[1]);
         }
       }
     } while (m);
@@ -194,21 +189,20 @@
   //
   // Returns an Array of {type, key} objects.
   function getSelectorGroups(selectors) {
-    var selector, lastToken, result, i, m;
+    var selector, result, i, m;
 
     result = [];
     selectors = parseSelector(selectors);
 
     for (i = 0; i < selectors.length; i++) {
       selector = selectors[i];
-      lastToken = selector[selector.length-1];
 
-      if (lastToken) {
-        if (m = lastToken.match(idRe)) {
+      if (selector) {
+        if (m = selector.match(idRe)) {
           result.push({ type: 'ID', key: m[0].slice(1) });
-        } else if (m = lastToken.match(classRe)) {
+        } else if (m = selector.match(classRe)) {
           result.push({ type: 'CLASS', key: m[0].slice(1) });
-        } else if (m = lastToken.match(tagRe)) {
+        } else if (m = selector.match(tagRe)) {
           result.push({ type: 'TAG', key: m[0].toUpperCase() });
         } else {
           result.push({ type: 'UNIVERSAL' });
