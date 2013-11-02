@@ -1,5 +1,18 @@
 # SelectorSet
 
+## Usage
+
+``` javascript
+var set = new SelectorSet();
+set.add('#logo');
+set.add('.post');
+set.add('h1');
+
+set.matches(el);
+// => [ { selector: '.post' } ]
+```
+
+
 ## Installation
 
 Available on [Bower](http://bower.io) as **selector-set**.
