@@ -4,14 +4,9 @@
   // From Sizzle
   //   https://github.com/jquery/sizzle/blob/master/sizzle.js
   var chunker = /((?:\((?:\([^()]+\)|[^()]+)+\)|\[(?:\[[^\[\]]*\]|['"][^'"]*['"]|[^\[\]'"]+)+\]|\\.|[^ >+~,(\[\\]+)+|[>+~])(\s*,\s*)?((?:.|\r|\n)*)/g;
-  var match = {
-    ID: /#((?:[\w\u00c0-\uFFFF\-]|\\.)+)/g,
-    CLASS: /\.((?:[\w\u00c0-\uFFFF\-]|\\.)+)/g,
-    TAG: /^((?:[\w\u00c0-\uFFFF\-]|\\.)+)/g,
-    ATTR: /\[\s*((?:[\w\u00c0-\uFFFF\-]|\\.)+)\s*(?:(\S?=)\s*(?:(['"])(.*?)\3|(#?(?:[\w\u00c0-\uFFFF\-]|\\.)*)|)|)\s*\]/g,
-    PSEUDO_CLASS: /[^:]:(?!first-line|first-letter|before|after)((?:[\w\u00c0-\uFFFF\-]|\\.)+)(?:\((['"]?)((?:\([^\)]+\)|[^\(\)]*)+)\2\))?/g,
-    PSEUDO_ELEMENT: /(:first-line|:first-letter|:before|:after)|::((?:[\w\u00c0-\uFFFF\-]|\\.)+)(?:\((['"]?)((?:\([^\)]+\)|[^\(\)]*)+)\2\))?/g
-  };
+  var idRe = /#((?:[\w\u00c0-\uFFFF\-]|\\.)+)/g;
+  var classRe = /\.((?:[\w\u00c0-\uFFFF\-]|\\.)+)/g;
+  var tagRe = /^((?:[\w\u00c0-\uFFFF\-]|\\.)+)/g;
 
   // Parse CSS selector into parts.
   //
@@ -49,11 +44,11 @@
       lastToken = tokens[tokens.length-1];
 
       if (lastToken) {
-        if (m = lastToken.match(match.ID)) {
+        if (m = lastToken.match(idRe)) {
           result.push({ type: 'ID', key: m[0].slice(1) });
-        } else if (m = lastToken.match(match.CLASS)) {
+        } else if (m = lastToken.match(classRe)) {
           result.push({ type: 'CLASS', key: m[0].slice(1) });
-        } else if (m = lastToken.match(match.TAG)) {
+        } else if (m = lastToken.match(tagRe)) {
           result.push({ type: 'TAG', key: m[0].toUpperCase() });
         } else {
           result.push({ type: 'UNIVERSAL' });
