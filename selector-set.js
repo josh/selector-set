@@ -60,7 +60,7 @@
     }
   };
 
-  SelectorSet.prototype.querySelectorAll = function(el) {
+  SelectorSet.prototype.queryAll = function(el) {
     var matches = [];
     this.selectors.forEach(function(obj) {
       var elements = SelectorSet.querySelectorAll(el, obj.selector);
