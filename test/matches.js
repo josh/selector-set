@@ -13,11 +13,13 @@
     set.add('#baz');
 
     var el = fixture1.querySelector('#foo');
+    ok(el);
     var results = set.matches(el);
     equal(results.length, 1);
     equal(results[0].selector, '#foo');
 
     el = fixture1.querySelector('.foo');
+    ok(el);
     results = set.matches(el);
     equal(results.length, 0);
   });
@@ -29,11 +31,13 @@
     set.add('div#bar');
 
     var el = fixture1.querySelector('div#foo');
+    ok(el);
     var results = set.matches(el);
     equal(results.length, 1);
     equal(results[0].selector, 'div#foo');
 
     el = fixture1.querySelector('div.foo');
+    ok(el);
     results = set.matches(el);
     equal(results.length, 0);
   });
@@ -45,11 +49,13 @@
     set.add('.baz');
 
     var el = fixture1.querySelector('.foo');
+    ok(el);
     var results = set.matches(el);
     equal(results.length, 1);
     equal(results[0].selector, '.foo');
 
     el = fixture1.querySelector('#foo');
+    ok(el);
     results = set.matches(el);
     equal(results.length, 0);
   });
@@ -61,11 +67,13 @@
     set.add('div.bar');
 
     var el = fixture1.querySelector('div.foo');
+    ok(el);
     var results = set.matches(el);
     equal(results.length, 1);
     equal(results[0].selector, 'div.foo');
 
     el = fixture1.querySelector('div#foo');
+    ok(el);
     results = set.matches(el);
     equal(results.length, 0);
   });
@@ -77,11 +85,13 @@
     set.add('baz');
 
     var el = fixture1.querySelector('foo');
+    ok(el);
     var results = set.matches(el);
     equal(results.length, 1);
     equal(results[0].selector, 'foo');
 
-    el = fixture1.querySelector('bar');
+    el = fixture1.querySelector('div');
+    ok(el);
     results = set.matches(el);
     equal(results.length, 0);
   });
@@ -92,6 +102,7 @@
     set.add('[foo=baz]');
 
     var el = fixture1.querySelector('[foo=bar]');
+    ok(el);
     var results = set.matches(el);
     equal(results.length, 1);
     equal(results[0].selector, '[foo=bar]');
@@ -102,6 +113,7 @@
     set.add('*');
 
     var el = fixture1.querySelector('*');
+    ok(el);
     var results = set.matches(el);
     equal(results.length, 1);
     equal(results[0].selector, '*');
@@ -115,16 +127,19 @@
     set.add('.bar');
 
     var el = fixture1.querySelector('#foo');
+    ok(el);
     var results = set.matches(el);
     equal(results.length, 1);
     equal(results[0].selector, '#foo');
 
     el = fixture1.querySelector('.foo');
+    ok(el);
     results = set.matches(el);
     equal(results.length, 1);
     equal(results[0].selector, '.foo');
 
     el = fixture1.querySelector('foo');
+    ok(el);
     results = set.matches(el);
     equal(results.length, 0);
   });
@@ -137,6 +152,7 @@
     set.add('.bar');
 
     var el = fixture2.querySelector('foo');
+    ok(el);
     var results = set.matches(el);
     equal(results.length, 2);
     equal(results[0].selector, '#foo');
@@ -151,6 +167,7 @@
     set.add('#bar');
 
     var el = fixture2.querySelector('foo');
+    ok(el);
     var results = set.matches(el);
     equal(results.length, 2);
     equal(results[0].selector, '.foo');
@@ -165,6 +182,7 @@
     set.add('#bar, .bar');
 
     var el = fixture2.querySelector('foo');
+    ok(el);
     var results = set.matches(el);
     equal(results.length, 3);
     equal(results[0].selector, '.foo, .bar');
@@ -182,6 +200,7 @@
     set.add('bar');
 
     var el = fixture2.querySelector('foo');
+    ok(el);
     var results = set.matches(el);
     equal(results.length, 3);
     equal(results[0].selector, '#foo');
@@ -199,10 +218,47 @@
     set.add('#bar');
 
     var el = fixture2.querySelector('foo');
+    ok(el);
     var results = set.matches(el);
     equal(results.length, 3);
     equal(results[0].selector, 'foo');
     equal(results[1].selector, '.foo');
     equal(results[2].selector, '#foo');
+  });
+
+  test('tag with descendant class', function() {
+    var set = new SelectorSet();
+    set.add('div .foo');
+    set.add('span .foo');
+    set.add('div .bar');
+
+    var el = fixture1.querySelector('div.foo');
+    ok(el);
+    var results = set.matches(el);
+    equal(results.length, 1);
+    equal(results[0].selector, 'div .foo');
+
+    el = fixture1.querySelector('#foo');
+    ok(el);
+    results = set.matches(el);
+    equal(results.length, 0);
+  });
+
+  test('tag with child class', function() {
+    var set = new SelectorSet();
+    set.add('div > .foo');
+    set.add('span > .foo');
+    set.add('div > .bar');
+
+    var el = fixture1.querySelector('div.foo');
+    ok(el);
+    var results = set.matches(el);
+    equal(results.length, 1);
+    equal(results[0].selector, 'div > .foo');
+
+    el = fixture1.querySelector('#foo');
+    ok(el);
+    results = set.matches(el);
+    equal(results.length, 0);
   });
 })();
