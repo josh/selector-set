@@ -1,7 +1,5 @@
-(function() {
+testModule('matches', function(SelectorSet) {
   'use strict';
-
-  module('matches');
 
   var fixture1 = document.getElementById('fixture1');
   var fixture2 = document.getElementById('fixture2');
@@ -267,4 +265,4 @@
     results = set.matches(el);
     equal(results.length, 0);
   });
-})();
+});

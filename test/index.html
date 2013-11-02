@@ -21,7 +21,19 @@
   </div>
 
   <script src="../bower_components/qunit/qunit/qunit.js"></script>
+
   <script src="../selector-set.js"></script>
+  <script src="./slow-selector-set.js"></script>
+
+  <script>
+    function testModule(name, suite) {
+      module('slow ' + name);
+      suite(SlowSelectorSet);
+
+      module('optimized ' + name);
+      suite(SelectorSet);
+    }
+  </script>
   <script src="./index.js"></script>
   <script src="./matches.js"></script>
   <script src="./queryall.js"></script>

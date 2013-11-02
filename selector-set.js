@@ -12,7 +12,6 @@
     };
   }
 
-
   var docElem = document.documentElement;
   var matches = (docElem.webkitMatchesSelector ||
                   docElem.mozMatchesSelector ||
@@ -136,21 +135,6 @@
 
     return matches;
   };
-
-  // SelectorSet.prototype.matches = function(el) {
-  //   var matches = [];
-  //   this.selectors.forEach(function(obj) {
-  //     if (el && SelectorSet.matches(el, obj.selector)) {
-  //       matches.push({
-  //         id: obj.id,
-  //         selector: obj.selector,
-  //         data: obj.data
-  //       });
-  //     }
-  //   });
-  //   return matches;
-  // };
-
 
   // Regexps adopted from Sizzle
   //   https://github.com/jquery/sizzle/blob/1.7/sizzle.js

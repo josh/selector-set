@@ -1,7 +1,5 @@
-(function() {
+testModule('queryAll', function(SelectorSet) {
   'use strict';
-
-  module('queryAll');
 
   var fixture1 = document.getElementById('fixture1');
 
@@ -52,4 +50,4 @@
     equal(results[1].selector, '.foo');
     equal(results[1].elements[0], el2);
   });
-})();
+});
