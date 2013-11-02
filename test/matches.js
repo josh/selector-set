@@ -265,4 +265,22 @@ testModule('matches', function(SelectorSet) {
     results = set.matches(el);
     equal(results.length, 0);
   });
+
+  test('large number of selectors', function() {
+    var set = new SelectorSet();
+
+    set.add('#foo');
+
+    var n = 1000;
+    while (n--) {
+      set.add('#a'+Math.floor(Math.random()*1000000000));
+      set.add('.b'+Math.floor(Math.random()*1000000000));
+    }
+
+    var el = fixture1.querySelector('#foo');
+    ok(el);
+    var results = set.matches(el);
+    equal(results.length, 1);
+    equal(results[0].selector, '#foo');
+  });
 });
