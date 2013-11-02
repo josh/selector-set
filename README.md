@@ -88,6 +88,42 @@ SelectorSet.matches = jQuery.find.matchesSelector
 ```
 
 
+## Development
+
+Clone the repository from GitHub.
+
+```
+$ git clone https://github.com/josh/selector-set
+```
+
+You'll need to have [Grunt](http://gruntjs.com) installed. If you don't have the `grunt` executable available, you can install it with:
+
+```
+$ npm install -g grunt-cli
+```
+
+Now just `cd` into the directory and install the local npm dependencies.
+
+```
+$ cd selector-set/
+$ npm install
+```
+
+Use `grunt test` to run the test suite.
+
+```
+$ grunt test
+Running "jshint:all" (jshint) task
+>> 5 files lint free.
+
+Running "qunit:all" (qunit) task
+Testing test/index.html .....................OK
+>> 100 assertions passed (50ms)
+
+Done, without errors.
+```
+
+
 ## Implementation
 
 The grouping technique isn't a new idea. In fact, it's how WebKit and Firefox work already. In order to calculate the styles of a single element, a huge number of CSS rules need to be considered.
