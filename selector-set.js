@@ -196,17 +196,14 @@
 
     for (i = 0; i < selectors.length; i++) {
       selector = selectors[i];
-
-      if (selector) {
-        if (m = selector.match(idRe)) {
-          result.push({ type: 'ID', key: m[0].slice(1) });
-        } else if (m = selector.match(classRe)) {
-          result.push({ type: 'CLASS', key: m[0].slice(1) });
-        } else if (m = selector.match(tagRe)) {
-          result.push({ type: 'TAG', key: m[0].toUpperCase() });
-        } else {
-          result.push({ type: 'UNIVERSAL' });
-        }
+      if (m = selector.match(idRe)) {
+        result.push({ type: 'ID', key: m[0].slice(1) });
+      } else if (m = selector.match(classRe)) {
+        result.push({ type: 'CLASS', key: m[0].slice(1) });
+      } else if (m = selector.match(tagRe)) {
+        result.push({ type: 'TAG', key: m[0].toUpperCase() });
+      } else {
+        result.push({ type: 'UNIVERSAL' });
       }
     }
 
