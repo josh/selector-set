@@ -3,8 +3,8 @@
 
   function SelectorSet() {
     this.uid = 0;
-    this.selectors = [];
-    this._selectors = {
+    this.querySelectors = [];
+    this.matchSelectors = {
       'ID': {},
       'CLASS': {},
       'TAG': {},
@@ -39,40 +39,55 @@
       getSelectorGroups(selector).forEach(function(g) {
         var values;
         if (g.key) {
-          values = self._selectors[g.type][g.key];
+          values = self.matchSelectors[g.type][g.key];
           if (!values) {
             values = [];
-            self._selectors[g.type][g.key] = values;
+            self.matchSelectors[g.type][g.key] = values;
           }
         } else {
-          values = self._selectors[g.type];
+          values = self.matchSelectors[g.type];
           if (!values) {
             values = [];
-            self._selectors[g.type] = values;
+            self.matchSelectors[g.type] = values;
           }
 
         }
         values.push(obj);
       });
 
-      this.selectors.push(obj);
+      this.querySelectors.push(selector);
     }
   };
 
-  SelectorSet.prototype.queryAll = function(el) {
-    var matches = [];
-    this.selectors.forEach(function(obj) {
-      var elements = SelectorSet.queryAll(obj.selector, el);
-      if (elements.length > 0) {
-        matches.push({
-          id: obj.id,
-          selector: obj.selector,
-          data: obj.data,
-          elements: elements
-        });
+  SelectorSet.prototype.queryAll = function(root) {
+    var matches = {};
+
+    var els = SelectorSet.queryAll(this.querySelectors.join(', '), root);
+
+    var i, j, len, len2, el, m, obj;
+    for (i = 0, len = els.length; i < len; i++) {
+      el = els[i];
+      m = this.matches(el);
+      for (j = 0, len2 = m.length; j < len2; j++) {
+        obj = m[j];
+        if (!matches[obj.id]) {
+          matches[obj.id] = {
+            id: obj.id,
+            selector: obj.selector,
+            data: obj.data,
+            elements: []
+          };
+        }
+        matches[obj.id].elements.push(el);
       }
-    });
-    return matches;
+    }
+
+    var results = [];
+    for (m in matches) {
+      results.push(matches[m]);
+    }
+
+    return results;
   };
 
   SelectorSet.prototype.matches = function(el) {
@@ -80,7 +95,7 @@
       return [];
     }
 
-    var selectors = this._selectors;
+    var selectors = this.matchSelectors;
     var i, j, len, len2;
 
     var selectorGroup, possibleMatches = [];
