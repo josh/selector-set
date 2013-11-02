@@ -6,6 +6,12 @@
   var fixture1 = document.getElementById('fixture1');
   var fixture2 = document.getElementById('fixture2');
 
+  test('undefined', function() {
+    var set = new SelectorSet();
+    var results = set.matches(null);
+    equal(results.length, 0);
+  });
+
   test('id', function() {
     var set = new SelectorSet();
     set.add('#foo');
