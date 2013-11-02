@@ -7,38 +7,30 @@
 
   SelectorSet.prototype.add = function(selector, data) {
     if (typeof selector === 'string') {
-      this.selectors.push({
-        selector: selector,
-        data: data
-      });
+      this.selectors.push({selector: selector, data: data});
     }
   };
 
-  SelectorSet.prototype.queryAll = function(el) {
-    var matches = [];
-    this.selectors.forEach(function(obj) {
-      var elements = SelectorSet.queryAll(obj.selector, el);
-      if (elements.length > 0) {
-        matches.push({
-          selector: obj.selector,
-          data: obj.data,
-          elements: elements
-        });
+  SelectorSet.prototype.queryAll = function(root) {
+    var i, obj, els, matches = [];
+    for (i = 0; i < this.selectors.length; i++) {
+      obj = this.selectors[i];
+      els = SelectorSet.queryAll(obj.selector, root);
+      if (els.length) {
+        matches.push({selector: obj.selector, data: obj.data, elements: els});
       }
-    });
+    }
     return matches;
   };
 
   SelectorSet.prototype.matches = function(el) {
-    var matches = [];
-    this.selectors.forEach(function(obj) {
+    var i, obj, matches = [];
+    for (i = 0; i < this.selectors.length; i++) {
+      obj = this.selectors[i];
       if (el && SelectorSet.matches(el, obj.selector)) {
-        matches.push({
-          selector: obj.selector,
-          data: obj.data
-        });
+        matches.push({selector: obj.selector, data: obj.data});
       }
-    });
+    }
     return matches;
   };
 
