@@ -160,54 +160,34 @@
   var classRe = /\.((?:[\w\u00c0-\uFFFF\-]|\\.)+)/g;
   var tagRe = /^((?:[\w\u00c0-\uFFFF\-]|\\.)+)/g;
 
-  // Parse CSS selector into parts.
-  //
-  // Adopted from Sizzle.
-  //
-  // selectors - CSS selector String.
-  //
-  // Returns an Array of Strings.
-  function parseSelector(selectors) {
-    var m, rest = selectors, parts = [];
-
-    do {
-      chunker.exec('');
-      if (m = chunker.exec(rest)) {
-        rest = m[3];
-        if (m[2] || !rest) {
-          parts.push(m[1]);
-        }
-      }
-    } while (m);
-
-    return parts;
-  }
-
   // Find best selector groups for CSS selectors.
   //
   // selectors - CSS selector String.
   //
   // Returns an Array of {type, key} objects.
   function getSelectorGroups(selectors) {
-    var selector, result, i, m;
+    var m, n, last, rest = selectors, groups = [];
 
-    result = [];
-    selectors = parseSelector(selectors);
-
-    for (i = 0; i < selectors.length; i++) {
-      selector = selectors[i];
-      if (m = selector.match(idRe)) {
-        result.push({ type: 'ID', key: m[0].slice(1) });
-      } else if (m = selector.match(classRe)) {
-        result.push({ type: 'CLASS', key: m[0].slice(1) });
-      } else if (m = selector.match(tagRe)) {
-        result.push({ type: 'TAG', key: m[0].toUpperCase() });
-      } else {
-        result.push({ type: 'UNIVERSAL' });
+    do {
+      chunker.exec('');
+      if (m = chunker.exec(rest)) {
+        rest = m[3];
+        if (m[2] || !rest) {
+          last = m[1];
+          if (n = last.match(idRe)) {
+            groups.push({ type: 'ID', key: n[0].slice(1) });
+          } else if (n = last.match(classRe)) {
+            groups.push({ type: 'CLASS', key: n[0].slice(1) });
+          } else if (n = last.match(tagRe)) {
+            groups.push({ type: 'TAG', key: n[0].toUpperCase() });
+          } else {
+            groups.push({ type: 'UNIVERSAL' });
+          }
+        }
       }
-    }
+    } while (m);
 
-    return result;
+    return groups;
   }
 
 
