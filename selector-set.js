@@ -1,64 +1,6 @@
 (function() {
   'use strict';
 
-  // From Sizzle
-  //   https://github.com/jquery/sizzle/blob/master/sizzle.js
-  var chunker = /((?:\((?:\([^()]+\)|[^()]+)+\)|\[(?:\[[^\[\]]*\]|['"][^'"]*['"]|[^\[\]'"]+)+\]|\\.|[^ >+~,(\[\\]+)+|[>+~])(\s*,\s*)?((?:.|\r|\n)*)/g;
-  var idRe = /#((?:[\w\u00c0-\uFFFF\-]|\\.)+)/g;
-  var classRe = /\.((?:[\w\u00c0-\uFFFF\-]|\\.)+)/g;
-  var tagRe = /^((?:[\w\u00c0-\uFFFF\-]|\\.)+)/g;
-
-  // Parse CSS selector into parts.
-  //
-  // Adopted from Sizzle.
-  //
-  // selector - CSS selector String.
-  //
-  // Returns an Array of Strings.
-  function parse(selector) {
-    var m, rest = selector, parts = [];
-
-    do {
-      chunker.exec('');
-      if (m = chunker.exec(rest)) {
-        rest = m[3];
-        parts.push(m[1]);
-        if (m[2]) {
-          break;
-        }
-      }
-    } while (m);
-
-    return parts;
-  }
-
-  function getSelectorGroups(selectors) {
-    var selector, tokens, lastToken, result, m;
-
-    result = [];
-    selectors = selectors.split(/\s*,\s*/);
-
-    for (var i = 0; i < selectors.length; i++) {
-      selector = selectors[i];
-      tokens = parse(selector);
-      lastToken = tokens[tokens.length-1];
-
-      if (lastToken) {
-        if (m = lastToken.match(idRe)) {
-          result.push({ type: 'ID', key: m[0].slice(1) });
-        } else if (m = lastToken.match(classRe)) {
-          result.push({ type: 'CLASS', key: m[0].slice(1) });
-        } else if (m = lastToken.match(tagRe)) {
-          result.push({ type: 'TAG', key: m[0].toUpperCase() });
-        } else {
-          result.push({ type: 'UNIVERSAL' });
-        }
-      }
-    }
-
-    return result;
-  }
-
   function SelectorSet() {
     this.uid = 0;
     this.selectors = [];
@@ -208,6 +150,75 @@
   //   });
   //   return matches;
   // };
+
+
+  // Regexps adopted from Sizzle
+  //   https://github.com/jquery/sizzle/blob/1.7/sizzle.js
+  //
+  var chunker = /((?:\((?:\([^()]+\)|[^()]+)+\)|\[(?:\[[^\[\]]*\]|['"][^'"]*['"]|[^\[\]'"]+)+\]|\\.|[^ >+~,(\[\\]+)+|[>+~])(\s*,\s*)?((?:.|\r|\n)*)/g;
+  var idRe = /#((?:[\w\u00c0-\uFFFF\-]|\\.)+)/g;
+  var classRe = /\.((?:[\w\u00c0-\uFFFF\-]|\\.)+)/g;
+  var tagRe = /^((?:[\w\u00c0-\uFFFF\-]|\\.)+)/g;
+
+  // Parse CSS selector into parts.
+  //
+  // Adopted from Sizzle.
+  //
+  // selectors - CSS selector String.
+  //
+  // Returns an two dimensional Array of Strings.
+  function parseSelector(selectors) {
+    var parts, part, rest = selectors, m;
+
+    part = [];
+    parts = [part];
+
+    do {
+      chunker.exec('');
+      if (m = chunker.exec(rest)) {
+        rest = m[3];
+        part.push(m[1]);
+        if (m[2]) {
+          part = [];
+          parts.push(part);
+        }
+      }
+    } while (m);
+
+    return parts;
+  }
+
+  // Find best selector groups for CSS selectors.
+  //
+  // selectors - CSS selector String.
+  //
+  // Returns an Array of {type, key} objects.
+  function getSelectorGroups(selectors) {
+    var selector, lastToken, result, i, m;
+
+    result = [];
+    selectors = parseSelector(selectors);
+
+    for (i = 0; i < selectors.length; i++) {
+      selector = selectors[i];
+      lastToken = selector[selector.length-1];
+
+      if (lastToken) {
+        if (m = lastToken.match(idRe)) {
+          result.push({ type: 'ID', key: m[0].slice(1) });
+        } else if (m = lastToken.match(classRe)) {
+          result.push({ type: 'CLASS', key: m[0].slice(1) });
+        } else if (m = lastToken.match(tagRe)) {
+          result.push({ type: 'TAG', key: m[0].toUpperCase() });
+        } else {
+          result.push({ type: 'UNIVERSAL' });
+        }
+      }
+    }
+
+    return result;
+  }
+
 
   window.SelectorSet = SelectorSet;
 })();
