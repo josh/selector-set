@@ -80,7 +80,7 @@ The main requirement is `querySelectorAll` and some sort of `prefixMatchesSelect
 ``` javascript
 // Use Sizzle's match and query functions
 SelectorSet.queryAll = Sizzle;
-SelectorSet.matches = Sizzle.find.matchesSelector
+SelectorSet.matches = Sizzle.matchesSelector
 
 // Or use jQuery's internal Sizzle
 SelectorSet.queryAll = jQuery.find;
