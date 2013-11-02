@@ -27,36 +27,38 @@
   };
 
   SelectorSet.prototype.add = function(selector, data) {
-    var self = this;
+    var obj, i, len, groups, g, values,
+        matchSelectors = this.matchSelectors,
+        querySelectors = this.querySelectors;
 
-    if (typeof selector === 'string') {
-      var obj = {
-        id: this.uid++,
-        selector: selector,
-        data: data
-      };
-
-      getSelectorGroups(selector).forEach(function(g) {
-        var values;
-        if (g.key) {
-          values = self.matchSelectors[g.type][g.key];
-          if (!values) {
-            values = [];
-            self.matchSelectors[g.type][g.key] = values;
-          }
-        } else {
-          values = self.matchSelectors[g.type];
-          if (!values) {
-            values = [];
-            self.matchSelectors[g.type] = values;
-          }
-
-        }
-        values.push(obj);
-      });
-
-      this.querySelectors.push(selector);
+    if (typeof selector !== 'string') {
+      return;
     }
+
+    obj = {
+      id: this.uid++,
+      selector: selector,
+      data: data
+    };
+
+    groups = getSelectorGroups(selector);
+    for (i = 0, len = groups.length; i < len; i++) {
+      g = groups[i];
+      if (g.key) {
+        values = matchSelectors[g.type][g.key];
+        if (!values) {
+          matchSelectors[g.type][g.key] = values = [];
+        }
+      } else {
+        values = matchSelectors[g.type];
+        if (!values) {
+          matchSelectors[g.type] = values = [];
+        }
+      }
+      values.push(obj);
+    }
+
+    querySelectors.push(selector);
   };
 
   SelectorSet.prototype.queryAll = function(root) {
