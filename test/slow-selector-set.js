@@ -11,11 +11,11 @@
     }
   };
 
-  SelectorSet.prototype.queryAll = function(root) {
+  SelectorSet.prototype.queryAll = function(context) {
     var i, obj, els, matches = [];
     for (i = 0; i < this.selectors.length; i++) {
       obj = this.selectors[i];
-      els = SelectorSet.queryAll(obj.selector, root);
+      els = SelectorSet.queryAll(obj.selector, context);
       if (els.length) {
         matches.push({selector: obj.selector, data: obj.data, elements: els});
       }

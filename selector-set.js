@@ -18,14 +18,36 @@
                   docElem.oMatchesSelector ||
                   docElem.msMatchesSelector);
 
+  // Public: Check if element matches selector.
+  //
+  // Maybe overridden with custom Element.matches function.
+  //
+  // el       - An Element
+  // selector - String CSS selector
+  //
+  // Returns true or false.
   SelectorSet.matches = function(el, selector) {
     return matches.call(el, selector);
   };
 
-  SelectorSet.queryAll = function(selector, el) {
-    return el.querySelectorAll(selector);
+  // Public: Find all elements in the context that match the selector.
+  //
+  // Maybe overridden with custom querySelectorAll function.
+  //
+  // selectors - String CSS selectors.
+  // context   - Element context
+  //
+  // Returns non-live list of Elements.
+  SelectorSet.queryAll = function(selectors, context) {
+    return context.querySelectorAll(selectors);
   };
 
+  // Public: Add selector to set.
+  //
+  // selector - String CSS selector
+  // data     - Optional data Object (default: undefined)
+  //
+  // Returns nothing.
   SelectorSet.prototype.add = function(selector, data) {
     var obj, i, len, groups, g, values,
         matchSelectors = this.matchSelectors,
@@ -61,10 +83,15 @@
     querySelectors.push(selector);
   };
 
-  SelectorSet.prototype.queryAll = function(root) {
+  // Public: Find all matching decendants of the context element.
+  //
+  // context - An Element
+  //
+  // Returns Array of {selector, data, elements} matches.
+  SelectorSet.prototype.queryAll = function(context) {
     var matches = {};
 
-    var els = SelectorSet.queryAll(this.querySelectors.join(', '), root);
+    var els = SelectorSet.queryAll(this.querySelectors.join(', '), context);
 
     var i, j, len, len2, el, m, obj;
     for (i = 0, len = els.length; i < len; i++) {
@@ -92,6 +119,11 @@
     return results;
   };
 
+  // Public: Match element against all selectors in set.
+  //
+  // el - An Element
+  //
+  // Returns Array of {selector, data} matches.
   SelectorSet.prototype.matches = function(el) {
     if (!el) {
       return [];
