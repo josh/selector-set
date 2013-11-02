@@ -21,7 +21,7 @@ Available on [Bower](http://bower.io) as **selector-set**.
 $ bower install selector-set
 ```
 
-Alternatively you can download the single `selector-set.js` file.
+Alternatively you can download the single `selector-set.js` file. There are no additional dependencies.
 
 ```
 $ curl -O https://raw.github.com/josh/selector-set/master/selector-set.js
@@ -69,6 +69,23 @@ styles.matches(el).forEach(function(rule) {
 ```
 
 Naive at best, but you get the idea. Also see [absurd.js](https://github.com/krasimir/absurd).
+
+
+## Browser Support
+
+Chrome (latest), Safari (6.0+), Firefox (latest) and IE 9+.
+
+The main requirement is `querySelectorAll` and some sort of `prefixMatchesSelector` support. You can support older browser versions by supplying you own fallback versions of these functions.
+
+``` javascript
+// Use Sizzle's match and query functions
+SelectorSet.queryAll = Sizzle;
+SelectorSet.matches = Sizzle.find.matchesSelector
+
+// Or use jQuery's internal Sizzle
+SelectorSet.queryAll = jQuery.find;
+SelectorSet.matches = jQuery.find.matchesSelector
+```
 
 
 ## Implementation

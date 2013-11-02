@@ -23,7 +23,7 @@
     return matches.call(el, selector);
   };
 
-  SelectorSet.querySelectorAll = function(el, selector) {
+  SelectorSet.queryAll = function(selector, el) {
     return el.querySelectorAll(selector);
   };
 
@@ -63,7 +63,7 @@
   SelectorSet.prototype.queryAll = function(el) {
     var matches = [];
     this.selectors.forEach(function(obj) {
-      var elements = SelectorSet.querySelectorAll(el, obj.selector);
+      var elements = SelectorSet.queryAll(obj.selector, el);
       if (elements.length > 0) {
         matches.push({
           id: obj.id,
