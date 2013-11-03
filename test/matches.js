@@ -1,9 +1,6 @@
 testModule('matches', function(SelectorSet) {
   'use strict';
 
-  var fixture1 = document.getElementById('fixture1');
-  var fixture2 = document.getElementById('fixture2');
-
   test('undefined', function() {
     var set = new SelectorSet();
     var results = set.matches(null);
@@ -16,6 +13,7 @@ testModule('matches', function(SelectorSet) {
     set.add('#bar');
     set.add('#baz');
 
+    var fixture1 = document.getElementById('fixture1');
     var el = fixture1.querySelector('#foo');
     ok(el);
     var results = set.matches(el);
@@ -34,6 +32,7 @@ testModule('matches', function(SelectorSet) {
     set.add('span#foo');
     set.add('div#bar');
 
+    var fixture1 = document.getElementById('fixture1');
     var el = fixture1.querySelector('div#foo');
     ok(el);
     var results = set.matches(el);
@@ -52,6 +51,7 @@ testModule('matches', function(SelectorSet) {
     set.add('.bar');
     set.add('.baz');
 
+    var fixture1 = document.getElementById('fixture1');
     var el = fixture1.querySelector('.foo');
     ok(el);
     var results = set.matches(el);
@@ -70,6 +70,7 @@ testModule('matches', function(SelectorSet) {
     set.add('span.foo');
     set.add('div.bar');
 
+    var fixture1 = document.getElementById('fixture1');
     var el = fixture1.querySelector('div.foo');
     ok(el);
     var results = set.matches(el);
@@ -88,6 +89,7 @@ testModule('matches', function(SelectorSet) {
     set.add('bar');
     set.add('baz');
 
+    var fixture1 = document.getElementById('fixture1');
     var el = fixture1.querySelector('foo');
     ok(el);
     var results = set.matches(el);
@@ -105,6 +107,7 @@ testModule('matches', function(SelectorSet) {
     set.add('[foo=bar]');
     set.add('[foo=baz]');
 
+    var fixture1 = document.getElementById('fixture1');
     var el = fixture1.querySelector('[foo=bar]');
     ok(el);
     var results = set.matches(el);
@@ -116,6 +119,7 @@ testModule('matches', function(SelectorSet) {
     var set = new SelectorSet();
     set.add('*');
 
+    var fixture1 = document.getElementById('fixture1');
     var el = fixture1.querySelector('*');
     ok(el);
     var results = set.matches(el);
@@ -130,6 +134,7 @@ testModule('matches', function(SelectorSet) {
     set.add('.foo');
     set.add('.bar');
 
+    var fixture1 = document.getElementById('fixture1');
     var el = fixture1.querySelector('#foo');
     ok(el);
     var results = set.matches(el);
@@ -155,6 +160,7 @@ testModule('matches', function(SelectorSet) {
     set.add('.foo');
     set.add('.bar');
 
+    var fixture2 = document.getElementById('fixture2');
     var el = fixture2.querySelector('foo');
     ok(el);
     var results = set.matches(el);
@@ -170,6 +176,7 @@ testModule('matches', function(SelectorSet) {
     set.add('#foo');
     set.add('#bar');
 
+    var fixture2 = document.getElementById('fixture2');
     var el = fixture2.querySelector('foo');
     ok(el);
     var results = set.matches(el);
@@ -185,6 +192,7 @@ testModule('matches', function(SelectorSet) {
     set.add('#foo, .foo');
     set.add('#bar, .bar');
 
+    var fixture2 = document.getElementById('fixture2');
     var el = fixture2.querySelector('foo');
     ok(el);
     var results = set.matches(el);
@@ -203,6 +211,7 @@ testModule('matches', function(SelectorSet) {
     set.add('foo');
     set.add('bar');
 
+    var fixture2 = document.getElementById('fixture2');
     var el = fixture2.querySelector('foo');
     ok(el);
     var results = set.matches(el);
@@ -221,6 +230,7 @@ testModule('matches', function(SelectorSet) {
     set.add('#foo');
     set.add('#bar');
 
+    var fixture2 = document.getElementById('fixture2');
     var el = fixture2.querySelector('foo');
     ok(el);
     var results = set.matches(el);
@@ -236,6 +246,7 @@ testModule('matches', function(SelectorSet) {
     set.add('span .foo');
     set.add('div .bar');
 
+    var fixture1 = document.getElementById('fixture1');
     var el = fixture1.querySelector('div.foo');
     ok(el);
     var results = set.matches(el);
@@ -254,6 +265,7 @@ testModule('matches', function(SelectorSet) {
     set.add('span > .foo');
     set.add('div > .bar');
 
+    var fixture1 = document.getElementById('fixture1');
     var el = fixture1.querySelector('div.foo');
     ok(el);
     var results = set.matches(el);
@@ -277,6 +289,7 @@ testModule('matches', function(SelectorSet) {
       set.add('.b'+Math.floor(Math.random()*1000000000));
     }
 
+    var fixture1 = document.getElementById('fixture1');
     var el = fixture1.querySelector('#foo');
     ok(el);
     var results = set.matches(el);

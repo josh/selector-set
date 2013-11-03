@@ -1,12 +1,11 @@
 testModule('queryAll', function(SelectorSet) {
   'use strict';
 
-  var fixture1 = document.getElementById('fixture1');
-
   test('id', function() {
     var set = new SelectorSet();
     set.add('#foo');
 
+    var fixture1 = document.getElementById('fixture1');
     var el = fixture1.querySelector('#foo');
     var results = set.queryAll(fixture1);
     equal(results.length, 1);
@@ -18,6 +17,7 @@ testModule('queryAll', function(SelectorSet) {
     var set = new SelectorSet();
     set.add('.foo');
 
+    var fixture1 = document.getElementById('fixture1');
     var el = fixture1.querySelector('.foo');
     var results = set.queryAll(fixture1);
     equal(results.length, 1);
@@ -29,6 +29,7 @@ testModule('queryAll', function(SelectorSet) {
     var set = new SelectorSet();
     set.add('foo');
 
+    var fixture1 = document.getElementById('fixture1');
     var el = fixture1.querySelector('foo');
     var results = set.queryAll(fixture1);
     equal(results.length, 1);
@@ -41,6 +42,7 @@ testModule('queryAll', function(SelectorSet) {
     set.add('#foo');
     set.add('.foo');
 
+    var fixture1 = document.getElementById('fixture1');
     var el1 = fixture1.querySelector('#foo');
     var el2 = fixture1.querySelector('.foo');
     var results = set.queryAll(fixture1);
