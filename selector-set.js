@@ -6,7 +6,7 @@
       return new SelectorSet();
     }
 
-    this.uid = 0;
+    this.size = 0;
     this.selectors = [];
     this.indexes = {};
   }
@@ -117,7 +117,7 @@
     }
 
     obj = {
-      id: this.uid++,
+      id: this.size++,
       selector: selector,
       data: data
     };
