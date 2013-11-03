@@ -7,13 +7,8 @@
     }
 
     this.uid = 0;
-    this.querySelectors = [];
-    this.matchSelectors = {
-      'ID': {},
-      'CLASS': {},
-      'TAG': {},
-      'UNIVERSAL': []
-    };
+    this.selectors = [];
+    this.indexes = {};
   }
 
   var docElem = document.documentElement;
@@ -46,6 +41,66 @@
     return context.querySelectorAll(selectors);
   };
 
+
+  SelectorSet.indexes = [];
+
+  var idRe = /#((?:[\w\u00c0-\uFFFF\-]|\\.)+)/g;
+  SelectorSet.indexes.push({
+    name: 'ID',
+    selector: function matchIdSelector(sel) {
+      var m;
+      if (m = sel.match(idRe)) {
+        return m[0].slice(1);
+      }
+    },
+    element: function getElementId(el) {
+      if (el.id) {
+        return [el.id];
+      }
+    }
+  });
+
+  var classRe = /\.((?:[\w\u00c0-\uFFFF\-]|\\.)+)/g;
+  SelectorSet.indexes.push({
+    name: 'CLASS',
+    selector: function matchClassSelector(sel) {
+      var m;
+      if (m = sel.match(classRe)) {
+        return m[0].slice(1);
+      }
+    },
+    element: function getElementClassNames(el) {
+      if (el.className) {
+        return el.className.split(/\s/);
+      }
+    }
+  });
+
+  var tagRe = /^((?:[\w\u00c0-\uFFFF\-]|\\.)+)/g;
+  SelectorSet.indexes.push({
+    name: 'TAG',
+    selector: function matchTagSelector(sel) {
+      var m;
+      if (m = sel.match(tagRe)) {
+        return m[0].toUpperCase();
+      }
+    },
+    element: function getElementTagName(el) {
+      return [el.nodeName];
+    }
+  });
+
+  SelectorSet.indexes.push({
+    name: 'UNIVERSAL',
+    selector: function() {
+      return '*';
+    },
+    element: function() {
+      return ['*'];
+    }
+  });
+
+
   // Public: Add selector to set.
   //
   // selector - String CSS selector
@@ -53,9 +108,9 @@
   //
   // Returns nothing.
   SelectorSet.prototype.add = function(selector, data) {
-    var obj, i, len, groups, g, values,
-        matchSelectors = this.matchSelectors,
-        querySelectors = this.querySelectors;
+    var obj, i, len, selIndexes, sel, indexName,
+        indexes = this.indexes,
+        selectors = this.selectors;
 
     if (typeof selector !== 'string') {
       return;
@@ -67,24 +122,20 @@
       data: data
     };
 
-    groups = getSelectorGroups(selector);
-    for (i = 0, len = groups.length; i < len; i++) {
-      g = groups[i];
-      if (g.key) {
-        values = matchSelectors[g.type][g.key];
-        if (!values) {
-          matchSelectors[g.type][g.key] = values = [];
-        }
-      } else {
-        values = matchSelectors[g.type];
-        if (!values) {
-          matchSelectors[g.type] = values = [];
-        }
+    selIndexes = getSelectorIndexes(selector);
+    for (i = 0, len = selIndexes.length; i < len; i++) {
+      sel = selIndexes[i];
+      indexName = sel.index.name;
+      if (!indexes[indexName]) {
+        indexes[indexName] = { index: sel.index, keys: {} };
       }
-      values.push(obj);
+      if (!indexes[indexName].keys[sel.key]) {
+        indexes[indexName].keys[sel.key] = [];
+      }
+      indexes[indexName].keys[sel.key].push(obj);
     }
 
-    querySelectors.push(selector);
+    selectors.push(selector);
   };
 
   // Public: Find all matching decendants of the context element.
@@ -95,7 +146,7 @@
   SelectorSet.prototype.queryAll = function(context) {
     var matches = {};
 
-    var els = SelectorSet.queryAll(this.querySelectors.join(', '), context);
+    var els = SelectorSet.queryAll(this.selectors.join(', '), context);
 
     var i, j, len, len2, el, m, obj;
     for (i = 0, len = els.length; i < len; i++) {
@@ -133,52 +184,22 @@
       return [];
     }
 
-    var selectors = this.matchSelectors;
-    var i, j, len, len2;
+    var i, j, len, len2, keys, objs, obj, index, indexName;
+    var indexes = this.indexes, ids = {}, matches = [];
 
-    var selectorGroup, possibleMatches = [];
-
-    if (selectorGroup = selectors.ID[el.id]) {
-      for (i = 0, len = selectorGroup.length; i < len; i++) {
-        possibleMatches.push(selectorGroup[i]);
-      }
-    }
-
-    var className = el.className;
-    if (className) {
-      var classSelectors = selectors.CLASS;
-      var classNames = className.split(/\s/);
-      for (j = 0, len2 = classNames.length; j < len2; j++) {
-        if (selectorGroup = classSelectors[classNames[j]]) {
-          for (i = 0, len = selectorGroup.length; i < len; i++) {
-            possibleMatches.push(selectorGroup[i]);
+    for (indexName in indexes) {
+      index = indexes[indexName];
+      keys = index.index.element(el) || [];
+      for (i = 0, len = keys.length; i < len; i++) {
+        if (objs = index.keys[keys[i]]) {
+          for (j = 0, len2 = objs.length; j < len2; j++) {
+            obj = objs[j];
+            if (!ids[obj.id] && SelectorSet.matches(el, obj.selector)) {
+              ids[obj.id] = true;
+              matches.push(obj);
+            }
           }
         }
-      }
-    }
-
-    if (selectorGroup = selectors.TAG[el.nodeName]) {
-      for (i = 0, len = selectorGroup.length; i < len; i++) {
-        possibleMatches.push(selectorGroup[i]);
-      }
-    }
-
-    if (selectorGroup = selectors.UNIVERSAL) {
-      for (i = 0, len = selectorGroup.length; i < len; i++) {
-        possibleMatches.push(selectorGroup[i]);
-      }
-    }
-
-    var obj, ids = {}, matches = [];
-    for (i = 0, len = possibleMatches.length; i < len; i++) {
-      obj = possibleMatches[i];
-      if (!ids[obj.id] && SelectorSet.matches(el, obj.selector)) {
-        ids[obj.id] = true;
-        matches.push({
-          id: obj.id,
-          selector: obj.selector,
-          data: obj.data
-        });
       }
     }
 
@@ -193,38 +214,33 @@
   //   https://github.com/jquery/sizzle/blob/1.7/sizzle.js
   //
   var chunker = /((?:\((?:\([^()]+\)|[^()]+)+\)|\[(?:\[[^\[\]]*\]|['"][^'"]*['"]|[^\[\]'"]+)+\]|\\.|[^ >+~,(\[\\]+)+|[>+~])(\s*,\s*)?((?:.|\r|\n)*)/g;
-  var idRe = /#((?:[\w\u00c0-\uFFFF\-]|\\.)+)/g;
-  var classRe = /\.((?:[\w\u00c0-\uFFFF\-]|\\.)+)/g;
-  var tagRe = /^((?:[\w\u00c0-\uFFFF\-]|\\.)+)/g;
 
-  // Find best selector groups for CSS selectors.
+  // Find best selector indexes for CSS selectors.
   //
   // selectors - CSS selector String.
   //
-  // Returns an Array of {type, key} objects.
-  function getSelectorGroups(selectors) {
-    var m, n, last, rest = selectors, groups = [];
+  // Returns an Array of {index, key} objects.
+  function getSelectorIndexes(selectors) {
+    var m, i, selIndex, key;
+    var indexes = SelectorSet.indexes;
+    var rest = selectors, selIndexes = [];
 
     do {
       chunker.exec('');
       if (m = chunker.exec(rest)) {
         rest = m[3];
         if (m[2] || !rest) {
-          last = m[1];
-          if (n = last.match(idRe)) {
-            groups.push({ type: 'ID', key: n[0].slice(1) });
-          } else if (n = last.match(classRe)) {
-            groups.push({ type: 'CLASS', key: n[0].slice(1) });
-          } else if (n = last.match(tagRe)) {
-            groups.push({ type: 'TAG', key: n[0].toUpperCase() });
-          } else {
-            groups.push({ type: 'UNIVERSAL' });
+          for (i = 0; !selIndex && i < indexes.length; i++) {
+            if (key = indexes[i].selector(m[1])) {
+              selIndex = { index: indexes[i], key: key };
+            }
           }
+          selIndexes.push(selIndex);
         }
       }
     } while (m);
 
-    return groups;
+    return selIndexes;
   }
 
 
