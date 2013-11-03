@@ -2,6 +2,10 @@
   'use strict';
 
   function SelectorSet() {
+    if (!(this instanceof SelectorSet)) {
+      return new SelectorSet();
+    }
+
     this.uid = 0;
     this.querySelectors = [];
     this.matchSelectors = {
