@@ -184,8 +184,8 @@
       return [];
     }
 
-    var i, j, len, len2, keys, objs, obj, index, indexName;
-    var indexes = this.indexes, ids = {}, matches = [];
+    var i, j, len, len2, indexName, index, keys, objs, obj, id;
+    var indexes = this.indexes, matchedIds = {}, matches = [];
 
     for (indexName in indexes) {
       index = indexes[indexName];
@@ -194,8 +194,9 @@
         if (objs = index.keys[keys[i]]) {
           for (j = 0, len2 = objs.length; j < len2; j++) {
             obj = objs[j];
-            if (!ids[obj.id] && SelectorSet.matches(el, obj.selector)) {
-              ids[obj.id] = true;
+            id = obj.id;
+            if (!matchedIds[id] && SelectorSet.matches(el, obj.selector)) {
+              matchedIds[id] = true;
               matches.push(obj);
             }
           }
