@@ -36,10 +36,33 @@ $ curl -O https://raw.github.com/josh/selector-set/master/selector-set.js
 
 ## Use cases
 
+### Batch find calls
+
+``` javascript
+var set = new SelectorSet();
+set.add('form.signup', function(form) {
+  // ...
+});
+set.add('#sidebar', function(sidebar) {
+  // ...
+});
+set.add('.menu', function(menu) {
+  // ...
+});
+
+$ ->
+  set.queryAll(document).forEach(function(match) {
+    match.elements.forEach(function(el) {
+      match.data.call(el, el);
+    });
+  });
+```
+
+
 ### Match delegated events
 
 ``` javascript
-handlers = new SelectorSet();
+var handlers = new SelectorSet();
 handlers.add('.menu', function(event) {
   // ...
 })
@@ -58,7 +81,7 @@ document.addEventListener('click', function(event) {
 ### Apply CSS rules
 
 ``` javascript
-styles = new SelectorSet();
+var styles = new SelectorSet();
 styles.add('p', {
   fontSize: '12px',
   color: 'red'
