@@ -93,10 +93,10 @@
   SelectorSet.indexes.push({
     name: 'UNIVERSAL',
     selector: function() {
-      return '*';
+      return true;
     },
     element: function() {
-      return ['*'];
+      return [true];
     }
   });
 
