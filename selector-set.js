@@ -141,7 +141,8 @@
               indexName = index.name;
               selIndex = indexes[indexName];
               if (!selIndex) {
-                selIndex = indexes[indexName] = { index: index, keys: {} };
+                selIndex = indexes[indexName] = Object.create(index);
+                selIndex.keys = {};
               }
               objs = selIndex.keys[key];
               if (!objs) {
@@ -219,7 +220,7 @@
 
     for (indexName in indexes) {
       index = indexes[indexName];
-      keys = index.index.element(el);
+      keys = index.element(el);
       if (keys) {
         for (i = 0, len = keys.length; i < len; i++) {
           if (objs = index.keys[keys[i]]) {
