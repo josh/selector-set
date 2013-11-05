@@ -203,12 +203,18 @@
       }
     }
 
-    matches.sort(function(a, b) {
-      return a.id - b.id;
-    });
-
-    return matches;
+    return matches.sort(sortById);
   };
+
+  // Sort by id property handler.
+  //
+  // a - Selector obj.
+  // b - Selector obj.
+  //
+  // Returns Number.
+  function sortById(a, b) {
+    return a.id - b.id;
+  }
 
   // Regexps adopted from Sizzle
   //   https://github.com/jquery/sizzle/blob/1.7/sizzle.js
