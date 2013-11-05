@@ -90,7 +90,7 @@
     }
   });
 
-  SelectorSet.indexes.push({
+  SelectorSet.indexes.default = {
     name: 'UNIVERSAL',
     selector: function() {
       return true;
@@ -98,7 +98,7 @@
     element: function() {
       return [true];
     }
-  });
+  };
 
 
   // Regexps adopted from Sizzle
@@ -114,8 +114,6 @@
   // Returns nothing.
   SelectorSet.prototype.add = function(selector, data) {
     var obj, i, m, index, key, indexName, selIndex, objs,
-        allIndexes = SelectorSet.indexes,
-        allIndexesLen = allIndexes.length,
         indexes = this.indexes,
         selectors = this.selectors,
         rest = selector;
@@ -129,6 +127,9 @@
       selector: selector,
       data: data
     };
+
+    var allIndexes = SelectorSet.indexes.concat(SelectorSet.indexes.default),
+     allIndexesLen = allIndexes.length;
 
     do {
       chunker.exec('');
