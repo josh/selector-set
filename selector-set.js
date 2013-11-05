@@ -189,15 +189,17 @@
 
     for (indexName in indexes) {
       index = indexes[indexName];
-      keys = index.index.element(el) || [];
-      for (i = 0, len = keys.length; i < len; i++) {
-        if (objs = index.keys[keys[i]]) {
-          for (j = 0, len2 = objs.length; j < len2; j++) {
-            obj = objs[j];
-            id = obj.id;
-            if (!matchedIds[id] && SelectorSet.matches(el, obj.selector)) {
-              matchedIds[id] = true;
-              matches.push(obj);
+      keys = index.index.element(el);
+      if (keys) {
+        for (i = 0, len = keys.length; i < len; i++) {
+          if (objs = index.keys[keys[i]]) {
+            for (j = 0, len2 = objs.length; j < len2; j++) {
+              obj = objs[j];
+              id = obj.id;
+              if (!matchedIds[id] && SelectorSet.matches(el, obj.selector)) {
+                matchedIds[id] = true;
+                matches.push(obj);
+              }
             }
           }
         }
