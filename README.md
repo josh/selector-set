@@ -131,3 +131,26 @@ The grouping technique isn't a new idea. In fact, it's how WebKit and Firefox wo
 Check out WebKit's definition of [`RuleSet::findBestRuleSetAndAdd`](https://github.com/WebKit/webkit/blob/c0885665302c752230987427d4021b6df634087d/Source/WebCore/css/RuleSet.cpp#L180-L231) to see how it groups CSS rules by selector category.
 
 In the future I hope something like WebKit's `RuleSet` could be made directly available to the browser.
+
+
+### Custom indexes
+
+Currently, only first class attributes like `id`, `class` and the tag name are indexed. But if you have some sort of application specific attribute you frequently use, you can write your own custom index on the attribute.
+
+``` javascript
+SelectorSet.indexes.push({
+  name: 'data-behavior~=',
+  selector: function(sel) {
+    var m;
+    if (m = sel.match(/\[data-behaviors~=(\w+)\]/)) {
+      return m[1];
+    }
+  },
+  element: function(el) {
+    var behaviors = el.getAttribute('data-behavior');
+    if (behaviors) {
+      return behaviors.split(/\s+/);
+    }
+  }
+});
+```
