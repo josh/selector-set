@@ -1,5 +1,8 @@
 # SelectorSet
 
+An efficient data structure for matching and querying elements against a large set of CSS selectors.
+
+
 ## Usage
 
 ``` javascript
@@ -10,6 +13,9 @@ set.add('h1');
 
 set.matches(el);
 // => [ { selector: '.post' } ]
+
+set.queryAll(document);
+// => [ { selector: '.post': elements: [post] }]
 ```
 
 
