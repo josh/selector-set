@@ -171,7 +171,7 @@
       results.push(matches[m]);
     }
 
-    return results;
+    return results.sort(sortById);
   };
 
   // Public: Match element against all selectors in set.
