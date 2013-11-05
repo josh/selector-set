@@ -221,7 +221,7 @@
   //
   // Returns an Array of {index, key} objects.
   function getSelectorIndexes(selectors) {
-    var m, i, selIndex, key;
+    var m, i, len, index, key;
     var indexes = SelectorSet.indexes;
     var rest = selectors, selIndexes = [];
 
@@ -230,12 +230,13 @@
       if (m = chunker.exec(rest)) {
         rest = m[3];
         if (m[2] || !rest) {
-          for (i = 0; !selIndex && i < indexes.length; i++) {
-            if (key = indexes[i].selector(m[1])) {
-              selIndex = { index: indexes[i], key: key };
+          for (i = 0, len = indexes.length; i < len; i++) {
+            index = indexes[i];
+            if (key = index.selector(m[1])) {
+              selIndexes.push({index: index, key: key});
+              break;
             }
           }
-          selIndexes.push(selIndex);
         }
       }
     } while (m);
