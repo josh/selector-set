@@ -1,13 +1,19 @@
 (function() {
   'use strict';
 
+  // Public: Create a new SelectorSet.
   function SelectorSet() {
     if (!(this instanceof SelectorSet)) {
       return new SelectorSet();
     }
 
+    // Internal: Number of selectors added to the set
     this.size = 0;
+
+    // Internal: Array of String selectors in the set
     this.selectors = [];
+
+    // Internal: Object index String names mapping to Index objects.
     this.indexes = {};
   }
 
@@ -42,8 +48,17 @@
   };
 
 
+  // Public: Array of indexes.
+  //
+  // name     - Unique String name
+  // selector - Function that takes a String selector and returns a String key
+  //            or undefined if it can't be used by the index.
+  // element  - Function that takes an Element and returns an Array of String
+  //            keys that point to indexed values.
+  //
   SelectorSet.indexes = [];
 
+  // Index by element id
   var idRe = /#((?:[\w\u00c0-\uFFFF\-]|\\.)+)/g;
   SelectorSet.indexes.push({
     name: 'ID',
@@ -60,6 +75,7 @@
     }
   });
 
+  // Index by all of its class names
   var classRe = /\.((?:[\w\u00c0-\uFFFF\-]|\\.)+)/g;
   SelectorSet.indexes.push({
     name: 'CLASS',
@@ -76,6 +92,7 @@
     }
   });
 
+  // Index by tag/node name: `DIV`, `FORM`, `A`
   var tagRe = /^((?:[\w\u00c0-\uFFFF\-]|\\.)+)/g;
   SelectorSet.indexes.push({
     name: 'TAG',
@@ -90,6 +107,7 @@
     }
   });
 
+  // Default index just contains a single array of elements.
   SelectorSet.indexes.default = {
     name: 'UNIVERSAL',
     selector: function() {
