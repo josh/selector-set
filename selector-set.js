@@ -101,6 +101,11 @@
   });
 
 
+  // Regexps adopted from Sizzle
+  //   https://github.com/jquery/sizzle/blob/1.7/sizzle.js
+  //
+  var chunker = /((?:\((?:\([^()]+\)|[^()]+)+\)|\[(?:\[[^\[\]]*\]|['"][^'"]*['"]|[^\[\]'"]+)+\]|\\.|[^ >+~,(\[\\]+)+|[>+~])(\s*,\s*)?((?:.|\r|\n)*)/g;
+
   // Public: Add selector to set.
   //
   // selector - String CSS selector
@@ -108,9 +113,12 @@
   //
   // Returns nothing.
   SelectorSet.prototype.add = function(selector, data) {
-    var obj, i, len, selIndexes, sel, indexName,
+    var obj, i, m, index, key, indexName, selIndex, objs,
+        allIndexes = SelectorSet.indexes,
+        allIndexesLen = allIndexes.length,
         indexes = this.indexes,
-        selectors = this.selectors;
+        selectors = this.selectors,
+        rest = selector;
 
     if (typeof selector !== 'string') {
       return;
@@ -122,21 +130,43 @@
       data: data
     };
 
-    selIndexes = getSelectorIndexes(selector);
-    for (i = 0, len = selIndexes.length; i < len; i++) {
-      sel = selIndexes[i];
-      indexName = sel.index.name;
-      if (!indexes[indexName]) {
-        indexes[indexName] = { index: sel.index, keys: {} };
+    do {
+      chunker.exec('');
+      if (m = chunker.exec(rest)) {
+        rest = m[3];
+        if (m[2] || !rest) {
+          for (i = 0; i < allIndexesLen; i++) {
+            index = allIndexes[i];
+            if (key = index.selector(m[1])) {
+              indexName = index.name;
+              selIndex = indexes[indexName];
+              if (!selIndex) {
+                selIndex = indexes[indexName] = { index: index, keys: {} };
+              }
+              objs = selIndex.keys[key];
+              if (!objs) {
+                objs = selIndex.keys[key] = [];
+              }
+              objs.push(obj);
+              break;
+            }
+          }
+        }
       }
-      if (!indexes[indexName].keys[sel.key]) {
-        indexes[indexName].keys[sel.key] = [];
-      }
-      indexes[indexName].keys[sel.key].push(obj);
-    }
+    } while (m);
 
     selectors.push(selector);
   };
+
+  // Sort by id property handler.
+  //
+  // a - Selector obj.
+  // b - Selector obj.
+  //
+  // Returns Number.
+  function sortById(a, b) {
+    return a.id - b.id;
+  }
 
   // Public: Find all matching decendants of the context element.
   //
@@ -208,50 +238,6 @@
 
     return matches.sort(sortById);
   };
-
-  // Sort by id property handler.
-  //
-  // a - Selector obj.
-  // b - Selector obj.
-  //
-  // Returns Number.
-  function sortById(a, b) {
-    return a.id - b.id;
-  }
-
-  // Regexps adopted from Sizzle
-  //   https://github.com/jquery/sizzle/blob/1.7/sizzle.js
-  //
-  var chunker = /((?:\((?:\([^()]+\)|[^()]+)+\)|\[(?:\[[^\[\]]*\]|['"][^'"]*['"]|[^\[\]'"]+)+\]|\\.|[^ >+~,(\[\\]+)+|[>+~])(\s*,\s*)?((?:.|\r|\n)*)/g;
-
-  // Find best selector indexes for CSS selectors.
-  //
-  // selectors - CSS selector String.
-  //
-  // Returns an Array of {index, key} objects.
-  function getSelectorIndexes(selectors) {
-    var m, i, len, index, key;
-    var indexes = SelectorSet.indexes;
-    var rest = selectors, selIndexes = [];
-
-    do {
-      chunker.exec('');
-      if (m = chunker.exec(rest)) {
-        rest = m[3];
-        if (m[2] || !rest) {
-          for (i = 0, len = indexes.length; i < len; i++) {
-            index = indexes[i];
-            if (key = index.selector(m[1])) {
-              selIndexes.push({index: index, key: key});
-              break;
-            }
-          }
-        }
-      }
-    } while (m);
-
-    return selIndexes;
-  }
 
 
   window.SelectorSet = SelectorSet;
