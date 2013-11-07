@@ -8,6 +8,7 @@
     "test/*"
   ],
   "devDependencies": {
+    "d3": "~3.3.0",
     "qunit": "~1.12.0"
   }
 }
