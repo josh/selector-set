@@ -59,27 +59,7 @@
     };
   }
 
-  function graph() {
-    var n = 10;
-
-    var data = [
-      {
-        name: 'indexed',
-        values: []
-      },
-      {
-        name: 'linear',
-        values: []
-      }
-    ];
-
-    var result;
-    while (n--) {
-      result = benchmarkSelectorSets(n);
-      data[0].values.push([n, result.indexed.mean*1000*1000]);
-      data[1].values.push([n, result.linear.mean*1000*1000]);
-    }
-
+  function graph(root) {
     var margin = {top: 20, right: 80, bottom: 30, left: 50},
         width = 400 - margin.left - margin.right,
         height = 200 - margin.top - margin.bottom;
@@ -105,52 +85,56 @@
         .x(function(d) { return x(d[0]); })
         .y(function(d) { return y(d[1]); });
 
-
-    var svg = d3.select('body').append('svg')
+    var svg = d3.select(root).append('svg')
         .attr('width', width + margin.left + margin.right)
         .attr('height', height + margin.top + margin.bottom)
       .append('g')
         .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
 
+    function redraw(data) {
+      color.domain(['indexed', 'linear']);
 
+      x.domain([
+        d3.min(data, function(a) { return d3.min(a.values, function(d) { return d[0]; }); }),
+        d3.max(data, function(a) { return d3.max(a.values, function(d) { return d[0]; }); })
+      ]);
 
-    color.domain(['indexed', 'linear']);
+      y.domain([
+        d3.min(data, function(a) { return d3.min(a.values, function(d) { return d[1]; }); }),
+        d3.max(data, function(a) { return d3.max(a.values, function(d) { return d[1]; }); })
+      ]);
 
-    x.domain([
-      d3.min(data, function(a) { return d3.min(a.values, function(d) { return d[0]; }); }),
-      d3.max(data, function(a) { return d3.max(a.values, function(d) { return d[0]; }); })
-    ]);
+      svg.select('.x.axis').remove();
+      svg.append('g')
+          .attr('class', 'x axis')
+          .attr('transform', 'translate(0, ' + height + ')')
+          .call(xAxis);
 
-    y.domain([
-      d3.min(data, function(a) { return d3.min(a.values, function(d) { return d[1]; }); }),
-      d3.max(data, function(a) { return d3.max(a.values, function(d) { return d[1]; }); })
-    ]);
+      svg.select('.y.axis').remove();
+      svg.append('g')
+          .attr('class', 'y axis')
+          .call(yAxis)
+        .append('text')
+          .attr('transform', 'rotate(-90)')
+          .attr('y', 6)
+          .attr('dy', '.71em')
+          .style('text-anchor', 'end')
+          .text('ms');
 
-    svg.append('g')
-        .attr('class', 'x axis')
-        .attr('transform', 'translate(0, ' + height + ')')
-        .call(xAxis);
+      svg.selectAll('.algorithm').remove();
+      var algorithm = svg.selectAll('.algorithm')
+          .data(data)
+        .enter().append('g')
+          .attr('class', 'algorithm');
 
-    svg.append('g')
-        .attr('class', 'y axis')
-        .call(yAxis)
-      .append('text')
-        .attr('transform', 'rotate(-90)')
-        .attr('y', 6)
-        .attr('dy', '.71em')
-        .style('text-anchor', 'end')
-        .text('ms');
+      algorithm.append('path')
+        .attr('class', 'line')
+        .attr('d', function(d) { return line(d.values); })
+        .style('stroke', function(d) { return color(d.name); });
+    }
 
-    var algorithm = svg.selectAll('.algorithm')
-        .data(data)
-      .enter().append('g')
-        .attr('class', 'algorithm');
-
-    algorithm.append('path')
-      .attr('class', 'line')
-      .attr('d', function(d) { return line(d.values); })
-      .style('stroke', function(d) { return color(d.name); });
+    return redraw;
   }
 
-  window.perf = {graph:graph};
+  window.perf = {graph:graph, benchmarkSelectorSets:benchmarkSelectorSets};
 })();

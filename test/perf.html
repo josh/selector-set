@@ -34,7 +34,27 @@
   <script src="./slow-selector-set.js"></script>
   <script src="./perf.js"></script>
   <script>
-    perf.graph();
+    var draw = perf.graph(document.body);
+    var n = 10;
+
+    var data = [
+      {
+        name: 'indexed',
+        values: []
+      },
+      {
+        name: 'linear',
+        values: []
+      }
+    ];
+
+    var result;
+    for (var i = 0; i < n; i++) {
+      result = perf.benchmarkSelectorSets(i);
+      data[0].values.push([i, result.indexed.mean*1000*1000]);
+      data[1].values.push([i, result.linear.mean*1000*1000]);
+      draw(data);
+    }
   </script>
 </body>
 </html>
