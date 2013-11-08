@@ -9,15 +9,15 @@
       font: 10px sans-serif;
     }
 
+    #graph {
+      margin: 20px 30px;
+    }
+
     .axis path,
     .axis line {
       fill: none;
       stroke: #000;
       shape-rendering: crispEdges;
-    }
-
-    .x.axis path {
-      display: none;
     }
 
     .line {
@@ -33,8 +33,12 @@
   <script src="../selector-set.js"></script>
   <script src="./slow-selector-set.js"></script>
   <script src="./perf.js"></script>
+
+  <svg id="graph" width="600" height="300">
+  </svg>
+
   <script>
-    var draw = perf.graph(document.body);
+    var draw = perf.graph(document.getElementById('graph'));
 
     var suite = perf.benchmarkSelectorSets([0, 1, 2, 3, 4, 5, 10], function() {
       draw(suite);
