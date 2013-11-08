@@ -1,16 +1,28 @@
 (function() {
   'use strict';
 
-  function runCachedBenchmark() {
+  function CachedBenchmark() {
     var bench = Benchmark.apply(null, arguments);
-
-    if (sessionStorage.getItem(bench.name)) {
-      return JSON.parse(sessionStorage[bench.name]);
-    } else {
-      bench.run();
-      sessionStorage[bench.name] = JSON.stringify(bench.stats);
-      return bench.stats;
-    }
+    bench.run = function run() {
+      if (!this._original) {
+        var json = sessionStorage.getItem(this.name);
+        if (json) {
+          var cachedObj = JSON.parse(json);
+          for (var propName in cachedObj) {
+            this[propName] = cachedObj[propName];
+          }
+          this.emit('complete');
+          return this;
+        } else {
+          Benchmark.prototype.run.apply(this, arguments);
+          sessionStorage.setItem(this.name, JSON.stringify(this));
+          return this;
+        }
+      } else {
+        return Benchmark.prototype.run.apply(this, arguments);
+      }
+    };
+    return bench;
   }
 
   function randomClassSelector() {
@@ -37,27 +49,30 @@
   }
 
 
-  function benchmarkSelectorSets(n) {
-    var sets = generateRandomClassSelectorSets(n);
-
+  function benchmarkForSelectorSetMatch(algorithm, name, set) {
     var el = document.createElement('div');
-    el.className = sets.selectors[0];
-
-    var indexedSet = sets.indexed;
-    function runIndexed() {
-      indexedSet.matches(el);
-    }
-
-    var linearSet = sets.linear;
-    function runLinear() {
-      linearSet.matches(el);
-    }
-
-    return {
-      indexed: runCachedBenchmark('SelectorSet('+n+')#matches', runIndexed),
-      linear: runCachedBenchmark('SlowSelectorSet('+n+')#matches', runLinear),
-    };
+    el.className = set.selectors[0];
+    function run() { set.matches(el); }
+    var bench = new CachedBenchmark(name + '#matches', run);
+    bench.selectorCount = set.selectors.length;
+    bench.algorithm = algorithm;
+    return bench;
   }
+
+
+  function benchmarkSelectorSets(ns) {
+    var suite = new Benchmark.Suite();
+
+    for (var i = 0; i < ns.length; i++) {
+      var n = ns[i];
+      var sets = generateRandomClassSelectorSets(n);
+      suite.push(benchmarkForSelectorSetMatch('indexed', 'SelectorSet('+n+')', sets.indexed));
+      suite.push(benchmarkForSelectorSetMatch('linear', 'SlowSelectorSet('+n+')', sets.linear));
+    }
+
+    return suite;
+  }
+
 
   function graph(root) {
     var margin = {top: 20, right: 80, bottom: 30, left: 50},
@@ -70,7 +85,19 @@
     var y = d3.scale.linear()
         .range([height, 0]);
 
+    function domain(data, fn) {
+      return [
+        d3.min(data, function(d) { return d3.min(d, fn); }),
+        d3.max(data, function(d) { return d3.max(d, fn); })
+      ];
+    }
+
     var color = d3.scale.category10();
+    function stroke(d) {
+      if (d[0]) {
+        return color(d[0].algorithm);
+      }
+    }
 
     var xAxis = d3.svg.axis()
         .scale(x)
@@ -80,10 +107,17 @@
         .scale(y)
         .orient('left');
 
+    function xValue(bench) {
+      return bench.selectorCount;
+    }
+    function yValue(bench) {
+      return bench.stats.mean * 1000 * 1000;
+    }
+
     var line = d3.svg.line()
         .interpolate('basis')
-        .x(function(d) { return x(d[0]); })
-        .y(function(d) { return y(d[1]); });
+        .x(function(d) { return x(xValue(d)); })
+        .y(function(d) { return y(yValue(d)); });
 
     var svg = d3.select(root).append('svg')
         .attr('width', width + margin.left + margin.right)
@@ -92,17 +126,8 @@
         .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
 
     function redraw(data) {
-      color.domain(['indexed', 'linear']);
-
-      x.domain([
-        d3.min(data, function(a) { return d3.min(a.values, function(d) { return d[0]; }); }),
-        d3.max(data, function(a) { return d3.max(a.values, function(d) { return d[0]; }); })
-      ]);
-
-      y.domain([
-        d3.min(data, function(a) { return d3.min(a.values, function(d) { return d[1]; }); }),
-        d3.max(data, function(a) { return d3.max(a.values, function(d) { return d[1]; }); })
-      ]);
+      x.domain(domain(data, xValue));
+      y.domain(domain(data, yValue));
 
       svg.select('.x.axis').remove();
       svg.append('g')
@@ -129,8 +154,8 @@
 
       algorithm.append('path')
         .attr('class', 'line')
-        .attr('d', function(d) { return line(d.values); })
-        .style('stroke', function(d) { return color(d.name); });
+        .attr('d', line)
+        .style('stroke', stroke);
     }
 
     return redraw;

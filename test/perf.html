@@ -35,26 +35,21 @@
   <script src="./perf.js"></script>
   <script>
     var draw = perf.graph(document.body);
-    var n = 10;
 
-    var data = [
-      {
-        name: 'indexed',
-        values: []
-      },
-      {
-        name: 'linear',
-        values: []
-      }
-    ];
+    var suite = perf.benchmarkSelectorSets([0, 1, 2, 3, 4, 5, 6, 10]).run();
 
-    var result;
-    for (var i = 0; i < n; i++) {
-      result = perf.benchmarkSelectorSets(i);
-      data[0].values.push([i, result.indexed.mean*1000*1000]);
-      data[1].values.push([i, result.linear.mean*1000*1000]);
+    var i = 0;
+    var data = [ [], [] ];
+    while (i < suite.length) {
+      data[0].push(suite[i]);
+      i++;
+      draw(data);
+
+      data[1].push(suite[i]);
+      i++;
       draw(data);
     }
+
   </script>
 </body>
 </html>
