@@ -16,15 +16,14 @@
       shape-rendering: crispEdges;
     }
 
+    .x.axis path {
+      display: none;
+    }
+
     .line {
       fill: none;
+      stroke: steelblue;
       stroke-width: 1.5px;
-    }
-    .line.linear {
-      stroke: #1f77b4;
-    }
-    .line.indexed {
-      stroke: #ff7f0e;
     }
   </style>
 </head>
@@ -35,8 +34,7 @@
   <script src="./slow-selector-set.js"></script>
   <script src="./perf.js"></script>
   <script>
-    var svg = d3.select("body").append("svg");
-    perf.graph(svg);
+    perf.graph();
   </script>
 </body>
 </html>

@@ -59,7 +59,7 @@
     };
   }
 
-  function graph(svg) {
+  function graph() {
     var n = 10;
 
     var data = [
@@ -80,40 +80,76 @@
       data[1].values.push([n, result.linear.mean*1000*1000]);
     }
 
-    var g = svg.append('g')
-        .attr('transform', 'translate(100, 20)');
-
-    var xMax = d3.max(data[1].values, function(d) { return d[0]; });
-    var yMax = d3.max(data[1].values, function(d) { return d[1]; });
+    var margin = {top: 20, right: 80, bottom: 30, left: 50},
+        width = 400 - margin.left - margin.right,
+        height = 200 - margin.top - margin.bottom;
 
     var x = d3.scale.linear()
-      .range([0, 400])
-      .domain([0, xMax]);
+        .range([0, width]);
+
     var y = d3.scale.linear()
-      .range([200, 0])
-      .domain([0, yMax]);
+        .range([height, 0]);
 
-    var xAxis = d3.svg.axis().scale(x);
-    g.append('g')
-        .attr('class', 'x axis')
-        .attr('transform', 'translate(0, 200)')
-        .call(xAxis);
+    var color = d3.scale.category10();
 
-    var yAxis = d3.svg.axis().scale(y).orient('left');
-    g.append('g')
-      .attr('class', 'y axis')
-      .call(yAxis);
+    var xAxis = d3.svg.axis()
+        .scale(x)
+        .orient('bottom');
+
+    var yAxis = d3.svg.axis()
+        .scale(y)
+        .orient('left');
 
     var line = d3.svg.line()
         .interpolate('basis')
         .x(function(d) { return x(d[0]); })
         .y(function(d) { return y(d[1]); });
 
-    g.selectAll().data(data)
+
+    var svg = d3.select('body').append('svg')
+        .attr('width', width + margin.left + margin.right)
+        .attr('height', height + margin.top + margin.bottom)
+      .append('g')
+        .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
+
+
+
+    color.domain(['indexed', 'linear']);
+
+    x.domain([
+      d3.min(data, function(a) { return d3.min(a.values, function(d) { return d[0]; }); }),
+      d3.max(data, function(a) { return d3.max(a.values, function(d) { return d[0]; }); })
+    ]);
+
+    y.domain([
+      d3.min(data, function(a) { return d3.min(a.values, function(d) { return d[1]; }); }),
+      d3.max(data, function(a) { return d3.max(a.values, function(d) { return d[1]; }); })
+    ]);
+
+    svg.append('g')
+        .attr('class', 'x axis')
+        .attr('transform', 'translate(0, ' + height + ')')
+        .call(xAxis);
+
+    svg.append('g')
+        .attr('class', 'y axis')
+        .call(yAxis)
+      .append('text')
+        .attr('transform', 'rotate(-90)')
+        .attr('y', 6)
+        .attr('dy', '.71em')
+        .style('text-anchor', 'end')
+        .text('ms');
+
+    var algorithm = svg.selectAll('.algorithm')
+        .data(data)
       .enter().append('g')
-      .append('path')
-        .attr('class', function(d) { return 'line ' + d.name; })
-        .attr('d', function(d) { return line(d.values); });
+        .attr('class', 'algorithm');
+
+    algorithm.append('path')
+      .attr('class', 'line')
+      .attr('d', function(d) { return line(d.values); })
+      .style('stroke', function(d) { return color(d.name); });
   }
 
   window.perf = {graph:graph};
