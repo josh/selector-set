@@ -94,16 +94,14 @@
 
     function domain(data, fn) {
       return [
-        d3.min(data, function(d) { return d3.min(d, fn); }),
-        d3.max(data, function(d) { return d3.max(d, fn); })
+        d3.min(data, function(d) { return d3.min(d.values, fn); }),
+        d3.max(data, function(d) { return d3.max(d.values, fn); })
       ];
     }
 
     var color = d3.scale.category10();
     function stroke(d) {
-      if (d[0]) {
-        return color(d[0].algorithm);
-      }
+      return color(d.key);
     }
 
     var xAxis = d3.svg.axis()
@@ -113,6 +111,9 @@
     var yAxis = d3.svg.axis()
         .scale(y)
         .orient('left');
+
+    var nest = d3.nest()
+                 .key(function(d) { return d.algorithm; });
 
     function xValue(bench) {
       return bench.selectorCount;
@@ -147,15 +148,7 @@
 
 
     function redraw(suite) {
-      var data = [ [], [] ];
-      var i = 0;
-      while (i < suite.length) {
-        data[0].push(suite[i]);
-        i++;
-
-        data[1].push(suite[i]);
-        i++;
-      }
+      var data = nest.entries(suite);
 
       x.domain(domain(data, xValue));
       svg.select('.x.axis').call(xAxis);
@@ -171,7 +164,7 @@
 
       algorithm.append('path')
         .attr('class', 'line')
-        .attr('d', line)
+        .attr('d', function(d) { return line(d.values); })
         .style('stroke', stroke);
     }
 
