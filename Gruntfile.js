@@ -35,6 +35,10 @@ module.exports = function(grunt) {
       tests: {
         options: {
           globals: {
+            'SelectorSet': false,
+            'SlowSelectorSet': false,
+            'Benchmark': false,
+            'd3': false,
             'QUnit': false,
             'testModule': false,
             'module': false,
