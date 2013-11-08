@@ -3,25 +3,28 @@
 
   function CachedBenchmark() {
     var bench = Benchmark.apply(null, arguments);
+
+    var cacheLoaded = false;
+    bench.on('complete', function() {
+      sessionStorage.setItem(bench.name, JSON.stringify(bench));
+    });
+
     bench.run = function run() {
-      if (!this._original) {
+      if (!cacheLoaded && !this._original) {
         var json = sessionStorage.getItem(this.name);
         if (json) {
           var cachedObj = JSON.parse(json);
-          for (var propName in cachedObj) {
-            this[propName] = cachedObj[propName];
-          }
+          this.stats = cachedObj.stats;
+          this.times = cachedObj.times;
+          cacheLoaded = true;
           this.emit('complete');
           return this;
-        } else {
-          Benchmark.prototype.run.apply(this, arguments);
-          sessionStorage.setItem(this.name, JSON.stringify(this));
-          return this;
         }
-      } else {
-        return Benchmark.prototype.run.apply(this, arguments);
       }
+
+      return Benchmark.prototype.run.apply(this, arguments);
     };
+
     return bench;
   }
 
@@ -60,8 +63,12 @@
   }
 
 
-  function benchmarkSelectorSets(ns) {
-    var suite = new Benchmark.Suite();
+  function benchmarkSelectorSets(ns, cycle) {
+    var suite = new Benchmark.Suite({
+      onCycle: function(event) {
+        cycle(event.target);
+      }
+    });
 
     for (var i = 0; i < ns.length; i++) {
       var n = ns[i];
@@ -125,7 +132,17 @@
       .append('g')
         .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
 
-    function redraw(data) {
+    function redraw(suite) {
+      var data = [ [], [] ];
+      var i = 0;
+      while (i < suite.length) {
+        data[0].push(suite[i]);
+        i++;
+
+        data[1].push(suite[i]);
+        i++;
+      }
+
       x.domain(domain(data, xValue));
       y.domain(domain(data, yValue));
 
