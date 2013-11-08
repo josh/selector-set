@@ -8,6 +8,7 @@
     "test/*"
   ],
   "devDependencies": {
+    "benchmark": "https://raw.github.com/bestiejs/benchmark.js/v1.0.0/benchmark.js",
     "d3": "~3.3.0",
     "qunit": "~1.12.0"
   }
