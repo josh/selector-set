@@ -156,16 +156,18 @@
       y.domain(domain(data, yValue));
       svg.select('.y.axis').transition().call(yAxis);
 
-      svg.selectAll('.algorithm').remove();
       var algorithm = svg.selectAll('.algorithm')
-          .data(data)
-        .enter().append('g')
-          .attr('class', 'algorithm');
+          .data(data);
 
-      algorithm.append('path')
-        .attr('class', 'line')
-        .attr('d', function(d) { return line(d.values); })
-        .style('stroke', stroke);
+      algorithm.enter().append('g')
+        .attr('class', 'algorithm')
+        .append('path')
+          .attr('class', 'line')
+          .style('stroke', stroke);
+
+      algorithm.select('path')
+        .transition()
+        .attr('d', function(d) { return line(d.values); });
     }
 
     return redraw;
