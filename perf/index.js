@@ -151,10 +151,10 @@
       var data = nest.entries(suite);
 
       x.domain(domain(data, xValue));
-      svg.select('.x.axis').call(xAxis);
+      svg.select('.x.axis').transition().call(xAxis);
 
       y.domain(domain(data, yValue));
-      svg.select('.y.axis').call(yAxis);
+      svg.select('.y.axis').transition().call(yAxis);
 
       svg.selectAll('.algorithm').remove();
       var algorithm = svg.selectAll('.algorithm')
