@@ -32,13 +32,9 @@ module.exports = function(grunt) {
       src: {
         src: ['selector-set.js']
       },
-      tests: {
+      test: {
         options: {
           globals: {
-            'SelectorSet': false,
-            'SlowSelectorSet': false,
-            'Benchmark': false,
-            'd3': false,
             'QUnit': false,
             'testModule': false,
             'module': false,
@@ -58,6 +54,17 @@ module.exports = function(grunt) {
           }
         },
         src: ['test/*.js']
+      },
+      perf: {
+        options: {
+          globals: {
+            'Benchmark': false,
+            'd3': false,
+            'SelectorSet': false,
+            'SlowSelectorSet': false
+          }
+        },
+        src: ['perf/*.js']
       }
     },
     qunit: {
@@ -72,9 +79,13 @@ module.exports = function(grunt) {
         files: ['<%= jshint.src.src %>'],
         tasks: ['jshint:src', 'qunit']
       },
-      tests: {
-        files: ['<%= jshint.tests.src %>', 'test/*.html'],
-        tasks: ['jshint:tests', 'qunit']
+      test: {
+        files: ['<%= jshint.test.src %>', 'test/*.html'],
+        tasks: ['jshint:test', 'qunit']
+      },
+      perf: {
+        files: ['<%= jshint.perf.src %>', 'perf/*.html'],
+        tasks: ['jshint:perf']
       }
     }
   });
