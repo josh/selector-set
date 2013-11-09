@@ -163,6 +163,9 @@
         .attr('class', 'line')
         .style('stroke', stroke);
 
+      l.exit()
+        .remove();
+
       l.transition()
         .attr('d', function(d) { return line(d.values); });
     }
