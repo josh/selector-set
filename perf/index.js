@@ -75,20 +75,20 @@
 
   var range = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 25];
 
-  var fixtures = {
-    id: {
+  var fixtures = [
+    {
       name: 'id',
       selector: function() { return '#rand' + random(); }
     },
-    class: {
+    {
       name: 'class',
       selector: function() { return '.rand' + random(); }
     },
-    tag: {
+    {
       name: 'tag',
       selector: function() { return 'rand' + random(); }
     },
-    idclass: {
+    {
       name: 'id/class',
       selector: function() {
         if (Math.random() < 0.5) {
@@ -98,7 +98,7 @@
         }
       }
     }
-  };
+  ];
 
 
   function runSelectorSetMatch(set, el) {
@@ -107,15 +107,15 @@
     };
   }
 
-  function benchmarkSelectorSets(cycle) {
+  function benchmarkSelectorSets(fixtures, cycle) {
     var suite = new Benchmark.Suite({
       onCycle: function(event) {
         cycle(event.target);
       }
     });
 
-    for (var fixtureName in fixtures) {
-      var fixture = fixtures[fixtureName];
+    for (var f = 0; f < fixtures.length; f++) {
+      var fixture = fixtures[f];
 
       for (var i = 0; i < range.length; i++) {
         var size = range[i];
