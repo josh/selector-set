@@ -31,8 +31,8 @@
   <script src="../bower_components/d3/d3.js"></script>
   <script src="../bower_components/benchmark/index.js"></script>
   <script src="../selector-set.js"></script>
-  <script src="./slow-selector-set.js"></script>
-  <script src="./perf.js"></script>
+  <script src="../test/slow-selector-set.js"></script>
+  <script src="./index.js"></script>
 
   <svg id="graph" width="600" height="300">
   </svg>
@@ -40,12 +40,12 @@
   <script>
     var draw = perf.graph(document.getElementById('graph'));
 
-    var suite = perf.benchmarkSelectorSets([0, 1, 2, 3, 4, 5, 10], function() {
+    var suite = perf.benchmarkSelectorSets([0, 1, 2, 3, 4, 5, 10, 25], function() {
       draw(suite);
     })
 
     setTimeout(function() {
-      suite.run({async: true})
+      suite.run({async: true});
       draw(suite);
     }, 1000)
   </script>
