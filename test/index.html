@@ -23,12 +23,12 @@
   <script src="../bower_components/qunit/qunit/qunit.js"></script>
 
   <script src="../selector-set.js"></script>
-  <script src="./slow-selector-set.js"></script>
+  <script src="./examplar-selector-set.js"></script>
 
   <script>
     function testModule(name, suite) {
-      module(SlowSelectorSet.name + '#' + name);
-      suite(SlowSelectorSet);
+      module(ExamplarSelectorSet.name + '#' + name);
+      suite(ExamplarSelectorSet);
 
       module(SelectorSet.name + '#' + name);
       suite(SelectorSet);

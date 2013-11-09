@@ -36,5 +36,5 @@
 
   ExamplarSelectorSet.matches = window.SelectorSet.matches;
   ExamplarSelectorSet.queryAll = window.SelectorSet.queryAll;
-  window.SlowSelectorSet = ExamplarSelectorSet;
+  window.ExamplarSelectorSet = ExamplarSelectorSet;
 })();

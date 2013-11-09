@@ -61,7 +61,7 @@ module.exports = function(grunt) {
             'Benchmark': false,
             'd3': false,
             'SelectorSet': false,
-            'SlowSelectorSet': false
+            'ExamplarSelectorSet': false
           }
         },
         src: ['perf/*.js']
