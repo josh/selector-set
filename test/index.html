@@ -27,10 +27,10 @@
 
   <script>
     function testModule(name, suite) {
-      module('examplar ' + name);
+      module(SlowSelectorSet.name + '#' + name);
       suite(SlowSelectorSet);
 
-      module('optimized ' + name);
+      module(SelectorSet.name + '#' + name);
       suite(SelectorSet);
     }
   </script>

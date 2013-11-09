@@ -1,21 +1,21 @@
 (function() {
   'use strict';
 
-  function SelectorSet() {
+  function ExamplarSelectorSet() {
     this.selectors = [];
   }
 
-  SelectorSet.prototype.add = function(selector, data) {
+  ExamplarSelectorSet.prototype.add = function(selector, data) {
     if (typeof selector === 'string') {
       this.selectors.push({selector: selector, data: data});
     }
   };
 
-  SelectorSet.prototype.queryAll = function(context) {
+  ExamplarSelectorSet.prototype.queryAll = function(context) {
     var i, obj, els, matches = [];
     for (i = 0; i < this.selectors.length; i++) {
       obj = this.selectors[i];
-      els = SelectorSet.queryAll(obj.selector, context);
+      els = this.constructor.queryAll(obj.selector, context);
       if (els.length) {
         matches.push({selector: obj.selector, data: obj.data, elements: els});
       }
@@ -23,18 +23,18 @@
     return matches;
   };
 
-  SelectorSet.prototype.matches = function(el) {
+  ExamplarSelectorSet.prototype.matches = function(el) {
     var i, obj, matches = [];
     for (i = 0; i < this.selectors.length; i++) {
       obj = this.selectors[i];
-      if (el && SelectorSet.matches(el, obj.selector)) {
+      if (el && this.constructor.matches(el, obj.selector)) {
         matches.push({selector: obj.selector, data: obj.data});
       }
     }
     return matches;
   };
 
-  SelectorSet.matches = window.SelectorSet.matches;
-  SelectorSet.queryAll = window.SelectorSet.queryAll;
-  window.SlowSelectorSet = SelectorSet;
+  ExamplarSelectorSet.matches = window.SelectorSet.matches;
+  ExamplarSelectorSet.queryAll = window.SelectorSet.queryAll;
+  window.SlowSelectorSet = ExamplarSelectorSet;
 })();

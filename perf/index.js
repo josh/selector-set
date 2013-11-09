@@ -28,53 +28,111 @@
     return bench;
   }
 
-  function randomClassSelector() {
-    return '.rand' + Math.floor(Math.random() * 1e+10);
+
+  function random() {
+    return Math.floor(Math.random() * 1e+10);
   }
 
-  function generateRandomClassSelectors(n) {
-    var selectors = [];
-    while (n--) {
-      selectors.push(randomClassSelector());
+  function elementMatchingSelector(selectors) {
+    var selector = selectors[0];
+    if (!selector) {
+      return;
     }
-    return selectors;
-  }
 
-  function generateRandomClassSelectorSets(n) {
-    var selectors = generateRandomClassSelectors(n);
-    var indexed = new SelectorSet();
-    var linear = new SlowSelectorSet();
-    for (var i = 0; i < n; i++) {
-      indexed.add(selectors[i]);
-      linear.add(selectors[i]);
+    var m, el;
+    if (m = selector.match(/^#(\w+)$/)) {
+      el = document.createElement('div');
+      el.id = m[1];
+    } else if (m = selector.match(/^\.(\w+)$/)) {
+      el = document.createElement('div');
+      el.className = m[1];
+    } else if (m = selector.match(/^(\w+)$/)) {
+      el = document.createElement(m[1]);
     }
-    return { selectors: selectors, indexed: indexed, linear: linear };
+
+    return el;
   }
 
 
-  function benchmarkForSelectorSetMatch(algorithm, name, set) {
-    var el = document.createElement('div');
-    el.className = set.selectors[0];
-    function run() { set.matches(el); }
-    var bench = new CachedBenchmark(name + '#matches', run);
-    bench.selectorCount = set.selectors.length;
-    bench.algorithm = algorithm;
-    return bench;
+  var implementations = [ SelectorSet, SlowSelectorSet ];
+
+
+  function fillSelectorSets(randSelector) {
+    return function(n) {
+      var i, len = implementations.length, sets = [];
+      for (i = 0; i < len; i++) {
+        sets[i] = new implementations[i]();
+      }
+      while (n--) {
+        var selector = randSelector();
+        for (i = 0; i < len; i++) {
+          sets[i].add(selector);
+        }
+      }
+      return sets;
+    };
   }
 
+  var range = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 25];
 
-  function benchmarkSelectorSets(ns, cycle) {
+  var fixtures = {
+    id: {
+      name: 'id',
+      selector: function() { return '#rand' + random(); }
+    },
+    class: {
+      name: 'class',
+      selector: function() { return '.rand' + random(); }
+    },
+    tag: {
+      name: 'tag',
+      selector: function() { return 'rand' + random(); }
+    },
+    idclass: {
+      name: 'id/class',
+      selector: function() {
+        if (Math.random() < 0.5) {
+          return '#rand' + random();
+        } else {
+          return '.rand' + random();
+        }
+      }
+    }
+  };
+
+
+  function runSelectorSetMatch(set, el) {
+    return function run() {
+      set.matches(el);
+    };
+  }
+
+  function benchmarkSelectorSets(cycle) {
     var suite = new Benchmark.Suite({
       onCycle: function(event) {
         cycle(event.target);
       }
     });
 
-    for (var i = 0; i < ns.length; i++) {
-      var n = ns[i];
-      var sets = generateRandomClassSelectorSets(n);
-      suite.push(benchmarkForSelectorSetMatch('indexed', 'SelectorSet('+n+')', sets.indexed));
-      suite.push(benchmarkForSelectorSetMatch('linear', 'SlowSelectorSet('+n+')', sets.linear));
+    for (var fixtureName in fixtures) {
+      var fixture = fixtures[fixtureName];
+
+      for (var i = 0; i < range.length; i++) {
+        var size = range[i];
+        var sets = fillSelectorSets(fixture.selector)(size);
+        var el = elementMatchingSelector(sets[0].selectors);
+
+        for (var j = 0; j < sets.length; j++) {
+          var set = sets[j];
+          var groupName = fixture.name + set.constructor.name + '#matches';
+          var run = runSelectorSetMatch(set, el);
+          var bench = new CachedBenchmark(groupName + size, run);
+          bench.set = set;
+          bench.groupName = groupName;
+
+          suite.push(bench);
+        }
+      }
     }
 
     return suite;
@@ -113,10 +171,10 @@
         .orient('left');
 
     var nest = d3.nest()
-                 .key(function(d) { return d.algorithm; });
+                 .key(function(d) { return d.groupName; });
 
     function xValue(bench) {
-      return bench.selectorCount;
+      return bench.set.selectors.length;
     }
     function yValue(bench) {
       return bench.stats.mean * 1000 * 1000;
@@ -173,5 +231,5 @@
     return redraw;
   }
 
-  window.perf = {graph:graph, benchmarkSelectorSets:benchmarkSelectorSets};
+  window.perf = {graph:graph, benchmarkSelectorSets:benchmarkSelectorSets, fixtures:fixtures};
 })();
