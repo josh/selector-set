@@ -50,6 +50,10 @@
       el = document.createElement(m[1]);
     }
 
+    if (!SelectorSet.prototype.matchesSelector(el, selector)) {
+      throw 'couldn\'t make element matching "' + selector + '"';
+    }
+
     return el;
   }
 
