@@ -121,6 +121,26 @@
   };
 
 
+  // Use ES Maps when supported
+  var Map;
+  if (typeof window.Map === 'function') {
+    Map = window.Map;
+  } else {
+    Map = (function() {
+      function Map() {
+        this.map = {};
+      }
+      Map.prototype.get = function(key) {
+        return this.map[key + ' '];
+      };
+      Map.prototype.set = function(key, value) {
+        this.map[key + ' '] = value;
+      };
+      return Map;
+    })();
+  }
+
+
   // Regexps adopted from Sizzle
   //   https://github.com/jquery/sizzle/blob/1.7/sizzle.js
   //
@@ -159,16 +179,16 @@
           for (i = 0; i < allIndexesLen; i++) {
             index = allIndexes[i];
             if (key = index.selector(m[1])) {
-              key = key + ' ';
               indexName = index.name;
               selIndex = indexes[indexName];
               if (!selIndex) {
                 selIndex = indexes[indexName] = Object.create(index);
-                selIndex.keys = {};
+                selIndex.keys = new Map();
               }
-              objs = selIndex.keys[key];
+              objs = selIndex.keys.get(key);
               if (!objs) {
-                objs = selIndex.keys[key] = [];
+                objs = [];
+                selIndex.keys.set(key, objs);
               }
               objs.push(obj);
               break;
@@ -237,7 +257,7 @@
       return [];
     }
 
-    var i, j, len, len2, indexName, index, keys, key, objs, obj, id;
+    var i, j, len, len2, indexName, index, keys, objs, obj, id;
     var indexes = this.activeIndexes, matchedIds = {}, matches = [];
 
     for (indexName in indexes) {
@@ -245,8 +265,7 @@
       keys = index.element(el);
       if (keys) {
         for (i = 0, len = keys.length; i < len; i++) {
-          key = keys[i] + ' ';
-          if (objs = index.keys[key]) {
+          if (objs = index.keys.get(keys[i])) {
             for (j = 0, len2 = objs.length; j < len2; j++) {
               obj = objs[j];
               id = obj.id;
