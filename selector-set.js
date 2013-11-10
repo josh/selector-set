@@ -31,7 +31,7 @@
   // selector - String CSS selector
   //
   // Returns true or false.
-  SelectorSet.matches = function(el, selector) {
+  SelectorSet.prototype.matchesSelector = function(el, selector) {
     return matches.call(el, selector);
   };
 
@@ -43,7 +43,7 @@
   // context   - Element context
   //
   // Returns non-live list of Elements.
-  SelectorSet.queryAll = function(selectors, context) {
+  SelectorSet.prototype.querySelectorAll = function(selectors, context) {
     return context.querySelectorAll(selectors);
   };
 
@@ -196,7 +196,7 @@
   SelectorSet.prototype.queryAll = function(context) {
     var matches = {};
 
-    var els = SelectorSet.queryAll(this.selectors.join(', '), context);
+    var els = this.querySelectorAll(this.selectors.join(', '), context);
 
     var i, j, len, len2, el, m, obj;
     for (i = 0, len = els.length; i < len; i++) {
@@ -246,7 +246,7 @@
             for (j = 0, len2 = objs.length; j < len2; j++) {
               obj = objs[j];
               id = obj.id;
-              if (!matchedIds[id] && SelectorSet.matches(el, obj.selector)) {
+              if (!matchedIds[id] && this.matchesSelector(el, obj.selector)) {
                 matchedIds[id] = true;
                 matches.push(obj);
               }

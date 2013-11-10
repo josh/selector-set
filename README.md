@@ -109,12 +109,12 @@ The main requirement is `querySelectorAll` and some sort of `prefixMatchesSelect
 
 ``` javascript
 // Use Sizzle's match and query functions
-SelectorSet.queryAll = Sizzle;
-SelectorSet.matches = Sizzle.matchesSelector
+SelectorSet.prototype.querySelectorAll = Sizzle;
+SelectorSet.prototype.matchesSelector  = Sizzle.matchesSelector
 
 // Or use jQuery's internal Sizzle
-SelectorSet.queryAll = jQuery.find;
-SelectorSet.matches = jQuery.find.matchesSelector
+SelectorSet.prototype.querySelectorAll = jQuery.find;
+SelectorSet.prototype.matchesSelector  = jQuery.find.matchesSelector
 ```
 
 
