@@ -64,7 +64,7 @@ module.exports = function(grunt) {
             'ExamplarSelectorSet': false
           }
         },
-        src: ['perf/*.js']
+        src: ['test/perf.js']
       }
     },
     qunit: {
