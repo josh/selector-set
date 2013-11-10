@@ -40,12 +40,12 @@
   <script>
     var draw = perf.graph(document.getElementById('graph'));
 
-    var suite = perf.benchmarkSelectorSets(perf.fixtures, function() {
+    var suite = perf.benchmarkSelectorSets(perf.fixtures.slice(0, 1), function() {
       draw(suite);
     })
 
     setTimeout(function() {
-      suite.run({async: true});
+      suite.run();
       draw(suite);
     }, 1000)
   </script>

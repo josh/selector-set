@@ -126,7 +126,10 @@
           var set = sets[j];
           var groupName = fixture.name + set.constructor.name + '#matches';
           var run = runSelectorSetMatch(set, el);
-          var bench = new CachedBenchmark(groupName + size, run);
+          var bench = new CachedBenchmark(groupName + size, run, {
+            async: true,
+            maxTime: 1
+          });
           bench.set = set;
           bench.groupName = groupName;
 
@@ -202,7 +205,7 @@
         .attr('y', 6)
         .attr('dy', '.71em')
         .style('text-anchor', 'end')
-        .text('ms');
+        .text('μs');
 
 
     function redraw(suite) {
