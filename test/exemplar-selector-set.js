@@ -5,6 +5,13 @@
     this.selectors = [];
   }
 
+  ExemplarSelectorSet.prototype = Object.create(SelectorSet.prototype, {
+    constructor: {
+      enumerable: false,
+      value: ExemplarSelectorSet
+    }
+  });
+
   ExemplarSelectorSet.prototype.add = function(selector, data) {
     if (typeof selector === 'string') {
       this.selectors.push({selector: selector, data: data});
@@ -33,9 +40,6 @@
     }
     return matches;
   };
-
-  ExemplarSelectorSet.prototype.matchesSelector = window.SelectorSet.prototype.matchesSelector;
-  ExemplarSelectorSet.prototype.querySelectorAll = window.SelectorSet.prototype.querySelectorAll;
 
   window.ExemplarSelectorSet = ExemplarSelectorSet;
 })();
