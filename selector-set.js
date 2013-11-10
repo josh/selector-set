@@ -159,6 +159,7 @@
           for (i = 0; i < allIndexesLen; i++) {
             index = allIndexes[i];
             if (key = index.selector(m[1])) {
+              key = key + ' ';
               indexName = index.name;
               selIndex = indexes[indexName];
               if (!selIndex) {
@@ -236,7 +237,7 @@
       return [];
     }
 
-    var i, j, len, len2, indexName, index, keys, objs, obj, id;
+    var i, j, len, len2, indexName, index, keys, key, objs, obj, id;
     var indexes = this.activeIndexes, matchedIds = {}, matches = [];
 
     for (indexName in indexes) {
@@ -244,7 +245,8 @@
       keys = index.element(el);
       if (keys) {
         for (i = 0, len = keys.length; i < len; i++) {
-          if (objs = index.keys[keys[i]]) {
+          key = keys[i] + ' ';
+          if (objs = index.keys[key]) {
             for (j = 0, len2 = objs.length; j < len2; j++) {
               obj = objs[j];
               id = obj.id;

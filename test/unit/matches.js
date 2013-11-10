@@ -296,4 +296,32 @@ testModule('matches', function(SelectorSet) {
     equal(results.length, 1);
     equal(results[0].selector, '#foo');
   });
+
+  test('object property names', function() {
+    var set = new SelectorSet();
+    set.add('#prototype');
+    set.add('#constructor');
+    set.add('.hasOwnProperty');
+    set.add('.isPrototype');
+    set.add('.toString');
+
+    var fixture = document.getElementById('fixture-props');
+    var el = fixture.querySelector('#prototype');
+    ok(el);
+    var results = set.matches(el);
+    equal(results.length, 1);
+    equal(results[0].selector, '#prototype');
+
+    el = fixture.querySelector('#constructor');
+    ok(el);
+    results = set.matches(el);
+    equal(results.length, 1);
+    equal(results[0].selector, '#constructor');
+
+    el = fixture.querySelector('.hasOwnProperty');
+    ok(el);
+    results = set.matches(el);
+    equal(results.length, 1);
+    equal(results[0].selector, '.hasOwnProperty');
+  });
 });
