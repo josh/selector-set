@@ -1,4 +1,4 @@
-(function() {
+(function(window) {
   'use strict';
 
   // Public: Create a new SelectorSet.
@@ -17,7 +17,7 @@
     this.indexes = {};
   }
 
-  var docElem = document.documentElement;
+  var docElem = window.document.documentElement;
   var matches = (docElem.webkitMatchesSelector ||
                   docElem.mozMatchesSelector ||
                   docElem.oMatchesSelector ||
@@ -264,4 +264,4 @@
   } else {
     window.SelectorSet = SelectorSet;
   }
-})();
+})(window);
