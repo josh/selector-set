@@ -35,22 +35,10 @@ module.exports = function(grunt) {
       test: {
         options: {
           globals: {
-            'QUnit': false,
             'testModule': false,
-            'module': false,
             'test': false,
-            'asyncTest': false,
-            'expect': false,
-            'start': false,
-            'stop': false,
             'ok': false,
-            'equal': false,
-            'notEqual': false,
-            'deepEqual': false,
-            'notDeepEqual': false,
-            'strictEqual': false,
-            'notStrictEqual': false,
-            'throws': false
+            'equal': false
           }
         },
         src: ['test/unit/*.js']
