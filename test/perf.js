@@ -105,12 +105,8 @@
   ];
 
 
-  function benchmark(fixtures, cycle) {
-    var suite = new Benchmark.Suite({
-      onCycle: function(event) {
-        cycle(event.target);
-      }
-    });
+  function benchmark(fixtures) {
+    var suite = new Benchmark.Suite();
 
     if (!fixtures.length) {
       fixtures = [fixtures];
@@ -136,7 +132,7 @@
           var run = runSelectorSetMatch(set, el);
           var bench = new CachedBenchmark(groupName + size, run, {
             async: true,
-            maxTime: 1
+            maxTime: 0.1
           });
           bench.set = set;
           bench.groupName = groupName;
