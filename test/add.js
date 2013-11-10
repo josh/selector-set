@@ -1,4 +1,4 @@
-testModule('index', function(SelectorSet) {
+testModule('add', function(SelectorSet) {
   'use strict';
 
   test('ignores non string selector', function() {
