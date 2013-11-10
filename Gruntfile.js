@@ -53,7 +53,7 @@ module.exports = function(grunt) {
             'throws': false
           }
         },
-        src: ['test/*.js']
+        src: ['test/unit/*.js']
       },
       perf: {
         options: {
