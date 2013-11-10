@@ -1,17 +1,17 @@
 (function() {
   'use strict';
 
-  function ExamplarSelectorSet() {
+  function ExemplarSelectorSet() {
     this.selectors = [];
   }
 
-  ExamplarSelectorSet.prototype.add = function(selector, data) {
+  ExemplarSelectorSet.prototype.add = function(selector, data) {
     if (typeof selector === 'string') {
       this.selectors.push({selector: selector, data: data});
     }
   };
 
-  ExamplarSelectorSet.prototype.queryAll = function(context) {
+  ExemplarSelectorSet.prototype.queryAll = function(context) {
     var i, obj, els, matches = [];
     for (i = 0; i < this.selectors.length; i++) {
       obj = this.selectors[i];
@@ -23,7 +23,7 @@
     return matches;
   };
 
-  ExamplarSelectorSet.prototype.matches = function(el) {
+  ExemplarSelectorSet.prototype.matches = function(el) {
     var i, obj, matches = [];
     for (i = 0; i < this.selectors.length; i++) {
       obj = this.selectors[i];
@@ -34,7 +34,8 @@
     return matches;
   };
 
-  ExamplarSelectorSet.matches = window.SelectorSet.matches;
-  ExamplarSelectorSet.queryAll = window.SelectorSet.queryAll;
-  window.ExamplarSelectorSet = ExamplarSelectorSet;
+  ExemplarSelectorSet.matches = window.SelectorSet.matches;
+  ExemplarSelectorSet.queryAll = window.SelectorSet.queryAll;
+
+  window.ExemplarSelectorSet = ExemplarSelectorSet;
 })();

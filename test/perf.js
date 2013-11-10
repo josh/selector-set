@@ -54,7 +54,7 @@
   }
 
 
-  var implementations = [ SelectorSet, ExamplarSelectorSet ];
+  var implementations = [ SelectorSet, ExemplarSelectorSet ];
 
 
   function fillSelectorSets(randSelector) {
