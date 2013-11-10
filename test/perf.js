@@ -101,18 +101,22 @@
   ];
 
 
-  function runSelectorSetMatch(set, el) {
-    return function run() {
-      set.matches(el);
-    };
-  }
-
-  function benchmarkSelectorSets(fixtures, cycle) {
+  function benchmark(fixtures, cycle) {
     var suite = new Benchmark.Suite({
       onCycle: function(event) {
         cycle(event.target);
       }
     });
+
+    if (!fixtures.length) {
+      fixtures = [fixtures];
+    }
+
+    function runSelectorSetMatch(set, el) {
+      return function run() {
+        set.matches(el);
+      };
+    }
 
     for (var f = 0; f < fixtures.length; f++) {
       var fixture = fixtures[f];
@@ -234,5 +238,9 @@
     return redraw;
   }
 
-  window.perf = {graph:graph, benchmarkSelectorSets:benchmarkSelectorSets, fixtures:fixtures};
+  window.perf = {
+    fixtures: fixtures,
+    graph: graph,
+    benchmark: benchmark
+  };
 })();

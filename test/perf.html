@@ -7,6 +7,7 @@
   <style>
     body {
       font: 10px sans-serif;
+      width: 800px;
     }
 
     #graph {
@@ -25,29 +26,37 @@
       stroke: steelblue;
       stroke-width: 1.5px;
     }
+
+    select {
+      float: right;
+    }
   </style>
 </head>
-<body>
+<body onload="update();">
+  <svg id="graph" width="600" height="300">
+  </svg>
+
+  <select id="fixture" onchange="update();">
+    <option value=0>id</option>
+    <option value=1>class</option>
+    <option value=2>id/class</option>
+  </select>
+
   <script src="../bower_components/d3/d3.js"></script>
   <script src="../bower_components/benchmark/index.js"></script>
   <script src="../selector-set.js"></script>
   <script src="./exemplar-selector-set.js"></script>
   <script src="./perf.js"></script>
-
-  <svg id="graph" width="600" height="300">
-  </svg>
-
   <script>
     var draw = perf.graph(document.getElementById('graph'));
+    var suite = [];
 
-    var suite = perf.benchmarkSelectorSets(perf.fixtures.slice(0, 1), function() {
-      draw(suite);
-    })
-
-    setTimeout(function() {
-      suite.run();
-      draw(suite);
-    }, 1000)
+    function update() {
+      var fixture = perf.fixtures[document.getElementById('fixture').value];
+      suite = perf.benchmark(fixture, function() {
+        draw(suite);
+      }).run();
+    }
   </script>
 </body>
 </html>
