@@ -13,8 +13,10 @@
     // Internal: Array of String selectors in the set
     this.selectors = [];
 
+    this.indexes = Object.create(this.indexes);
+
     // Internal: Object index String names mapping to Index objects.
-    this.indexes = {};
+    this.activeIndexes = {};
   }
 
   var docElem = window.document.documentElement;
@@ -56,11 +58,11 @@
   // element  - Function that takes an Element and returns an Array of String
   //            keys that point to indexed values.
   //
-  SelectorSet.indexes = [];
+  SelectorSet.prototype.indexes = [];
 
   // Index by element id
   var idRe = /#((?:[\w\u00c0-\uFFFF\-]|\\.)+)/g;
-  SelectorSet.indexes.push({
+  SelectorSet.prototype.indexes.push({
     name: 'ID',
     selector: function matchIdSelector(sel) {
       var m;
@@ -77,7 +79,7 @@
 
   // Index by all of its class names
   var classRe = /\.((?:[\w\u00c0-\uFFFF\-]|\\.)+)/g;
-  SelectorSet.indexes.push({
+  SelectorSet.prototype.indexes.push({
     name: 'CLASS',
     selector: function matchClassSelector(sel) {
       var m;
@@ -94,7 +96,7 @@
 
   // Index by tag/node name: `DIV`, `FORM`, `A`
   var tagRe = /^((?:[\w\u00c0-\uFFFF\-]|\\.)+)/g;
-  SelectorSet.indexes.push({
+  SelectorSet.prototype.indexes.push({
     name: 'TAG',
     selector: function matchTagSelector(sel) {
       var m;
@@ -108,7 +110,7 @@
   });
 
   // Default index just contains a single array of elements.
-  SelectorSet.indexes.default = {
+  SelectorSet.prototype.indexes.default = {
     name: 'UNIVERSAL',
     selector: function() {
       return true;
@@ -132,7 +134,7 @@
   // Returns nothing.
   SelectorSet.prototype.add = function(selector, data) {
     var obj, i, m, index, key, indexName, selIndex, objs,
-        indexes = this.indexes,
+        indexes = this.activeIndexes,
         selectors = this.selectors,
         rest = selector;
 
@@ -146,7 +148,7 @@
       data: data
     };
 
-    var allIndexes = SelectorSet.indexes.concat(SelectorSet.indexes.default),
+    var allIndexes = this.indexes.slice(0).concat(this.indexes.default),
      allIndexesLen = allIndexes.length;
 
     do {
@@ -235,7 +237,7 @@
     }
 
     var i, j, len, len2, indexName, index, keys, objs, obj, id;
-    var indexes = this.indexes, matchedIds = {}, matches = [];
+    var indexes = this.activeIndexes, matchedIds = {}, matches = [];
 
     for (indexName in indexes) {
       index = indexes[indexName];

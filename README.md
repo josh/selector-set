@@ -168,7 +168,7 @@ In the future I hope something like WebKit's `RuleSet` could be made directly av
 Currently, only first class attributes like `id`, `class` and the tag name are indexed. But if you have some sort of application specific attribute you frequently use, you can write your own custom index on the attribute.
 
 ``` javascript
-SelectorSet.indexes.push({
+SelectorSet.prototype.indexes.push({
   name: 'data-behavior~=',
   selector: function(sel) {
     var m;
