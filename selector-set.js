@@ -259,6 +259,9 @@
     return matches.sort(sortById);
   };
 
-
-  window.SelectorSet = SelectorSet;
+  if (typeof define === 'function' && define.amd) {
+    define(function() { return SelectorSet; });
+  } else {
+    window.SelectorSet = SelectorSet;
+  }
 })();
