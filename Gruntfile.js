@@ -83,6 +83,29 @@ module.exports = function(grunt) {
     }
   });
 
+  grunt.registerTask('benchmark', 'Run benchmarks.', function() {
+    var phantomjs = require('grunt-lib-phantomjs').init(grunt);
+
+    phantomjs.on('benchmark.cycle', function(bench) {
+      grunt.log.subhead(bench.name);
+      grunt.log.writeln(bench.stats.mean * 1000 * 1000);
+    });
+
+    phantomjs.on('benchmark.complete', function() {
+      phantomjs.halt();
+    });
+
+    var done = this.async();
+    phantomjs.spawn('test/benchmark.html', {
+      options: {
+        timeout: 5000
+      },
+      done: function(err) {
+        done(err);
+      }
+    });
+  });
+
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-qunit');
   grunt.loadNpmTasks('grunt-contrib-watch');
