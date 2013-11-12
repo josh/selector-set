@@ -167,11 +167,14 @@ Done, without errors.
 
 ## Implementation
 
-The grouping technique isn't a new idea. In fact, it's how WebKit and Firefox work already. In order to calculate the styles of a single element, a huge number of CSS rules need to be considered.
 
-Check out WebKit's definition of [`RuleSet::findBestRuleSetAndAdd`](https://github.com/WebKit/webkit/blob/c0885665302c752230987427d4021b6df634087d/Source/WebCore/css/RuleSet.cpp#L180-L231) to see how it groups CSS rules by selector category.
+### Inspired by browsers
 
-In the future I hope something like WebKit's `RuleSet` could be made directly available to the browser.
+The grouping technique isn't a new idea. In fact, it's how WebKit and Firefox work already. In order to calculate the styles of a single element, a huge number of CSS rules need to be considered. Browsers don't just iterate over every selector and test it. That would be way too slow.
+
+WebKit has a [`RuleSet`](https://github.com/WebKit/webkit/blob/c0885665302c752230987427d4021b6df634087d/Source/WebCore/css/RuleSet.cpp) class that very much inspired this library. Checkout it's definition of [`RuleSet::findBestRuleSetAndAdd`](https://github.com/WebKit/webkit/blob/c0885665302c752230987427d4021b6df634087d/Source/WebCore/css/RuleSet.cpp#L180-L231) to see how it groups CSS rules by selector category.
+
+In the future I hope something like WebKit's `RuleSet` could be made directly available to the browser. Not only would be writing it in C++ be faster, having access to a real CSS parser would make it much more robust than this library's hacky regexp matchers.
 
 
 ### Custom indexes
@@ -195,3 +198,9 @@ SelectorSet.prototype.indexes.push({
   }
 });
 ```
+
+## License
+
+Copyright (c) 2013 Joshua Peek
+
+Distributed under an MIT-style license. See LICENSE for details.
