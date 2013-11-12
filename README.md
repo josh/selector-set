@@ -38,6 +38,8 @@ $ curl -O https://raw.github.com/josh/selector-set/master/selector-set.js
 
 ### Batch find calls
 
+Large numbers of `querySelectorAll` calls they are usually made on page load can be batched up for efficiency. Having them in a set also makes it convenient to rerun on changed content.
+
 ``` javascript
 var set = new SelectorSet();
 set.add('form.signup', function(form) {
@@ -62,6 +64,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
 ### Match delegated events
 
+Having a large number of delegated handlers on for a single event can slow down it down on every dispatch. Doing one set match against an element is much fast than attempting to iterate and match every selector again and again.
+
 ``` javascript
 var handlers = new SelectorSet();
 handlers.add('.menu', function(event) {
@@ -78,8 +82,12 @@ document.addEventListener('click', function(event) {
 }, false);
 ```
 
+*(This is a trivialized example that doesn't handle propagated matches)*
+
 
 ### Apply CSS rules
+
+For fun, we could implement CSS style matching and application in pure JS.
 
 ``` javascript
 var styles = new SelectorSet();
@@ -98,7 +106,7 @@ styles.matches(el).forEach(function(rule) {
 });
 ```
 
-Naive at best, but you get the idea. Also see [absurd.js](https://github.com/krasimir/absurd).
+*(Seriously don't do this)*
 
 
 ## Browser Support
@@ -116,6 +124,9 @@ SelectorSet.prototype.matchesSelector  = Sizzle.matchesSelector
 SelectorSet.prototype.querySelectorAll = jQuery.find;
 SelectorSet.prototype.matchesSelector  = jQuery.find.matchesSelector
 ```
+
+Using Sizzle will also allow you to use more advanced selectors like `:first`, `:has`, `:input` that do not exist in native `querySelector`.
+
 
 
 ## Development
