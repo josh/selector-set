@@ -167,6 +167,12 @@ Done, without errors.
 
 ## Implementation
 
+Actually matching a group of selectors against an element via `Element#matches` or `Sizzle` can actually be slow when you get to matching 100+ selectors. Real world applications tend to follow common selector patterns. This fact and the knowledge of this group of selectors ahead of time allows us to apply some optimizations.
+
+First selectors added to the set are quickly analyzed and indexed under a key. This key is derived from a significant part of the right most side of the selector. If the selector targets an id, the id name is used as the key. If theres a class, the class name is used and so forth. The selector is then put into a map indexed by this key. Looking up the key is constant time.
+
+When its time to match the element against the group. The element's properties are examined for possible keys. These keys are then looked up in the mapping which returns a smaller set of selectors which then perform a full matches test against the element.
+
 
 ### Inspired by browsers
 
