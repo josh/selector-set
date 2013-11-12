@@ -50,7 +50,7 @@ set.add('.menu', function(menu) {
   // ...
 });
 
-$(function() {
+document.addEventListener('DOMContentLoaded', function() {
   set.queryAll(document).forEach(function(match) {
     match.elements.forEach(function(el) {
       match.data.call(el, el);
