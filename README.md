@@ -183,6 +183,15 @@ WebKit has a [`RuleSet`](https://github.com/WebKit/webkit/blob/c0885665302c75223
 In the future I hope something like WebKit's `RuleSet` could be made directly available to the browser. Not only would be writing it in C++ be faster, having access to a real CSS parser would make it much more robust than this library's hacky regexp matchers.
 
 
+### Profile
+
+This graph compares selector-set match time to a naive loop that tests each selector every time.
+
+![](https://f.cloud.github.com/assets/137/1523467/9370cb62-4bb6-11e3-9649-bce7f24b7042.png)
+
+As you can see, the set-selector is mostly constant time as the number of selectors in the set grows O(1). But matching every selector every time is linear as to the number selectors O(N). There is a slight overhead to using selector-set when there are only a few selectors (<5). This is something that can be improved, but it maybe pointless to use the set if you only want to match one or two selectors.
+
+
 ### Custom indexes
 
 Currently, only first class attributes like `id`, `class` and the tag name are indexed. But if you have some sort of application specific attribute you frequently use, you can write your own custom index on the attribute.
