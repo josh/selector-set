@@ -1,5 +1,9 @@
 {
   "name": "selector-set",
+  "repository" : {
+    "type": "git",
+    "url": "http://github.com/josh/selector-set.git"
+  },
   "devDependencies": {
     "bower": "~1.2.7",
     "grunt": "~0.4.1",
