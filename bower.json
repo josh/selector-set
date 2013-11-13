@@ -5,7 +5,7 @@
     ".gitignore",
     "Gruntfile.js",
     "package.json",
-    "test/*"
+    "test/"
   ],
   "devDependencies": {
     "benchmark": "~1.0.0",
