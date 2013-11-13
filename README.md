@@ -64,7 +64,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 ### Match delegated events
 
-Having a large number of delegated handlers on for a single event can slow down it down on every dispatch. Doing one set match against an element is much fast than attempting to iterate and match every selector again and again.
+Having a large number of delegated handlers on for a single event can slow it down on every dispatch. Doing one set match against an element is much fast than attempting to iterate and match every selector again and again.
 
 ``` javascript
 var handlers = new SelectorSet();
