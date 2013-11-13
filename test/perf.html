@@ -32,15 +32,10 @@
     }
   </style>
 </head>
-<body onload="update();">
+<body>
   <svg id="graph" width="600" height="300">
   </svg>
-
-  <select id="fixture" onchange="update();">
-    <option value=0>id</option>
-    <option value=1>class</option>
-    <option value=2>id/class</option>
-  </select>
+  <select id="benchmarks"></select>
 
   <script src="../bower_components/d3/d3.js"></script>
   <script src="../bower_components/benchmark/benchmark.js"></script>
@@ -58,11 +53,19 @@
       }
     }
 
-    function update() {
-      var fixture = perf.fixtures[document.getElementById('fixture').value];
-      suite = perf.benchmark(fixture).run();
-      redraw()
+    var select = document.getElementById('benchmarks');
+    for (var i = 0; i < perf.benchmarks.length; i++) {
+      var option = document.createElement('option');
+      option.value = i;
+      option.textContent = perf.benchmarks[i].name;
+      select.appendChild(option);
     }
+    select.onchange = function() {
+      var benchmark = perf.benchmarks[select.value];
+      suite = perf.benchmark(benchmark).run();
+      redraw()
+    };
+    select.onchange();
   </script>
 </body>
 </html>

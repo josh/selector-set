@@ -79,21 +79,21 @@
 
   var range = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 25];
 
-  var fixtures = [
+  var benchmarks = [
     {
-      name: 'id',
+      name: 'match - id',
       selector: function() { return '#rand' + random(); }
     },
     {
-      name: 'class',
+      name: 'match - class',
       selector: function() { return '.rand' + random(); }
     },
     {
-      name: 'tag',
+      name: 'match - tag',
       selector: function() { return 'rand' + random(); }
     },
     {
-      name: 'id/class',
+      name: 'match - id/class',
       selector: function() {
         if (Math.random() < 0.5) {
           return '#rand' + random();
@@ -105,11 +105,11 @@
   ];
 
 
-  function benchmark(fixtures) {
+  function benchmark(benchmarks) {
     var suite = new Benchmark.Suite();
 
-    if (!fixtures.length) {
-      fixtures = [fixtures];
+    if (!benchmarks.length) {
+      benchmarks = [benchmarks];
     }
 
     function runSelectorSetMatch(set, el) {
@@ -118,17 +118,17 @@
       };
     }
 
-    for (var f = 0; f < fixtures.length; f++) {
-      var fixture = fixtures[f];
+    for (var b = 0; b < benchmarks.length; b++) {
+      var benchmark = benchmarks[b];
 
       for (var i = 0; i < range.length; i++) {
         var size = range[i];
-        var sets = fillSelectorSets(fixture.selector)(size);
+        var sets = fillSelectorSets(benchmark.selector)(size);
         var el = elementMatchingSelector(sets[0].selectors);
 
         for (var j = 0; j < sets.length; j++) {
           var set = sets[j];
-          var groupName = fixture.name + set.constructor.name + '#matches';
+          var groupName = benchmark.name + set.constructor.name + '#matches';
           var run = runSelectorSetMatch(set, el);
           var bench = new CachedBenchmark(groupName + size, run, {
             async: true,
@@ -239,7 +239,7 @@
   }
 
   window.perf = {
-    fixtures: fixtures,
+    benchmarks: benchmarks,
     graph: graph,
     benchmark: benchmark
   };
