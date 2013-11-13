@@ -38,6 +38,26 @@ $ curl -O https://raw.github.com/josh/selector-set/master/selector-set.js
 
 ### Batch find calls
 
+Typical web apps run a bunch of `querySelector` calls on load.
+
+``` javascript
+document.addEventListener('DOMContentLoaded', function() {
+  var el;
+
+  if (el = document.querySelector('form.signup')) {
+    // ...
+  }
+  
+  if (el = document.querySelector('#sidebar')) {
+    // ...
+  }
+
+  if (el = document.querySelector('.menu')) {
+    // ...
+  }
+});
+```
+
 Large numbers of `querySelectorAll` calls they are usually made on page load can be batched up for efficiency. Having them in a set also makes it convenient to rerun on changed content.
 
 ``` javascript
