@@ -2,7 +2,7 @@
   "name": "selector-set",
   "version": "0.1.0",
   "ignore": [
-    ".gitignore",
+    ".*",
     "Gruntfile.js",
     "package.json",
     "test/"
