@@ -5,7 +5,7 @@
     return Math.floor(Math.random() * 1e+10);
   }
 
-  function elementMatchingSelector(selectors) {
+  function createElementMatchingSelector(selectors) {
     var selector = selectors[0];
     if (!selector) {
       return;
@@ -91,16 +91,16 @@
     }
 
     for (var b = 0; b < benchmarks.length; b++) {
-      var benchmark = benchmarks[b];
+      var benchOpts = benchmarks[b];
 
       for (var i = 0; i < range.length; i++) {
         var size = range[i];
-        var sets = fillSelectorSets(benchmark.selector)(size);
-        var el = elementMatchingSelector(sets[0].selectors);
+        var sets = fillSelectorSets(benchOpts.selector)(size);
+        var el = createElementMatchingSelector(sets[0].selectors);
 
         for (var j = 0; j < sets.length; j++) {
           var set = sets[j];
-          var groupName = benchmark.name + set.constructor.name + '#matches';
+          var groupName = benchOpts.name + set.constructor.name + '#matches';
           var run = runSelectorSetMatch(set, el);
           var bench = new Benchmark(groupName + size, run, {
             async: true,
