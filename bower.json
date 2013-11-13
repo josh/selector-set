@@ -1,6 +1,7 @@
 {
   "name": "selector-set",
   "version": "0.1.0",
+  "main": "selector-set.js",
   "ignore": [
     ".*",
     "Gruntfile.js",
