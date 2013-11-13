@@ -1,34 +1,6 @@
 (function() {
   'use strict';
 
-  function CachedBenchmark() {
-    var bench = Benchmark.apply(null, arguments);
-
-    var cacheLoaded = false;
-    bench.on('complete', function() {
-      sessionStorage.setItem(bench.name, JSON.stringify(bench));
-    });
-
-    bench.run = function run() {
-      if (!cacheLoaded && !this._original) {
-        var json = sessionStorage.getItem(this.name);
-        if (json) {
-          var cachedObj = JSON.parse(json);
-          this.stats = cachedObj.stats;
-          this.times = cachedObj.times;
-          cacheLoaded = true;
-          this.emit('complete');
-          return this;
-        }
-      }
-
-      return Benchmark.prototype.run.apply(this, arguments);
-    };
-
-    return bench;
-  }
-
-
   function random() {
     return Math.floor(Math.random() * 1e+10);
   }
@@ -130,7 +102,7 @@
           var set = sets[j];
           var groupName = benchmark.name + set.constructor.name + '#matches';
           var run = runSelectorSetMatch(set, el);
-          var bench = new CachedBenchmark(groupName + size, run, {
+          var bench = new Benchmark(groupName + size, run, {
             async: true,
             maxTime: 0.1
           });
