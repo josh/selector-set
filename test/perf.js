@@ -5,8 +5,7 @@
     return Math.floor(Math.random() * 1e+10);
   }
 
-  function createElementMatchingSelector(selectors) {
-    var selector = selectors[0];
+  function createElementMatchingSelector(selector) {
     if (!selector) {
       return;
     }
@@ -32,47 +31,56 @@
 
   var implementations = [ SelectorSet, ExemplarSelectorSet ];
 
+  var MAX_ELEMENTS = 100;
 
-  function fillSelectorSets(randSelector) {
-    return function(n) {
-      var i, len = implementations.length, sets = [];
-      for (i = 0; i < len; i++) {
-        sets[i] = new implementations[i]();
-      }
-      while (n--) {
-        var selector = randSelector();
-        for (i = 0; i < len; i++) {
-          sets[i].add(selector);
-        }
-      }
-      return sets;
-    };
+  function generateMatchElements(randFn) {
+    var n = MAX_ELEMENTS, sels = [];
+    while (n--) {
+      sels.push(randFn());
+    }
+    return sels;
   }
 
   var range = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 25];
 
+  function runSelectorSetMatch(set, el) {
+    var fn = function run() { set.matches(el); };
+    fn.set = set;
+    fn.el  = el;
+    return fn;
+  }
+
+  Benchmark.options.async = true;
+  Benchmark.options.maxTime = 0.1;
+
   var benchmarks = [
     {
       name: 'match - id',
-      selector: function() { return '#rand' + random(); }
+      selectors: generateMatchElements(function() {
+        return '#rand' + random();
+      })
     },
     {
       name: 'match - class',
-      selector: function() { return '.rand' + random(); }
+      selectors: generateMatchElements(function() {
+        return '.rand' + random();
+      })
     },
     {
       name: 'match - tag',
-      selector: function() { return 'rand' + random(); }
+      selectors: generateMatchElements(function() {
+        return 'rand' + random();
+      })
     },
     {
       name: 'match - id/class',
-      selector: function() {
+      selectors: generateMatchElements(function() {
         if (Math.random() < 0.5) {
           return '#rand' + random();
         } else {
           return '.rand' + random();
         }
-      }
+      })
     }
   ];
 
@@ -84,32 +92,19 @@
       benchmarks = [benchmarks];
     }
 
-    function runSelectorSetMatch(set, el) {
-      return function run() {
-        set.matches(el);
-      };
-    }
-
     for (var b = 0; b < benchmarks.length; b++) {
-      var benchOpts = benchmarks[b];
+      var bench = benchmarks[b];
+      var el = createElementMatchingSelector(bench.selectors[0]);
 
-      for (var i = 0; i < range.length; i++) {
-        var size = range[i];
-        var sets = fillSelectorSets(benchOpts.selector)(size);
-        var el = createElementMatchingSelector(sets[0].selectors);
+      for (var r = 0; r < range.length; r++) {
+        var selectors = bench.selectors.slice(0, range[r]);
 
-        for (var j = 0; j < sets.length; j++) {
-          var set = sets[j];
-          var groupName = benchOpts.name + set.constructor.name + '#matches';
-          var run = runSelectorSetMatch(set, el);
-          var bench = new Benchmark(groupName + size, run, {
-            async: true,
-            maxTime: 0.1
-          });
-          bench.set = set;
-          bench.groupName = groupName;
-
-          suite.push(bench);
+        for (var i = 0; i < implementations.length; i++) {
+          var set = new implementations[i]();
+          for (var s = 0; s < selectors.length; s++) {
+            set.add(selectors[s]);
+          }
+          suite.add(runSelectorSetMatch(set, el));
         }
       }
     }
@@ -150,10 +145,10 @@
         .orient('left');
 
     var nest = d3.nest()
-                 .key(function(d) { return d.groupName; });
+                 .key(function(d) { return d.fn.set.constructor.name; });
 
     function xValue(bench) {
-      return bench.set.selectors.length;
+      return bench.fn.set.selectors.length;
     }
     function yValue(bench) {
       return bench.stats.mean * 1000 * 1000;
