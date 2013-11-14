@@ -43,6 +43,9 @@
   <script src="./exemplar-selector-set.js"></script>
   <script src="./perf.js"></script>
   <script>
+    Benchmark.options.async = true;
+    Benchmark.options.maxTime = 0.01;
+
     var draw = perf.graph(document.getElementById('graph'));
     var suite = [];
 
@@ -62,7 +65,7 @@
     }
     select.onchange = function() {
       var benchmark = perf.benchmarks[select.value];
-      suite = perf.benchmark(benchmark).run();
+      suite = benchmark.suite.run();
       redraw()
     };
     select.onchange();

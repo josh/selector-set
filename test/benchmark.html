@@ -18,7 +18,7 @@
       }
     }
 
-    var suite = perf.benchmark(perf.benchmarks[0]);
+    var suite = perf.benchmarks[0].suite.run({async: true});
 
     suite.on('cycle', function(event) {
       sendMessage('benchmark.cycle', event.target);

@@ -1,8 +1,39 @@
 (function() {
   'use strict';
 
+  function each(obj, fn) {
+    for (var key in obj) {
+      fn(key, obj[key]);
+    }
+  }
+
+  function defineCachedProperties(obj, props) {
+    var properties = {};
+    each(props, function(name, fn) {
+      var cache;
+      properties[name] = {
+        get: function() {
+          if (!cache) {
+            cache = fn.apply(this, arguments);
+          }
+          return cache;
+        }
+      };
+    });
+    Object.defineProperties(obj, properties);
+  }
+
   function random() {
     return Math.floor(Math.random() * 1e+10);
+  }
+
+
+  function initSet(Set, selectors) {
+    var set = new Set();
+    for (var i = 0; i < selectors.length; i++) {
+      set.add(selectors[i]);
+    }
+    return set;
   }
 
   function createElementMatchingSelector(selector) {
@@ -29,88 +60,89 @@
   }
 
 
-  var implementations = [ SelectorSet, ExemplarSelectorSet ];
-
-  var MAX_ELEMENTS = 100;
-
-  function generateMatchElements(randFn) {
-    var n = MAX_ELEMENTS, sels = [];
-    while (n--) {
-      sels.push(randFn());
+  function Bench(props) {
+    for (var propName in props) {
+      this[propName] = props[propName];
     }
-    return sels;
   }
 
-  var range = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 25];
+  Bench.prototype.implementations = [ SelectorSet, ExemplarSelectorSet ];
+  Bench.prototype.sizes = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 25];
 
-  function runSelectorSetMatch(set, el) {
-    var fn = function run() { set.matches(el); };
-    fn.set = set;
-    fn.el  = el;
-    return fn;
-  }
+  defineCachedProperties(Bench.prototype, {
+    selectors: function() {
+      var selectors = [];
+      var n = 100;
+      while (n--) {
+        selectors.push(this.randomSelector());
+      }
+      return selectors;
+    },
+    sets: function() {
+      var i, j, sets = [];
+      for (i = 0; i < this.sizes.length; i++) {
+        var selectors = this.selectors.slice(0, this.sizes[i]);
+        for (j = 0; j < this.implementations.length; j++) {
+          sets.push(initSet(this.implementations[j], selectors));
+        }
+      }
+      return sets;
+    },
+    element: function() {
+      return createElementMatchingSelector(this.selectors[0]);
+    },
+    suite: function() {
+      var i, suite = new Benchmark.Suite();
+      for (i = 0; i < this.sets.length; i++) {
+        var set = this.sets[i];
+        var run = this.run(set);
+        run.set = set;
+        suite.add(run);
+      }
+      return suite;
+    }
+  });
 
-  Benchmark.options.async = true;
-  Benchmark.options.maxTime = 0.1;
+  Bench.prototype.runMatch = function(set) {
+    var el = this.element;
+    return function run() { set.matches(el); };
+  };
+
 
   var benchmarks = [
-    {
+    new Bench({
       name: 'match - id',
-      selectors: generateMatchElements(function() {
+      randomSelector: function() {
         return '#rand' + random();
-      })
-    },
-    {
+      },
+      run: Bench.prototype.runMatch
+    }),
+    new Bench({
       name: 'match - class',
-      selectors: generateMatchElements(function() {
+      randomSelector: function() {
         return '.rand' + random();
-      })
-    },
-    {
+      },
+      run: Bench.prototype.runMatch
+    }),
+    new Bench({
       name: 'match - tag',
-      selectors: generateMatchElements(function() {
+      randomSelector: function() {
         return 'rand' + random();
-      })
-    },
-    {
+      },
+      run: Bench.prototype.runMatch
+    }),
+    new Bench({
       name: 'match - id/class',
-      selectors: generateMatchElements(function() {
+      randomSelector: function() {
         if (Math.random() < 0.5) {
           return '#rand' + random();
         } else {
           return '.rand' + random();
         }
-      })
-    }
+      },
+      run: Bench.prototype.runMatch
+    })
   ];
-
-
-  function benchmark(benchmarks) {
-    var suite = new Benchmark.Suite();
-
-    if (!benchmarks.length) {
-      benchmarks = [benchmarks];
-    }
-
-    for (var b = 0; b < benchmarks.length; b++) {
-      var bench = benchmarks[b];
-      var el = createElementMatchingSelector(bench.selectors[0]);
-
-      for (var r = 0; r < range.length; r++) {
-        var selectors = bench.selectors.slice(0, range[r]);
-
-        for (var i = 0; i < implementations.length; i++) {
-          var set = new implementations[i]();
-          for (var s = 0; s < selectors.length; s++) {
-            set.add(selectors[s]);
-          }
-          suite.add(runSelectorSetMatch(set, el));
-        }
-      }
-    }
-
-    return suite;
-  }
 
 
   function graph(root) {
@@ -207,7 +239,6 @@
 
   window.perf = {
     benchmarks: benchmarks,
-    graph: graph,
-    benchmark: benchmark
+    graph: graph
   };
 })();

@@ -88,7 +88,7 @@ module.exports = function(grunt) {
     var phantomjs = require('grunt-lib-phantomjs').init(grunt);
 
     phantomjs.on('benchmark.cycle', function(bench) {
-      grunt.log.subhead(bench.name);
+      // grunt.log.subhead(bench.name);
       grunt.log.writeln(bench.stats.mean * 1000 * 1000);
     });
 
