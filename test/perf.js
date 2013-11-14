@@ -91,6 +91,12 @@
     element: function() {
       return createElementMatchingSelector(this.selectors[0]);
     },
+    tree: function() {
+      var root = document.createElement('div');
+      root.innerHTML = '<div><div><div><div id=parent></div></div></div><div></div></div>';
+      root.querySelector('#parent').appendChild(this.element);
+      return root;
+    },
     suite: function() {
       var i, suite = new Benchmark.Suite();
       for (i = 0; i < this.sets.length; i++) {
@@ -106,6 +112,11 @@
   Bench.prototype.runMatch = function(set) {
     var el = this.element;
     return function run() { set.matches(el); };
+  };
+
+  Bench.prototype.runQueryAll = function(set) {
+    var root = this.tree;
+    return function run() { set.queryAll(root); };
   };
 
 
@@ -141,6 +152,13 @@
         }
       },
       run: Bench.prototype.runMatch
+    }),
+    new Bench({
+      name: 'queryAll - id',
+      randomSelector: function() {
+        return '#rand' + random();
+      },
+      run: Bench.prototype.runQueryAll
     })
   ];
 
