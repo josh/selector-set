@@ -28,7 +28,7 @@
       var obj, selectors = [], i = this.selectors.length;
       while (i--) {
         obj = this.selectors[i];
-        if (obj.selector !== selector || (data && obj.data !== data)) {
+        if (obj.selector !== selector || (arguments.length === 2 && obj.data !== data)) {
           selectors.push(obj);
         }
       }

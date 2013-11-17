@@ -237,6 +237,7 @@
     var selectorIndexes, selectorIndex, i, j, key, index, selIndex, objs, obj;
     var indexes = this.activeIndexes;
     var removedIds = {};
+    var removeAll = arguments.length === 1;
 
     selectorIndexes = this.selectorIndexes(selector);
     for (i = 0; i < selectorIndexes.length; i++) {
@@ -251,7 +252,7 @@
           j = objs.length;
           while (j--) {
             obj = objs[j];
-            if (obj.selector === selector && (!data || obj.data === data)) {
+            if (obj.selector === selector && (removeAll || obj.data === data)) {
               objs.splice(j, 1);
               removedIds[obj.id] = true;
             }

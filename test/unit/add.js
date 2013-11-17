@@ -25,7 +25,19 @@ testModule('add', function(SelectorSet) {
     set.add('#bar');
     equal(set.size, 3);
 
+    set.add('#bar', 123);
+    equal(set.size, 4);
+
+    set.add('#bar', 456);
+    equal(set.size, 5);
+
     set.remove('#foo');
+    equal(set.size, 3);
+
+    set.remove('#bar', undefined);
+    equal(set.size, 2);
+
+    set.remove('#bar', 456);
     equal(set.size, 1);
 
     set.remove('#bar');
