@@ -215,6 +215,8 @@
     if (typeof selector !== 'string') {
       return;
     }
+
+    this.size--;
   };
 
   // Sort by id property handler.
