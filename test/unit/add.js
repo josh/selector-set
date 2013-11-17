@@ -18,5 +18,8 @@ testModule('add', function(SelectorSet) {
 
     set.add('#bar');
     equal(set.size, 2);
+
+    set.remove('#foo');
+    equal(set.size, 1);
   });
 });

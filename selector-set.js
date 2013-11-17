@@ -201,6 +201,10 @@
     selectors.push(selector);
   };
 
+  SelectorSet.prototype.remove = function() {
+    this.size--;
+  };
+
   // Sort by id property handler.
   //
   // a - Selector obj.
