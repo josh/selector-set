@@ -3,6 +3,7 @@
 
   function ExemplarSelectorSet() {
     this.selectors = [];
+    this.size = 0;
   }
 
   ExemplarSelectorSet.prototype = Object.create(SelectorSet.prototype, {
@@ -15,6 +16,7 @@
   ExemplarSelectorSet.prototype.add = function(selector, data) {
     if (typeof selector === 'string') {
       this.selectors.push({selector: selector, data: data});
+      this.size++;
     }
   };
 

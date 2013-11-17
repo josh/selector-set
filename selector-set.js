@@ -7,7 +7,7 @@
       return new SelectorSet();
     }
 
-    // Internal: Number of selectors added to the set
+    // Public: Number of selectors added to the set
     this.size = 0;
 
     // Internal: Array of String selectors in the set
