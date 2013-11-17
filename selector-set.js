@@ -234,8 +234,9 @@
       return;
     }
 
-    var selectorIndexes, selectorIndex, i, key, index, selIndex, objs;
+    var selectorIndexes, selectorIndex, i, j, key, index, selIndex, objs, obj;
     var indexes = this.activeIndexes;
+    var removedIds = {};
 
     selectorIndexes = this.selectorIndexes(selector);
     for (i = 0; i < selectorIndexes.length; i++) {
@@ -247,19 +248,19 @@
       if (selIndex) {
         objs = selIndex.keys.get(key);
         if (objs) {
-          var obj, newObjs = [], j = objs.length;
+          j = objs.length;
           while (j--) {
             obj = objs[j];
-            if (obj.selector !== selector || (data && obj.data !== data)) {
-              newObjs.push(obj);
-            } else {
-              this.size--;
+            if (obj.selector === selector && (!data || obj.data === data)) {
+              objs.splice(j, 1);
+              removedIds[obj.id] = true;
             }
           }
-          selIndex.keys.set(key, newObjs);
         }
       }
     }
+
+    this.size -= Object.keys(removedIds).length;
   };
 
   // Sort by id property handler.

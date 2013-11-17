@@ -19,10 +19,16 @@ testModule('add', function(SelectorSet) {
     set.add('#foo');
     equal(set.size, 1);
 
-    set.add('#bar');
+    set.add('#foo');
     equal(set.size, 2);
+
+    set.add('#bar');
+    equal(set.size, 3);
 
     set.remove('#foo');
     equal(set.size, 1);
+
+    set.remove('#bar');
+    equal(set.size, 0);
   });
 });

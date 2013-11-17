@@ -23,6 +23,40 @@ testModule('matches', function(SelectorSet) {
     equal(results.length, 0);
   });
 
+  test('add/remove multiple', function() {
+    var set = new SelectorSet();
+    var fixture1 = document.getElementById('fixture1');
+    var el = fixture1.querySelector('#foo');
+    ok(el);
+
+    set.add('#foo');
+    set.add('#foo');
+    var results = set.matches(el);
+    equal(results.length, 2);
+    equal(results[0].selector, '#foo');
+    equal(results[1].selector, '#foo');
+
+    set.remove('#foo');
+    results = set.matches(el);
+    equal(results.length, 0);
+  });
+
+  test('add/remove multiple indexed', function() {
+    var set = new SelectorSet();
+    var fixture1 = document.getElementById('fixture1');
+    var el = fixture1.querySelector('#foo');
+    ok(el);
+
+    set.add('#foo, #bar, .baz');
+    var results = set.matches(el);
+    equal(results.length, 1);
+    equal(results[0].selector, '#foo, #bar, .baz');
+
+    set.remove('#foo, #bar, .baz');
+    results = set.matches(el);
+    equal(results.length, 0);
+  });
+
   test('add/remove data', function() {
     var set = new SelectorSet();
     var fixture1 = document.getElementById('fixture1');
