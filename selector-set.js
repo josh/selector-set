@@ -205,8 +205,16 @@
     selectors.push(selector);
   };
 
-  SelectorSet.prototype.remove = function() {
-    this.size--;
+  // Public: Remove selector from set.
+  //
+  // selector - String CSS selector
+  // data     - Optional data Object (default: undefined)
+  //
+  // Returns nothing.
+  SelectorSet.prototype.remove = function(selector) {
+    if (typeof selector !== 'string') {
+      return;
+    }
   };
 
   // Sort by id property handler.
