@@ -7,6 +7,43 @@ testModule('matches', function(SelectorSet) {
     equal(results.length, 0);
   });
 
+  test('add/remove', function() {
+    var set = new SelectorSet();
+    var fixture1 = document.getElementById('fixture1');
+    var el = fixture1.querySelector('#foo');
+    ok(el);
+
+    set.add('#foo');
+    var results = set.matches(el);
+    equal(results.length, 1);
+    equal(results[0].selector, '#foo');
+
+    set.remove('#foo');
+    results = set.matches(el);
+    equal(results.length, 0);
+  });
+
+  test('add/remove data', function() {
+    var set = new SelectorSet();
+    var fixture1 = document.getElementById('fixture1');
+    var el = fixture1.querySelector('#foo');
+    ok(el);
+
+    set.add('#foo', 123);
+    var results = set.matches(el);
+    equal(results.length, 1);
+    equal(results[0].selector, '#foo');
+
+    set.remove('#foo', 456);
+    results = set.matches(el);
+    equal(results.length, 1);
+    equal(results[0].selector, '#foo');
+
+    set.remove('#foo', 123);
+    results = set.matches(el);
+    equal(results.length, 0);
+  });
+
   test('id', function() {
     var set = new SelectorSet();
     set.add('#foo');

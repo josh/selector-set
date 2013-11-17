@@ -229,12 +229,37 @@
   // data     - Optional data Object (default: undefined)
   //
   // Returns nothing.
-  SelectorSet.prototype.remove = function(selector) {
+  SelectorSet.prototype.remove = function(selector, data) {
     if (typeof selector !== 'string') {
       return;
     }
 
-    this.size--;
+    var selectorIndexes, selectorIndex, i, key, index, selIndex, objs;
+    var indexes = this.activeIndexes;
+
+    selectorIndexes = this.selectorIndexes(selector);
+    for (i = 0; i < selectorIndexes.length; i++) {
+      selectorIndex = selectorIndexes[i];
+      key = selectorIndex.key;
+      index = selectorIndex.index;
+      selIndex = indexes[index.name];
+
+      if (selIndex) {
+        objs = selIndex.keys.get(key);
+        if (objs) {
+          var obj, newObjs = [], j = objs.length;
+          while (j--) {
+            obj = objs[j];
+            if (obj.selector !== selector || (data && obj.data !== data)) {
+              newObjs.push(obj);
+            } else {
+              this.size--;
+            }
+          }
+          selIndex.keys.set(key, newObjs);
+        }
+      }
+    }
   };
 
   // Sort by id property handler.
