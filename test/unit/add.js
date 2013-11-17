@@ -4,8 +4,11 @@ testModule('add', function(SelectorSet) {
   test('ignores non string selector', function() {
     var set = new SelectorSet();
     set.add();
+    set.remove();
     set.add({});
+    set.remove({});
     set.add(1);
+    set.remove(1);
     ok(true);
   });
 
