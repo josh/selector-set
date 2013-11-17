@@ -149,6 +149,36 @@
   //
   var chunker = /((?:\((?:\([^()]+\)|[^()]+)+\)|\[(?:\[[^\[\]]*\]|['"][^'"]*['"]|[^\[\]'"]+)+\]|\\.|[^ >+~,(\[\\]+)+|[>+~])(\s*,\s*)?((?:.|\r|\n)*)/g;
 
+  // Internal: Get indexes for selector.
+  //
+  // selector - String CSS selector
+  //
+  // Returns Array of {index, key}.
+  SelectorSet.prototype.selectorIndexes = function(selector) {
+    var allIndexes = this.indexes.slice(0).concat(this.indexes.default),
+        allIndexesLen = allIndexes.length,
+        i, m, rest = selector,
+        key, index, indexes = [];
+
+    do {
+      chunker.exec('');
+      if (m = chunker.exec(rest)) {
+        rest = m[3];
+        if (m[2] || !rest) {
+          for (i = 0; i < allIndexesLen; i++) {
+            index = allIndexes[i];
+            if (key = index.selector(m[1])) {
+              indexes.push({index: index, key: key});
+              break;
+            }
+          }
+        }
+      }
+    } while (m);
+
+    return indexes;
+  };
+
   // Public: Add selector to set.
   //
   // selector - String CSS selector
@@ -156,10 +186,10 @@
   //
   // Returns nothing.
   SelectorSet.prototype.add = function(selector, data) {
-    var obj, i, m, index, key, indexName, selIndex, objs,
+    var obj, i, index, key, selIndex, objs,
+        selectorIndexes, selectorIndex,
         indexes = this.activeIndexes,
-        selectors = this.selectors,
-        rest = selector;
+        selectors = this.selectors;
 
     if (typeof selector !== 'string') {
       return;
@@ -171,35 +201,23 @@
       data: data
     };
 
-    var allIndexes = this.indexes.slice(0).concat(this.indexes.default),
-     allIndexesLen = allIndexes.length;
-
-    do {
-      chunker.exec('');
-      if (m = chunker.exec(rest)) {
-        rest = m[3];
-        if (m[2] || !rest) {
-          for (i = 0; i < allIndexesLen; i++) {
-            index = allIndexes[i];
-            if (key = index.selector(m[1])) {
-              indexName = index.name;
-              selIndex = indexes[indexName];
-              if (!selIndex) {
-                selIndex = indexes[indexName] = Object.create(index);
-                selIndex.keys = new Map();
-              }
-              objs = selIndex.keys.get(key);
-              if (!objs) {
-                objs = [];
-                selIndex.keys.set(key, objs);
-              }
-              objs.push(obj);
-              break;
-            }
-          }
-        }
+    selectorIndexes = this.selectorIndexes(selector);
+    for (i = 0; i < selectorIndexes.length; i++) {
+      selectorIndex = selectorIndexes[i];
+      key = selectorIndex.key;
+      index = selectorIndex.index;
+      selIndex = indexes[index.name];
+      if (!selIndex) {
+        selIndex = indexes[index.name] = Object.create(index);
+        selIndex.keys = new Map();
       }
-    } while (m);
+      objs = selIndex.keys.get(key);
+      if (!objs) {
+        objs = [];
+        selIndex.keys.set(key, objs);
+      }
+      objs.push(obj);
+    }
 
     this.size++;
     selectors.push(selector);
