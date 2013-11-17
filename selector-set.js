@@ -10,6 +10,9 @@
     // Public: Number of selectors added to the set
     this.size = 0;
 
+    // Internal: Incrementing ID counter
+    this.uid = 0;
+
     // Internal: Array of String selectors in the set
     this.selectors = [];
 
@@ -163,7 +166,7 @@
     }
 
     obj = {
-      id: this.size++,
+      id: this.uid++,
       selector: selector,
       data: data
     };
@@ -198,6 +201,7 @@
       }
     } while (m);
 
+    this.size++;
     selectors.push(selector);
   };
 
