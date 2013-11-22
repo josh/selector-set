@@ -33,10 +33,10 @@
 
   <script>
     function testModule(name, suite) {
-      module(ExemplarSelectorSet.name + '#' + name);
+      module('ExemplarSelectorSet' + '#' + name);
       suite(ExemplarSelectorSet);
 
-      module(SelectorSet.name + '#' + name);
+      module('SelectorSet' + '#' + name);
       suite(SelectorSet);
     }
   </script>
