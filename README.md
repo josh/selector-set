@@ -193,7 +193,7 @@ Running "jshint:all" (jshint) task
 >> 5 files lint free.
 
 Running "qunit:all" (qunit) task
-Testing test/index.html .....................OK
+Testing test/test.html .....................OK
 >> 100 assertions passed (50ms)
 
 Done, without errors.
