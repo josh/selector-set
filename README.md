@@ -25,8 +25,7 @@ An arbitrary `data` object can be associated with each selector to help identify
 ``` javascript
 var set = new SelectorSet();
 
-var data = function setupForm() {
-}
+var data = function setupForm() {};
 set.add('form', data);
 
 var el = document.createElement('form');
