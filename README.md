@@ -84,7 +84,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 ### Match delegated events
 
-Having a large number of delegated handlers on for a single event can slow it down on every dispatch. Doing one set match against an element is much fast than attempting to iterate and match every selector again and again.
+Having a large number of delegated handlers on for a single event can slow it down on every dispatch. Doing one set match against an element is much faster than attempting to iterate and match every selector again and again.
 
 ``` javascript
 var handlers = new SelectorSet();
@@ -133,7 +133,7 @@ styles.matches(el).forEach(function(rule) {
 
 Chrome (latest), Safari (6.0+), Firefox (latest) and IE 9+.
 
-The main requirement is `querySelectorAll` and some sort of `prefixMatchesSelector` support. You can support older browser versions by supplying you own fallback versions of these functions.
+The main requirement is `querySelectorAll` and some sort of `prefixMatchesSelector` support. You can support older browser versions by supplying your own fallback versions of these functions.
 
 ``` javascript
 // Use Sizzle's match and query functions
