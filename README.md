@@ -11,11 +11,13 @@ set.add('#logo');
 set.add('.post');
 set.add('h1');
 
+var el = document.createElement('h1');
 set.matches(el);
-// => [ { selector: '.post' } ]
+// => [ { selector: 'h1' } ]
 
-set.queryAll(document);
-// => [ { selector: '.post': elements: [post] }]
+document.body.appendChild(el);
+set.queryAll(document.body);
+// => [ { selector: 'h1': elements: [el] } ]
 ```
 
 
