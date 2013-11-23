@@ -24,10 +24,7 @@ module.exports = function(grunt) {
       grunt: {
         src: ['Gruntfile.js'],
         options: {
-          globals: {
-            'module': false,
-            'require': false
-          }
+          node: true
         }
       },
       src: {
