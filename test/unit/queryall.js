@@ -1,5 +1,7 @@
-testModule('queryAll', function(SelectorSet) {
+(function() {
   'use strict';
+
+  module('queryAll');
 
   test('id', function() {
     var set = new SelectorSet();
@@ -76,4 +78,4 @@ testModule('queryAll', function(SelectorSet) {
     equal(results[2].elements[0], el1);
     equal(results[2].elements[1], el2);
   });
-});
+})();

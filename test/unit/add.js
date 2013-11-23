@@ -1,5 +1,7 @@
-testModule('add', function(SelectorSet) {
+(function() {
   'use strict';
+
+  module('add');
 
   test('ignores non string selector', function() {
     var set = new SelectorSet();
@@ -43,4 +45,4 @@ testModule('add', function(SelectorSet) {
     set.remove('#bar');
     equal(set.size, 0);
   });
-});
+})();

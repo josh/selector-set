@@ -41,7 +41,8 @@ module.exports = function(grunt) {
       test: {
         options: {
           globals: {
-            'testModule': false,
+            'SelectorSet': false,
+            'module': false,
             'test': false,
             'ok': false,
             'equal': false
@@ -62,7 +63,7 @@ module.exports = function(grunt) {
       }
     },
     qunit: {
-      all: ['test/test.html']
+      all: ['test/test*.html']
     },
     watch: {
       grunt: {

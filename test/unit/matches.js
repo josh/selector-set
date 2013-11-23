@@ -1,5 +1,7 @@
-testModule('matches', function(SelectorSet) {
+(function() {
   'use strict';
+
+  module('matches');
 
   test('undefined', function() {
     var set = new SelectorSet();
@@ -395,4 +397,4 @@ testModule('matches', function(SelectorSet) {
     equal(results.length, 1);
     equal(results[0].selector, '.hasOwnProperty');
   });
-});
+})();
