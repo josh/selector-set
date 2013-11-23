@@ -20,6 +20,20 @@ set.queryAll(document.body);
 // => [ { selector: 'h1': elements: [el] } ]
 ```
 
+An arbitrary `data` object can be associated with each selector to help identify matches.
+
+``` javascript
+var set = new SelectorSet();
+
+var data = function setupForm() {
+}
+set.add('form', data);
+
+var el = document.createElement('form');
+set.matches(el);
+// => [ { selector: 'form', data: setupForm } ]
+```
+
 
 ## Installation
 
