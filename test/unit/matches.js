@@ -351,6 +351,24 @@
     equal(results.length, 0);
   });
 
+  test('svg', function() {
+    var set = new SelectorSet();
+    set.add('svg');
+    set.add('.dot');
+
+    var fixture = document.getElementById('fixture-svg');
+    var svg = fixture.querySelector('svg');
+    var circle = fixture.querySelector('circle');
+
+    var results = set.matches(svg);
+    equal(results.length, 1);
+    equal(results[0].selector, 'svg');
+
+    results = set.matches(circle);
+    equal(results.length, 1);
+    equal(results[0].selector, '.dot');
+  });
+
   test('large number of selectors', function() {
     var set = new SelectorSet();
 
