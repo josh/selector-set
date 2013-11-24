@@ -91,8 +91,13 @@
       }
     },
     element: function getElementClassNames(el) {
-      if (el.className) {
-        return el.className.split(/\s/);
+      var className = el.className;
+      if (className) {
+        if (typeof className === 'string') {
+          return className.split(/\s/);
+        } else if (className instanceof SVGAnimatedString) {
+          return className.baseVal.split(/\s/);
+        }
       }
     }
   });
