@@ -78,4 +78,23 @@
     equal(results[2].elements[0], el1);
     equal(results[2].elements[1], el2);
   });
+
+  test('svg', function() {
+    var set = new SelectorSet();
+    set.add('svg');
+    set.add('.dot');
+
+    var fixture = document.getElementById('fixture-svg');
+    var svg = fixture.querySelector('svg');
+    var circle = fixture.querySelector('circle');
+
+    var results = set.queryAll(fixture);
+    equal(results.length, 2);
+    equal(results[0].selector, 'svg');
+    equal(results[0].elements.length, 1);
+    equal(results[0].elements[0], svg);
+    equal(results[1].selector, '.dot');
+    equal(results[1].elements.length, 1);
+    equal(results[1].elements[0], circle);
+  });
 })();
