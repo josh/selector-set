@@ -108,7 +108,7 @@
       }
     },
     element: function getElementTagName(el) {
-      return [el.nodeName];
+      return [el.nodeName.toUpperCase()];
     }
   });
 
