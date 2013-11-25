@@ -184,6 +184,20 @@
     return indexes;
   };
 
+  // Public: Log when added selector falls under the default index.
+  //
+  // This API should not be considered stable. May change between
+  // minor versions.
+  //
+  // obj - {selector, data} Object
+  //
+  //   SelectorSet.prototype.logDefaultIndexUsed = function(obj) {
+  //     console.warn(obj.selector, "could not be indexed");
+  //   };
+  //
+  // Returns nothing.
+  SelectorSet.prototype.logDefaultIndexUsed = function() {};
+
   // Public: Add selector to set.
   //
   // selector - String CSS selector
@@ -215,6 +229,9 @@
       if (!selIndex) {
         selIndex = indexes[index.name] = Object.create(index);
         selIndex.keys = new Map();
+      }
+      if (index === this.indexes.default) {
+        this.logDefaultIndexUsed(obj);
       }
       objs = selIndex.keys.get(key);
       if (!objs) {
