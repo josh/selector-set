@@ -19,13 +19,17 @@
   var testCount = 10;
 
   function test(testName, callback) {
-    var i, seed, rand;
+    var i, seed;
+
+    function testFn() {
+      return function() {
+        callback.call(this, seededRandomFn(seed));
+      };
+    }
+
     for (i = 0; i < testCount; i++) {
       seed = suiteRand();
-      rand = seededRandomFn(seed);
-      QUnit.test(testName + ' (' + seed + ')', function() {
-        callback.call(this, rand);
-      });
+      QUnit.test(testName + ' (' + seed + ')', testFn(seed));
     }
   }
 
