@@ -60,7 +60,8 @@ module.exports = function(grunt) {
       }
     },
     qunit: {
-      all: ['test/test*.html']
+      all: ['test/test-exemplar.html', 'test/test.html'],
+      fuzz: ['test/test-fuzz.html']
     },
     watch: {
       grunt: {
@@ -109,7 +110,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-qunit');
   grunt.loadNpmTasks('grunt-contrib-watch');
 
-  grunt.registerTask('test', ['jshint', 'qunit']);
+  grunt.registerTask('test', ['jshint', 'qunit:all']);
   grunt.registerTask('default', ['jshint']);
 
 };
