@@ -123,6 +123,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-watch');
 
   grunt.registerTask('test', ['jshint', 'qunit:all']);
+  grunt.registerTask('fuzz', ['jshint:fuzz', 'qunit:fuzz']);
   grunt.registerTask('default', ['jshint']);
 
 };
