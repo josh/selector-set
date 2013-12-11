@@ -21,7 +21,7 @@
   function test(testName, callback) {
     var i, seed;
 
-    function testFn() {
+    function testFn(seed) {
       return function() {
         callback.call(this, seededRandomFn(seed));
       };
