@@ -51,6 +51,7 @@ module.exports = function(grunt) {
         options: {
           globals: {
             'SelectorSet': false,
+            'ExemplarSelectorSet': false,
             'sessionStorage': false,
             'QUnit': false,
             'ok': false,
