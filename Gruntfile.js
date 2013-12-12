@@ -7,6 +7,7 @@ module.exports = function(grunt) {
       options: {
         curly: true,
         eqeqeq: true,
+        es3: true,
         immed: true,
         indent: 2,
         latedef: true,

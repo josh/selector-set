@@ -118,7 +118,7 @@
   });
 
   // Default index just contains a single array of elements.
-  SelectorSet.prototype.indexes.default = {
+  SelectorSet.prototype.indexes['default'] = {
     name: 'UNIVERSAL',
     selector: function() {
       return true;
@@ -160,7 +160,7 @@
   //
   // Returns Array of {index, key}.
   SelectorSet.prototype.selectorIndexes = function(selector) {
-    var allIndexes = this.indexes.slice(0).concat(this.indexes.default),
+    var allIndexes = this.indexes.slice(0).concat(this.indexes['default']),
         allIndexesLen = allIndexes.length,
         i, m, rest = selector,
         key, index, indexes = [];
@@ -230,7 +230,7 @@
         selIndex = indexes[index.name] = Object.create(index);
         selIndex.keys = new Map();
       }
-      if (index === this.indexes.default) {
+      if (index === this.indexes['default']) {
         this.logDefaultIndexUsed(obj);
       }
       objs = selIndex.keys.get(key);
