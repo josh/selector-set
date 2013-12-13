@@ -302,6 +302,10 @@
   //
   // Returns Array of {selector, data, elements} matches.
   SelectorSet.prototype.queryAll = function(context) {
+    if (!this.selectors.length) {
+      return [];
+    }
+
     var matches = {};
 
     var els = this.querySelectorAll(this.selectors.join(', '), context);
