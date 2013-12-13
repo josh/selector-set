@@ -9,6 +9,15 @@
     equal(results.length, 0);
   });
 
+  test('no selectors', function() {
+    var set = new SelectorSet();
+    var fixture1 = document.getElementById('fixture1');
+    ok(fixture1);
+
+    var results = set.matches(fixture1);
+    equal(results.length, 0);
+  });
+
   test('add/remove', function() {
     var set = new SelectorSet();
     var fixture1 = document.getElementById('fixture1');

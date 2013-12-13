@@ -3,6 +3,21 @@
 
   module('queryAll');
 
+  test('undefined', function() {
+    var set = new SelectorSet();
+    var results = set.queryAll(null);
+    equal(results.length, 0);
+  });
+
+  test('no selectors', function() {
+    var set = new SelectorSet();
+    var fixture1 = document.getElementById('fixture1');
+
+    var results = set.queryAll(fixture1);
+    ok(fixture1);
+    equal(results.length, 0);
+  });
+
   test('id', function() {
     var set = new SelectorSet();
     set.add('#foo');
