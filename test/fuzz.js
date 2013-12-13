@@ -200,4 +200,33 @@
       deepEqual(setMatch);
     }
   });
+
+  test('queryAll', function(rand) {
+    var expectedSet = new ExemplarSelectorSet();
+    var actualSet = new SelectorSet();
+    var deepEqual = testEqual(actualSet, expectedSet);
+
+    var root = randomTree(rand);
+    var sels = randomSelectorsForRoot(rand, root);
+
+    deepEqual(function(set) {
+      return set.size;
+    });
+
+    function setAdd(set) {
+      return set.add(sels[i]);
+    }
+    var i;
+    for (i = 0; i < sels.length; i++) {
+      deepEqual(setAdd);
+    }
+
+    deepEqual(function(set) {
+      return set.size;
+    });
+
+    deepEqual(function(set) {
+      return set.queryAll(root);
+    });
+  });
 })();
