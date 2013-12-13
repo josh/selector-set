@@ -42,7 +42,11 @@
       obj = this.selectors[i];
       els = this.querySelectorAll(obj.selector, context);
       if (els.length) {
-        matches.push({selector: obj.selector, data: obj.data, elements: els});
+        matches.push({
+          selector: obj.selector,
+          data: obj.data,
+          elements: els
+        });
       }
     }
     return matches;
@@ -53,7 +57,10 @@
     for (i = 0; i < this.selectors.length; i++) {
       obj = this.selectors[i];
       if (el && this.matchesSelector(el, obj.selector)) {
-        matches.push({selector: obj.selector, data: obj.data});
+        matches.push({
+          selector: obj.selector,
+          data: obj.data
+        });
       }
     }
     return matches;
