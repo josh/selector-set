@@ -3,22 +3,13 @@
 
   var testCount = 100;
 
+
   function seededRandomFn(seed) {
     function random() {
       seed = (seed * 9301 + 49297) % 233280;
       return seed / 233280;
     }
     return random;
-  }
-
-  var maxCharCode = 255;
-  function randomChar(rand) {
-    var code = (rand() * 1e10) % maxCharCode;
-    return String.fromCharCode(code);
-  }
-
-  function randomId(rand) {
-    return randomChar(rand) + randomChar(rand) + randomChar(rand);
   }
 
   function retry(callback) {
@@ -30,6 +21,26 @@
         continue;
       }
     }
+  }
+
+  var alpha = {};
+  var c = 65535;
+  while (--c) {
+    var s = String.fromCharCode(c);
+    // var m = s.match(/^[\w\u00c0-\uFFFF\-]$/);
+    var m = s.match(/^[\wa-zA-Z0-9\-]$/);
+    if (m) {
+      alpha[s] = c;
+    }
+  }
+  alpha = Object.keys(alpha);
+
+  function randomChar(rand) {
+    return alpha[Math.floor(rand() * 1e10) % alpha.length];
+  }
+
+  function randomId(rand) {
+    return randomChar(rand) + randomChar(rand) + randomChar(rand);
   }
 
   function randomElement(rand) {
