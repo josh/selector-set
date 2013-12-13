@@ -13,7 +13,7 @@
 
   var maxCharCode = 32768;
   function randomChar(rand) {
-    var code = (rand()*1000000) % maxCharCode;
+    var code = (rand() * 1e10) % maxCharCode;
     return String.fromCharCode(code);
   }
 
