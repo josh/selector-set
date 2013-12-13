@@ -96,11 +96,8 @@
     try {
       if (SelectorSet.prototype.matchesSelector(document.body, sel+',*')) {
         return sel;
-      } else {
-        // console.warn('generated invalid selector', sel);
       }
     } catch (err) {
-      // console.warn('generated invalid selector', sel);
       return;
     }
   }
