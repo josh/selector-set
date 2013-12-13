@@ -64,7 +64,7 @@
   SelectorSet.prototype.indexes = [];
 
   // Index by element id
-  var idRe = /#((?:[\w\u00c0-\uFFFF\-]|\\.)+)/g;
+  var idRe = /\A#((?:[\w\u00c0-\uFFFF\-]|\\.)+)\Z/g;
   SelectorSet.prototype.indexes.push({
     name: 'ID',
     selector: function matchIdSelector(sel) {
@@ -81,7 +81,7 @@
   });
 
   // Index by all of its class names
-  var classRe = /\.((?:[\w\u00c0-\uFFFF\-]|\\.)+)/g;
+  var classRe = /\A\.((?:[\w\u00c0-\uFFFF\-]|\\.)+)\Z/g;
   SelectorSet.prototype.indexes.push({
     name: 'CLASS',
     selector: function matchClassSelector(sel) {
@@ -103,7 +103,7 @@
   });
 
   // Index by tag/node name: `DIV`, `FORM`, `A`
-  var tagRe = /^((?:[\w\u00c0-\uFFFF\-]|\\.)+)/g;
+  var tagRe = /\A^((?:[\w\u00c0-\uFFFF\-]|\\.)+)\Z/g;
   SelectorSet.prototype.indexes.push({
     name: 'TAG',
     selector: function matchTagSelector(sel) {
