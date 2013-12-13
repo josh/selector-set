@@ -171,7 +171,7 @@
   test('match', function(rand) {
     var expectedSet = new ExemplarSelectorSet();
     var actualSet = new SelectorSet();
-    var deepEqual = testEqual(expectedSet, actualSet);
+    var deepEqual = testEqual(actualSet, expectedSet);
 
     var root = randomTree(rand);
     var els = root.getElementsByTagName('*');
