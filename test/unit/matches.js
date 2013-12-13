@@ -216,6 +216,30 @@
     equal(results[0].selector, '[foo=bar]');
   });
 
+  test('attribute with "#bar" as value', function() {
+    var set = new SelectorSet();
+    set.add('[foo="#bar"]');
+
+    var fixture2 = document.getElementById('fixture2');
+    var el = fixture2.querySelector('[foo="#bar"]');
+    ok(el);
+    var results = set.matches(el);
+    equal(results.length, 1);
+    equal(results[0].selector, '[foo="#bar"]');
+  });
+
+  test('attribute with ".bar" as value', function() {
+    var set = new SelectorSet();
+    set.add('[foo=".bar"]');
+
+    var fixture2 = document.getElementById('fixture2');
+    var el = fixture2.querySelector('[foo=".bar"]');
+    ok(el);
+    var results = set.matches(el);
+    equal(results.length, 1);
+    equal(results[0].selector, '[foo=".bar"]');
+  });
+
   test('universal', function() {
     var set = new SelectorSet();
     set.add('*');
