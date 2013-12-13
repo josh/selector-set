@@ -1,6 +1,8 @@
 (function() {
   'use strict';
 
+  var testCount = 50;
+
   function seededRandomFn(seed) {
     function random() {
       seed = (seed * 9301 + 49297) % 233280;
@@ -9,43 +11,46 @@
     return random;
   }
 
-  function randomId(rand) {
-    if (rand() > 0.5) {
-      return rand().toString(36).replace(/[^a-z]+/g, '');
-    } else if (rand() > 0.25) {
-      return 'span';
-    } else {
-      return 'div';
-    }
+  var maxCharCode = 1024;
+  function randomChar(rand) {
+    var code = (rand()*1000000) % maxCharCode;
+    return String.fromCharCode(code);
   }
 
-  function randomTagName(rand) {
-    if (rand() > 0.5) {
-      return 'div';
-    } else if (rand() > 0.25) {
-      return 'span';
-    } else {
-      return 'p';
+  function randomId(rand) {
+    return randomChar(rand) + randomChar(rand) + randomChar(rand);
+  }
+
+  function retry(callback) {
+    var n = 1000000;
+    while (n--) {
+      try {
+        return callback();
+      } catch (err) {
+        continue;
+      }
     }
   }
 
   function randomElement(rand) {
-    var el = document.createElement(randomTagName(rand));
+    var el = retry(function() {
+      return document.createElement(randomId(rand));
+    });
 
-    if (rand() > 0.5) {
+    retry(function() {
       el.id = randomId(rand);
-    }
+    });
 
-    if (rand() > 0.5) {
+    retry(function() {
       el.className = [randomId(rand), randomId(rand), randomId(rand)].join(' ');
-    }
+    });
 
-    if (rand() > 0.5) {
-      el.setAttribute('data-' + randomId(rand), randomId(rand));
-    }
-    if (rand() > 0.5) {
-      el.setAttribute('data-' + randomId(rand), [randomId(rand), randomId(rand)].join(' '));
-    }
+    retry(function() {
+      el.setAttribute(randomId(rand), randomId(rand));
+    });
+    retry(function() {
+      el.setAttribute(randomId(rand), [randomId(rand), randomId(rand)].join(' '));
+    });
 
     return el;
   }
@@ -58,7 +63,9 @@
     var i = rand() * 100;
     while (--i > 0) {
       child = randomElement(rand);
-      parent.appendChild(child);
+      if (child) {
+        parent.appendChild(child);
+      }
 
       if (rand() > 0.75) {
         parent = child;
@@ -68,25 +75,29 @@
   }
 
   function randomSelector(rand, el) {
-    if (rand() < 0.25) {
-      return;
-    }
-
+    var sel;
     var len = el.attributes.length;
 
     if (len) {
       var i = Math.floor(rand() * 1000) % len;
       var attr = el.attributes[i];
 
-      if (attr.name === 'id') {
-        return '#' + attr.value;
-      } else if (attr.name === 'class') {
-        return '.' + attr.value.split(' ')[0];
+      if (rand() > 0.25 && attr.name === 'id') {
+        sel = '#' + attr.value;
+      } else if (rand() > 0.25 && attr.name === 'class') {
+        sel = '.' + attr.value.split(' ')[0];
       } else {
-        return '[' + attr.name + '="' + attr.value + '"]';
+        sel = '[' + attr.name + '="' + attr.value + '"]';
       }
     } else {
-      return el.nodeName.toLowerCase();
+      sel = el.nodeName.toLowerCase();
+    }
+
+    try {
+      window.document.querySelector(sel);
+      return sel;
+    } catch (err) {
+      return;
     }
   }
 
@@ -110,7 +121,6 @@
   }
   var suiteSeed = parseFloat(sessionStorage.seed);
   var suiteRand = seededRandomFn(suiteSeed);
-  var testCount = 500;
 
   function test(testName, callback) {
     var i, seed;
@@ -145,10 +155,9 @@
       }
 
       if (actualError) {
-        QUnit.ok(expectedError, 'expected error');
-      } else {
-        QUnit.deepEqual(actualValue, expectedValue);
+        QUnit.ok(expectedError);
       }
+      QUnit.deepEqual(actualValue, expectedValue);
     }
     return deepEqual;
   }
