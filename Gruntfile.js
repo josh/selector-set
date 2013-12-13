@@ -29,12 +29,7 @@ module.exports = function(grunt) {
         }
       },
       src: {
-        src: ['selector-set.js'],
-        options: {
-          globals: {
-            'define': false
-          }
-        }
+        src: ['selector-set.js']
       },
       test: {
         options: {

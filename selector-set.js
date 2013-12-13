@@ -371,9 +371,5 @@
     return matches.sort(sortById);
   };
 
-  if (typeof define === 'function' && define.amd) {
-    define(function() { return SelectorSet; });
-  } else {
-    window.SelectorSet = SelectorSet;
-  }
+  window.SelectorSet = SelectorSet;
 })(window);
