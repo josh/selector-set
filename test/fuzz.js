@@ -158,7 +158,8 @@
         expectedError = err;
       }
 
-      if (actualError) {
+      if (actualError || expectedError) {
+        QUnit.ok(actualError);
         QUnit.ok(expectedError);
       }
       QUnit.deepEqual(actualValue, expectedValue);
