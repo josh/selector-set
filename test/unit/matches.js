@@ -99,6 +99,20 @@
     equal(results.length, 0);
   });
 
+  test('id as attribute', function() {
+    var set = new SelectorSet();
+    set.add('[id=foo]');
+    set.add('#foo');
+
+    var fixture1 = document.getElementById('fixture1');
+    var el = fixture1.querySelector('[id=foo]');
+    ok(el);
+    var results = set.matches(el);
+    equal(results.length, 2);
+    equal(results[0].selector, '[id=foo]');
+    equal(results[1].selector, '#foo');
+  });
+
   test('id with tag', function() {
     var set = new SelectorSet();
     set.add('div#foo');
@@ -135,6 +149,20 @@
     ok(el);
     results = set.matches(el);
     equal(results.length, 0);
+  });
+
+  test('class as attribute', function() {
+    var set = new SelectorSet();
+    set.add('[class=foo]');
+    set.add('.foo');
+
+    var fixture1 = document.getElementById('fixture1');
+    var el = fixture1.querySelector('[class=foo]');
+    ok(el);
+    var results = set.matches(el);
+    equal(results.length, 2);
+    equal(results[0].selector, '[class=foo]');
+    equal(results[1].selector, '.foo');
   });
 
   test('class with tag', function() {
