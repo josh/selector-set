@@ -1,7 +1,7 @@
 (function() {
   'use strict';
 
-  var testCount = 50;
+  var testCount = 100;
 
   function seededRandomFn(seed) {
     function random() {
@@ -11,7 +11,7 @@
     return random;
   }
 
-  var maxCharCode = 1024;
+  var maxCharCode = 32768;
   function randomChar(rand) {
     var code = (rand()*1000000) % maxCharCode;
     return String.fromCharCode(code);
