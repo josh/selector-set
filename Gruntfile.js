@@ -48,10 +48,7 @@ module.exports = function(grunt) {
           globals: {
             'SelectorSet': false,
             'ExemplarSelectorSet': false,
-            'sessionStorage': false,
-            'QUnit': false,
-            'ok': false,
-            'equal': false
+            'QUnit': false
           }
         },
         src: ['test/fuzz.js']

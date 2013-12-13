@@ -117,10 +117,10 @@
   }
 
 
-  if (!sessionStorage.seed) {
-    sessionStorage.seed = Math.random();
+  if (!window.sessionStorage.seed) {
+    window.sessionStorage.seed = Math.random();
   }
-  var suiteSeed = parseFloat(sessionStorage.seed);
+  var suiteSeed = parseFloat(window.sessionStorage.seed);
   var suiteRand = seededRandomFn(suiteSeed);
 
   function test(testName, callback) {
