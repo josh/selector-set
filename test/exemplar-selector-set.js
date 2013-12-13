@@ -51,7 +51,7 @@
           id: obj.id,
           selector: obj.selector,
           data: obj.data,
-          elements: els
+          elements: Array.prototype.slice.call(els, 0)
         });
       }
     }
