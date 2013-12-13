@@ -115,5 +115,4 @@ module.exports = function(grunt) {
   grunt.registerTask('test', ['jshint', 'qunit:all']);
   grunt.registerTask('fuzz', ['jshint:fuzz', 'qunit:fuzz']);
   grunt.registerTask('default', ['jshint']);
-
 };
