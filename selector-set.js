@@ -305,7 +305,7 @@
   //
   // Returns Array of {selector, data, elements} matches.
   SelectorSet.prototype.queryAll = function(context) {
-    if (!this.selectors.length) {
+    if (this.selectors.length === 0) {
       return [];
     }
 
