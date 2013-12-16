@@ -3,6 +3,7 @@
 
   // Public: Create a new SelectorSet.
   function SelectorSet() {
+    // Construct new SelectorSet if called as a function.
     if (!(this instanceof SelectorSet)) {
       return new SelectorSet();
     }
@@ -16,12 +17,14 @@
     // Internal: Array of String selectors in the set
     this.selectors = [];
 
+    // Internal: All Object index String names mapping to Index objects.
     this.indexes = Object.create(this.indexes);
 
-    // Internal: Object index String names mapping to Index objects.
+    // Internal: Used Object index String names mapping to Index objects.
     this.activeIndexes = {};
   }
 
+  // Detect prefixed Element#matches function.
   var docElem = window.document.documentElement;
   var matches = (docElem.webkitMatchesSelector ||
                   docElem.mozMatchesSelector ||
@@ -371,5 +374,6 @@
     return matches.sort(sortById);
   };
 
+  // Public: Expose SelectorSet as a global on window.
   window.SelectorSet = SelectorSet;
 })(window);
