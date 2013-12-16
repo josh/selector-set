@@ -64,11 +64,15 @@
       select.appendChild(option);
     }
     select.onchange = function() {
+      window.location.hash = select.value;
+    };
+    window.onhashchange = function() {
+      select.value = window.location.hash.slice(1);
       var benchmark = perf.benchmarks[select.value];
       suite = benchmark.suite.run();
       redraw()
-    };
-    select.onchange();
+    }
+    window.onhashchange();
   </script>
 </body>
 </html>
