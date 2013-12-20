@@ -226,6 +226,10 @@ This graph compares selector-set match time to a naive loop that tests each sele
 
 As you can see, the set-selector is mostly constant time as the number of selectors in the set grows O(1). But matching every selector every time is linear as to the number selectors O(N). There is a slight overhead to using selector-set when there are only a few selectors (<5). This is something that can be improved, but it maybe pointless to use the set if you only want to match one or two selectors.
 
+Here is a jsPerf test matching a single element to all of the selectors on github.com.
+
+http://jsperf.com/selectorset-match
+
 
 ### Custom indexes
 
