@@ -336,6 +336,24 @@
     equal(results[2].selector, '#foo, .foo');
   });
 
+  test('compound universal matches', function() {
+    var set = new SelectorSet();
+    set.add('.foo, .foo');
+    set.add('[id=foo], [class=foo]');
+    set.add('[class=foo], [foo]');
+    set.add('[foo], [foo]');
+
+    var fixture2 = document.getElementById('fixture2');
+    var el = fixture2.querySelector('foo');
+    ok(el);
+    var results = set.matches(el);
+    equal(results.length, 4);
+    equal(results[0].selector, '.foo, .foo');
+    equal(results[1].selector, '[id=foo], [class=foo]');
+    equal(results[2].selector, '[class=foo], [foo]');
+    equal(results[3].selector, '[foo], [foo]');
+  });
+
   test('multiple id, class and tag match', function() {
     var set = new SelectorSet();
     set.add('#foo');
