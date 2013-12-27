@@ -165,7 +165,7 @@
   SelectorSet.prototype.selectorIndexes = function(selector) {
     var allIndexes = this.indexes.slice(0).concat(this.indexes['default']),
         allIndexesLen = allIndexes.length,
-        i, m, rest = selector,
+        i, j, m, dup, rest = selector,
         key, index, indexes = [];
 
     do {
@@ -176,7 +176,17 @@
           for (i = 0; i < allIndexesLen; i++) {
             index = allIndexes[i];
             if (key = index.selector(m[1])) {
-              indexes.push({index: index, key: key});
+              j = indexes.length;
+              dup = false;
+              while (j--) {
+                if (indexes[j].index === index && indexes[j].key === key) {
+                  dup = true;
+                  break;
+                }
+              }
+              if (!dup) {
+                indexes.push({index: index, key: key});
+              }
               break;
             }
           }
