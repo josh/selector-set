@@ -141,7 +141,7 @@ styles.matches(el).forEach(function(rule) {
 });
 ```
 
-*(Seriously don't do this)*
+Okay, you wouldn't want to ever actually do this. But consider the use case of implementing some sort of CSS property polyfill in pure JS.
 
 
 ## Browser Support
