@@ -21,7 +21,7 @@
     this.indexes = Object.create(this.indexes);
 
     // Internal: Used Object index String names mapping to Index objects.
-    this.activeIndexes = {};
+    this.activeIndexes = [];
   }
 
   // Detect prefixed Element#matches function.
@@ -218,7 +218,7 @@
   //
   // Returns nothing.
   SelectorSet.prototype.add = function(selector, data) {
-    var obj, i, index, key, selIndex, objs,
+    var obj, i, j, index, key, selIndex, objs,
         selectorIndexes, selectorIndex,
         indexes = this.activeIndexes,
         selectors = this.selectors;
@@ -238,11 +238,21 @@
       selectorIndex = selectorIndexes[i];
       key = selectorIndex.key;
       index = selectorIndex.index;
-      selIndex = indexes[index.name];
-      if (!selIndex) {
-        selIndex = indexes[index.name] = Object.create(index);
-        selIndex.keys = new Map();
+
+      selIndex = null;
+      j = indexes.length;
+      while (j--) {
+        if (index.isPrototypeOf(indexes[j])) {
+          selIndex = indexes[j];
+          break;
+        }
       }
+      if (!selIndex) {
+        selIndex = Object.create(index);
+        selIndex.keys = new Map();
+        indexes.push(selIndex);
+      }
+
       if (index === this.indexes['default']) {
         this.logDefaultIndexUsed(obj);
       }
@@ -269,7 +279,7 @@
       return;
     }
 
-    var selectorIndexes, selectorIndex, i, j, key, index, selIndex, objs, obj;
+    var selectorIndexes, selectorIndex, i, j, k, selIndex, objs, obj;
     var indexes = this.activeIndexes;
     var removedIds = {};
     var removeAll = arguments.length === 1;
@@ -277,21 +287,23 @@
     selectorIndexes = this.selectorIndexes(selector);
     for (i = 0; i < selectorIndexes.length; i++) {
       selectorIndex = selectorIndexes[i];
-      key = selectorIndex.key;
-      index = selectorIndex.index;
-      selIndex = indexes[index.name];
 
-      if (selIndex) {
-        objs = selIndex.keys.get(key);
-        if (objs) {
-          j = objs.length;
-          while (j--) {
-            obj = objs[j];
-            if (obj.selector === selector && (removeAll || obj.data === data)) {
-              objs.splice(j, 1);
-              removedIds[obj.id] = true;
+      j = indexes.length;
+      while (j--) {
+        selIndex = indexes[j];
+        if (selectorIndex.index.isPrototypeOf(selIndex)) {
+          objs = selIndex.keys.get(selectorIndex.key);
+          if (objs) {
+            k = objs.length;
+            while (k--) {
+              obj = objs[k];
+              if (obj.selector === selector && (removeAll || obj.data === data)) {
+                objs.splice(k, 1);
+                removedIds[obj.id] = true;
+              }
             }
           }
+          break;
         }
       }
     }
@@ -359,17 +371,17 @@
       return [];
     }
 
-    var i, j, len, len2, indexName, index, keys, objs, obj, id;
+    var i, j, k, len, len2, len3, index, keys, objs, obj, id;
     var indexes = this.activeIndexes, matchedIds = {}, matches = [];
 
-    for (indexName in indexes) {
-      index = indexes[indexName];
+    for (i = 0, len = indexes.length; i < len; i++) {
+      index = indexes[i];
       keys = index.element(el);
       if (keys) {
-        for (i = 0, len = keys.length; i < len; i++) {
-          if (objs = index.keys.get(keys[i])) {
-            for (j = 0, len2 = objs.length; j < len2; j++) {
-              obj = objs[j];
+        for (j = 0, len2 = keys.length; j < len2; j++) {
+          if (objs = index.keys.get(keys[j])) {
+            for (k = 0, len3 = objs.length; k < len3; k++) {
+              obj = objs[k];
               id = obj.id;
               if (!matchedIds[id] && this.matchesSelector(el, obj.selector)) {
                 matchedIds[id] = true;
