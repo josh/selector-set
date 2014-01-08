@@ -331,31 +331,29 @@
       return [];
     }
 
-    var matches = {};
-
+    var matches = {}, results = [];
     var els = this.querySelectorAll(this.selectors.join(', '), context);
 
-    var i, j, len, len2, el, m, obj;
+    var i, j, len, len2, el, m, match, obj;
     for (i = 0, len = els.length; i < len; i++) {
       el = els[i];
       m = this.matches(el);
       for (j = 0, len2 = m.length; j < len2; j++) {
         obj = m[j];
         if (!matches[obj.id]) {
-          matches[obj.id] = {
+          match = {
             id: obj.id,
             selector: obj.selector,
             data: obj.data,
             elements: []
           };
+          matches[obj.id] = match;
+          results.push(match);
+        } else {
+          match = matches[obj.id];
         }
-        matches[obj.id].elements.push(el);
+        match.elements.push(el);
       }
-    }
-
-    var results = [];
-    for (m in matches) {
-      results.push(matches[m]);
     }
 
     return results.sort(sortById);
