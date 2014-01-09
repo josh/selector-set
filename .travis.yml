@@ -1,3 +1,7 @@
 language: node_js
 before_script: npm install -g grunt-cli
-script: grunt test
+script: grunt travis --verbose
+env:
+  global:
+  - secure: ZaiDo8+Ee0EjMkbpKdIclGF7NW3aaHOl4i6pb2EgpdO60eyRT6kJo/N92jR/DMuv7d9dVzr19jXbHrhdbrj3soIs5Oxr0FZGvpjNRKfjLe5J1eu7d1zUjPH5aPScT0noRBbM7Izn3pR93sX++B7W3wd3W+xHDvdcBQXPvPaWXN0=
+  - secure: ZtCg3Y97/WoduDTA4l4h3qHlMFSPzhe1bSujXgxS9TPS1OxpAe449wCrQEA9fAfxrHaAr+bzNRXzMNC7+ElAgIwPiIh6sfrDrsXIFk4+r0nXEZSRHlmAflgHByCEpqNH8z/DoV6ADLXwm8Zcz6c06iZgwyK9Ri5POAXP3Qpv4k8=
