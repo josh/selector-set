@@ -81,6 +81,9 @@ module.exports = function(grunt) {
       all: {
         options: {
           urls: ['http://127.0.0.1:9999/test/test.html'],
+          tunnelTimeout: 5,
+          build: process.env.TRAVIS_JOB_ID,
+          concurrency: 2,
           browsers: [
             { browserName: 'safari', platform: 'OS X 10.9' },
             { browserName: 'chrome', platform: 'Linux' },
