@@ -140,6 +140,6 @@ module.exports = function(grunt) {
   grunt.registerTask('test', ['jshint', 'qunit:all']);
   grunt.registerTask('fuzz', ['jshint:fuzz', 'qunit:fuzz']);
   grunt.registerTask('sauce', ['connect', 'saucelabs-qunit']);
-  grunt.registerTask('travis', ['sauce']);
+  grunt.registerTask('travis', ['jshint', 'sauce']);
   grunt.registerTask('default', ['jshint']);
 };
