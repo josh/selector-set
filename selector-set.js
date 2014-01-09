@@ -80,6 +80,12 @@
       if (el.id) {
         return [el.id];
       }
+    },
+    find: function findElementsById(context, key) {
+      var el = context.ownerDocument.getElementById(key);
+      if (el && context.contains(el)) {
+        return [el];
+      }
     }
   });
 
@@ -102,6 +108,9 @@
           return className.baseVal.split(/\s/);
         }
       }
+    },
+    find: function findElementsByClassName(context, key) {
+      return context.getElementsByClassName(key);
     }
   });
 
@@ -117,6 +126,9 @@
     },
     element: function getElementTagName(el) {
       return [el.nodeName.toUpperCase()];
+    },
+    find: function findElementsByClassName(context, key) {
+      return context.getElementsByTagName(key);
     }
   });
 
