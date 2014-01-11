@@ -162,9 +162,10 @@
   // selector - String CSS selector
   //
   // Returns Array of {index, key}.
-  SelectorSet.prototype.selectorIndexes = function(selector) {
-    var allIndexes = this.indexes.slice(0).concat(this.indexes['default']),
-        allIndexesLen = allIndexes.length,
+  function parseSelectorIndexes(allIndexes, selector) {
+    allIndexes = allIndexes.slice(0).concat(allIndexes['default']);
+
+    var allIndexesLen = allIndexes.length,
         i, j, m, dup, rest = selector,
         key, index, indexes = [];
 
@@ -195,7 +196,7 @@
     } while (m);
 
     return indexes;
-  };
+  }
 
   // Internal: Find first item in Array that is a prototype of `proto`.
   //
@@ -249,7 +250,7 @@
       data: data
     };
 
-    selectorIndexes = this.selectorIndexes(selector);
+    selectorIndexes = parseSelectorIndexes(this.indexes, selector);
     for (i = 0; i < selectorIndexes.length; i++) {
       selectorIndex = selectorIndexes[i];
       key = selectorIndex.key;
@@ -293,7 +294,7 @@
     var removedIds = {};
     var removeAll = arguments.length === 1;
 
-    selectorIndexes = this.selectorIndexes(selector);
+    selectorIndexes = parseSelectorIndexes(this.indexes, selector);
     for (i = 0; i < selectorIndexes.length; i++) {
       selectorIndex = selectorIndexes[i];
 
