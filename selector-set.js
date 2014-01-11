@@ -263,7 +263,6 @@
         selIndex = Object.create(index);
         selIndex.map = new Map();
         selIndex.keys = [];
-        selIndex.values = [];
         indexes.push(selIndex);
       }
 
@@ -275,7 +274,6 @@
         objs = [];
         selIndex.map.set(key, objs);
         selIndex.keys.push(key);
-        selIndex.values.push(objs);
       }
       objs.push(obj);
     }
