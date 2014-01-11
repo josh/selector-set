@@ -209,6 +209,22 @@
     return indexes;
   };
 
+  // Internal: Find first item in Array that is a prototype of `proto`.
+  //
+  // ary   - Array of objects
+  // proto - Prototype of expected item in `ary`
+  //
+  // Returns object from `ary` if found. Otherwise returns undefined.
+  function findByPrototype(ary, proto) {
+    var i, len, item;
+    for (i = 0, len = ary.length; i < len; i++) {
+      item = ary[i];
+      if (proto.isPrototypeOf(item)) {
+        return item;
+      }
+    }
+  }
+
   // Public: Log when added selector falls under the default index.
   //
   // This API should not be considered stable. May change between
@@ -230,7 +246,7 @@
   //
   // Returns nothing.
   SelectorSet.prototype.add = function(selector, data) {
-    var obj, i, j, index, key, selIndex, objs,
+    var obj, i, indexProto, key, index, objs,
         selectorIndexes, selectorIndex,
         matchIndexes = this.matchIndexes,
         selectors = this.selectors;
@@ -249,29 +265,22 @@
     for (i = 0; i < selectorIndexes.length; i++) {
       selectorIndex = selectorIndexes[i];
       key = selectorIndex.key;
-      index = selectorIndex.index;
+      indexProto = selectorIndex.index;
 
-      selIndex = null;
-      j = matchIndexes.length;
-      while (j--) {
-        if (index.isPrototypeOf(matchIndexes[j])) {
-          selIndex = matchIndexes[j];
-          break;
-        }
-      }
-      if (!selIndex) {
-        selIndex = Object.create(index);
-        selIndex.map = new Map();
-        matchIndexes.push(selIndex);
+      index = findByPrototype(matchIndexes, indexProto);
+      if (!index) {
+        index = Object.create(indexProto);
+        index.map = new Map();
+        matchIndexes.push(index);
       }
 
-      if (index === this.indexes['default']) {
+      if (indexProto === this.indexes['default']) {
         this.logDefaultIndexUsed(obj);
       }
-      objs = selIndex.map.get(key);
+      objs = index.map.get(key);
       if (!objs) {
         objs = [];
-        selIndex.map.set(key, objs);
+        index.map.set(key, objs);
       }
       objs.push(obj);
     }
