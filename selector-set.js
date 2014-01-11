@@ -21,7 +21,7 @@
     this.indexes = Object.create(this.indexes);
 
     // Internal: Used Object index String names mapping to Index objects.
-    this.activeIndexes = [];
+    this.matchIndexes = [];
   }
 
   // Detect prefixed Element#matches function.
@@ -232,7 +232,7 @@
   SelectorSet.prototype.add = function(selector, data) {
     var obj, i, j, index, key, selIndex, objs,
         selectorIndexes, selectorIndex,
-        indexes = this.activeIndexes,
+        matchIndexes = this.matchIndexes,
         selectors = this.selectors;
 
     if (typeof selector !== 'string') {
@@ -252,17 +252,17 @@
       index = selectorIndex.index;
 
       selIndex = null;
-      j = indexes.length;
+      j = matchIndexes.length;
       while (j--) {
-        if (index.isPrototypeOf(indexes[j])) {
-          selIndex = indexes[j];
+        if (index.isPrototypeOf(matchIndexes[j])) {
+          selIndex = matchIndexes[j];
           break;
         }
       }
       if (!selIndex) {
         selIndex = Object.create(index);
         selIndex.keys = new Map();
-        indexes.push(selIndex);
+        matchIndexes.push(selIndex);
       }
 
       if (index === this.indexes['default']) {
@@ -292,7 +292,7 @@
     }
 
     var selectorIndexes, selectorIndex, i, j, k, selIndex, objs, obj;
-    var indexes = this.activeIndexes;
+    var matchIndexes = this.matchIndexes;
     var removedIds = {};
     var removeAll = arguments.length === 1;
 
@@ -300,9 +300,9 @@
     for (i = 0; i < selectorIndexes.length; i++) {
       selectorIndex = selectorIndexes[i];
 
-      j = indexes.length;
+      j = matchIndexes.length;
       while (j--) {
-        selIndex = indexes[j];
+        selIndex = matchIndexes[j];
         if (selectorIndex.index.isPrototypeOf(selIndex)) {
           objs = selIndex.keys.get(selectorIndex.key);
           if (objs) {
@@ -382,10 +382,10 @@
     }
 
     var i, j, k, len, len2, len3, index, keys, objs, obj, id;
-    var indexes = this.activeIndexes, matchedIds = {}, matches = [];
+    var matchIndexes = this.matchIndexes, matchedIds = {}, matches = [];
 
-    for (i = 0, len = indexes.length; i < len; i++) {
-      index = indexes[i];
+    for (i = 0, len = matchIndexes.length; i < len; i++) {
+      index = matchIndexes[i];
       keys = index.element(el);
       if (keys) {
         for (j = 0, len2 = keys.length; j < len2; j++) {
