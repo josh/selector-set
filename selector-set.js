@@ -261,17 +261,17 @@
       }
       if (!selIndex) {
         selIndex = Object.create(index);
-        selIndex.keys = new Map();
+        selIndex.map = new Map();
         matchIndexes.push(selIndex);
       }
 
       if (index === this.indexes['default']) {
         this.logDefaultIndexUsed(obj);
       }
-      objs = selIndex.keys.get(key);
+      objs = selIndex.map.get(key);
       if (!objs) {
         objs = [];
-        selIndex.keys.set(key, objs);
+        selIndex.map.set(key, objs);
       }
       objs.push(obj);
     }
@@ -304,7 +304,7 @@
       while (j--) {
         selIndex = matchIndexes[j];
         if (selectorIndex.index.isPrototypeOf(selIndex)) {
-          objs = selIndex.keys.get(selectorIndex.key);
+          objs = selIndex.map.get(selectorIndex.key);
           if (objs) {
             k = objs.length;
             while (k--) {
@@ -389,7 +389,7 @@
       keys = index.element(el);
       if (keys) {
         for (j = 0, len2 = keys.length; j < len2; j++) {
-          if (objs = index.keys.get(keys[j])) {
+          if (objs = index.map.get(keys[j])) {
             for (k = 0, len3 = objs.length; k < len3; k++) {
               obj = objs[k];
               id = obj.id;
