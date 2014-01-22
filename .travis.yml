@@ -3,5 +3,5 @@ before_script: npm install -g grunt-cli
 script: grunt travis
 env:
   global:
-  - secure: ZaiDo8+Ee0EjMkbpKdIclGF7NW3aaHOl4i6pb2EgpdO60eyRT6kJo/N92jR/DMuv7d9dVzr19jXbHrhdbrj3soIs5Oxr0FZGvpjNRKfjLe5J1eu7d1zUjPH5aPScT0noRBbM7Izn3pR93sX++B7W3wd3W+xHDvdcBQXPvPaWXN0=
-  - secure: ZtCg3Y97/WoduDTA4l4h3qHlMFSPzhe1bSujXgxS9TPS1OxpAe449wCrQEA9fAfxrHaAr+bzNRXzMNC7+ElAgIwPiIh6sfrDrsXIFk4+r0nXEZSRHlmAflgHByCEpqNH8z/DoV6ADLXwm8Zcz6c06iZgwyK9Ri5POAXP3Qpv4k8=
+  - secure: "GCnyXeASia6/bWH0uvlCQlB38SU8h1O7vsWvUE0efsE9z+RsTlcRYGKYJ1qfQ5dDIjxtMTLXnSNCVO1daI2uQyVEH+dvRcNfGa2cQlqb2rTVd8sUWn0qod4q76K14Wz/OD9wctqXcA6VEzCNVAfIqdddWlvemNQsmkPctGBGAn0="
+  - secure: "Gxg1mBeelWWk8WdyBI1LZjow947vIt91ZHjtwRcgcTPTYNECeRuuxtXfbMnedWCpqpajv3Q+P9TGaBloX2d0ZiPVJPgqkACC3PJOl+B4CJUsWM5SbS63op+B2HXgPAdTQPS65bTVDZ/q2nto46HgBOBBuWdiNuOsN4NOpizojtU="
