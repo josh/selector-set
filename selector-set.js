@@ -1,4 +1,13 @@
-(function(window) {
+(function (root, factory) {
+  if (typeof define === 'function' && define.amd) {
+    define(function () {
+      return factory(root);
+    });
+  } else {
+    // Public: Expose SelectorSet as a global on root.
+    root.SelectorSet = factory(root);
+  }
+})(this, function(window) {
   'use strict';
 
   // Public: Create a new SelectorSet.
@@ -404,6 +413,5 @@
     return matches.sort(sortById);
   };
 
-  // Public: Expose SelectorSet as a global on window.
-  window.SelectorSet = SelectorSet;
-})(window);
+  return SelectorSet;
+});
