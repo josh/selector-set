@@ -98,7 +98,9 @@
       if (className) {
         if (typeof className === 'string') {
           return className.split(/\s/);
-        } else if (className instanceof SVGAnimatedString) {
+        } else if (typeof className === 'object' && 'baseVal' in className) {
+          // className is a SVGAnimatedString
+          // global SVGAnimatedString is not an exposed global in Opera 12
           return className.baseVal.split(/\s/);
         }
       }
