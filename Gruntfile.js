@@ -80,17 +80,19 @@ module.exports = function(grunt) {
     'saucelabs-qunit': {
       all: {
         options: {
-          urls: ['http://127.0.0.1:9999/test/test.html'],
+          urls: ['http://127.0.0.1:9999/test/test-exemplar.html', 'http://127.0.0.1:9999/test/test.html'],
           tunnelTimeout: 5,
           build: process.env.TRAVIS_JOB_ID,
           concurrency: 1,
           browsers: [
-            { browserName: 'safari', platform: 'OS X 10.9' },
-            { browserName: 'chrome', platform: 'Linux' },
-            { browserName: 'firefox', platform: 'Windows 8.1' },
+            { browserName: 'chrome', platform: 'Windows 8.1' },
+            { browserName: 'firefox', platform: 'Linux' },
             { browserName: 'internet explorer', version: '11', platform: 'Windows 8.1' },
             { browserName: 'internet explorer', version: '10', platform: 'Windows 8' },
-            { browserName: 'internet explorer', version: '9', platform: 'Windows 7' }
+            { browserName: 'internet explorer', version: '9', platform: 'Windows 7' },
+            { browserName: 'safari', version: '7', platform: 'OS X 10.9' },
+            { browserName: 'safari', version: '6', platform: 'OS X 10.8' },
+            { browserName: 'safari', version: '5', platform: 'OS X 10.6' }
           ]
         }
       }
@@ -109,29 +111,6 @@ module.exports = function(grunt) {
         tasks: ['jshint:test', 'qunit:all']
       }
     }
-  });
-
-  grunt.registerTask('benchmark', 'Run benchmarks.', function() {
-    var phantomjs = require('grunt-lib-phantomjs').init(grunt);
-
-    phantomjs.on('benchmark.cycle', function(bench) {
-      // grunt.log.subhead(bench.name);
-      grunt.log.writeln(bench.stats.mean * 1000 * 1000);
-    });
-
-    phantomjs.on('benchmark.complete', function() {
-      phantomjs.halt();
-    });
-
-    var done = this.async();
-    phantomjs.spawn('test/benchmark.html', {
-      options: {
-        timeout: 5000
-      },
-      done: function(err) {
-        done(err);
-      }
-    });
   });
 
   grunt.loadNpmTasks('grunt-contrib-connect');
