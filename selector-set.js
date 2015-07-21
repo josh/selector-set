@@ -26,7 +26,8 @@
 
   // Detect prefixed Element#matches function.
   var docElem = window.document.documentElement;
-  var matches = (docElem.webkitMatchesSelector ||
+  var matches = (docElem.matches ||
+                  docElem.webkitMatchesSelector ||
                   docElem.mozMatchesSelector ||
                   docElem.oMatchesSelector ||
                   docElem.msMatchesSelector);
