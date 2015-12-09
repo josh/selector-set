@@ -2,6 +2,7 @@
   "name": "selector-set",
   "version": "1.0.6",
   "description": "An efficient data structure for matching and querying elements against a large set of CSS selectors.",
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "http://github.com/josh/selector-set.git"
