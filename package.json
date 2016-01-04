@@ -7,6 +7,7 @@
     "type": "git",
     "url": "http://github.com/josh/selector-set.git"
   },
+  "main": "selector-set.js",
   "devDependencies": {
     "bower": "~1.4.1",
     "grunt": "~0.4.1",
