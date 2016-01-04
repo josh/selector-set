@@ -20,5 +20,8 @@
   "scripts": {
     "install": "bower install",
     "test": "grunt test"
-  }
+  },
+  "files": [
+    "selector-set.js"  
+  ]
 }
