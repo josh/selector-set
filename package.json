@@ -2,10 +2,12 @@
   "name": "selector-set",
   "version": "1.0.6",
   "description": "An efficient data structure for matching and querying elements against a large set of CSS selectors.",
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "http://github.com/josh/selector-set.git"
   },
+  "main": "selector-set.js",
   "devDependencies": {
     "bower": "~1.4.1",
     "grunt": "~0.4.1",
@@ -18,5 +20,8 @@
   "scripts": {
     "install": "bower install",
     "test": "grunt test"
-  }
+  },
+  "files": [
+    "selector-set.js"  
+  ]
 }
