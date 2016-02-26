@@ -1,4 +1,12 @@
-(function(window) {
+(function(root, factory) {
+  if (typeof define === 'function' && define.amd) {
+    define([], factory);
+  } else if (typeof exports === 'object') {
+    module.exports = factory();
+  } else {
+    root.SelectorSet = factory();
+  }
+})(this, function() {
   'use strict';
 
   // Public: Create a new SelectorSet.
@@ -407,6 +415,6 @@
     return matches.sort(sortById);
   };
 
-  // Public: Expose SelectorSet as a global on window.
-  window.SelectorSet = SelectorSet;
-})(window);
+  // Public: Export SelectorSet
+  return SelectorSet;
+});
