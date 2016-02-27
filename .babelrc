@@ -1,0 +1,6 @@
+{
+  "moduleIds": true,
+  "presets": [
+    "es2015-rollup"
+  ]
+}
