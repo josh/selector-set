@@ -244,8 +244,6 @@ SelectorSet.prototype.add = function(selector, data) {
     return;
   }
 
-  const asdf = 12;
-
   obj = {
     id: this.uid++,
     selector: selector,
