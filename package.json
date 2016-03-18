@@ -8,6 +8,7 @@
     "url": "http://github.com/josh/selector-set.git"
   },
   "main": "selector-set.js",
+  "jsnext:main": "selector-set.next.js",
   "devDependencies": {
     "benchmark": "^1.0.0",
     "bower": "~1.4.1",
@@ -24,6 +25,6 @@
     "test": "grunt test"
   },
   "files": [
-    "selector-set.js"  
+    "selector-set.js"
   ]
 }
