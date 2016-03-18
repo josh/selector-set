@@ -1,6 +1,6 @@
 {
   "name": "selector-set",
-  "version": "1.0.6",
+  "version": "1.1.0",
   "description": "An efficient data structure for matching and querying elements against a large set of CSS selectors.",
   "license": "MIT",
   "repository": {
