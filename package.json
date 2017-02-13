@@ -25,7 +25,9 @@
     "test": "grunt test"
   },
   "files": [
+    "selector-set.js.flow",
     "selector-set.js",
+    "selector-set.next.js.flow",
     "selector-set.next.js"
   ]
 }
