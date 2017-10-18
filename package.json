@@ -9,6 +9,7 @@
   },
   "main": "selector-set.js",
   "module": "selector-set.next.js",
+  "jsnext:main": "selector-set.next.js",
   "devDependencies": {
     "benchmark": "^1.0.0",
     "bower": "~1.4.1",
