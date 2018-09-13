@@ -1,0 +1,27 @@
+{
+  "parserOptions": {
+    "sourceType": "module"
+  },
+  "globals": {
+  },
+  "extends": [
+    "plugin:github/browser"
+  ],
+  "rules": {
+  },
+  "overrides": [
+    {
+      "files": ["test/**/*.js"],
+      "env": {
+        "browser": true,
+        "qunit": true
+      },
+      "globals": {
+        "SelectorSet": true,
+        "ExemplarSelectorSet": true,
+        "Benchmark": true,
+        "d3": true
+      }
+    }
+  ]
+}
