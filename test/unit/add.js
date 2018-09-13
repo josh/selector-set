@@ -1,9 +1,9 @@
 (function() {
-  'use strict';
+  "use strict";
 
-  module('add');
+  module("add");
 
-  test('ignores non string selector', function() {
+  test("ignores non string selector", function() {
     var set = new SelectorSet();
     set.add();
     set.remove();
@@ -14,35 +14,35 @@
     ok(true);
   });
 
-  test('increments size', function() {
+  test("increments size", function() {
     var set = new SelectorSet();
     equal(set.size, 0);
 
-    set.add('#foo');
+    set.add("#foo");
     equal(set.size, 1);
 
-    set.add('#foo');
+    set.add("#foo");
     equal(set.size, 2);
 
-    set.add('#bar');
+    set.add("#bar");
     equal(set.size, 3);
 
-    set.add('#bar', 123);
+    set.add("#bar", 123);
     equal(set.size, 4);
 
-    set.add('#bar', 456);
+    set.add("#bar", 456);
     equal(set.size, 5);
 
-    set.remove('#foo');
+    set.remove("#foo");
     equal(set.size, 3);
 
-    set.remove('#bar', undefined);
+    set.remove("#bar", undefined);
     equal(set.size, 2);
 
-    set.remove('#bar', 456);
+    set.remove("#bar", 456);
     equal(set.size, 1);
 
-    set.remove('#bar');
+    set.remove("#bar");
     equal(set.size, 0);
   });
 })();

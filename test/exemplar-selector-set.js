@@ -1,5 +1,5 @@
 (function() {
-  'use strict';
+  "use strict";
 
   function ExemplarSelectorSet() {
     this.selectors = [];
@@ -12,28 +12,33 @@
       value: ExemplarSelectorSet
     },
     size: {
-      get: function() {
+      get() {
         return this.selectors.length;
       }
     }
   });
 
   ExemplarSelectorSet.prototype.add = function(selector, data) {
-    if (typeof selector === 'string') {
+    if (typeof selector === "string") {
       this.selectors.push({
         id: this.uid++,
-        selector: selector,
-        data: data
+        selector,
+        data
       });
     }
   };
 
   ExemplarSelectorSet.prototype.remove = function(selector, data) {
-    if (typeof selector === 'string') {
-      var obj, selectors = [], i = this.selectors.length;
+    if (typeof selector === "string") {
+      var obj,
+        selectors = [],
+        i = this.selectors.length;
       while (i--) {
         obj = this.selectors[i];
-        if (obj.selector !== selector || (arguments.length === 2 && obj.data !== data)) {
+        if (
+          obj.selector !== selector ||
+          (arguments.length === 2 && obj.data !== data)
+        ) {
           selectors.push(obj);
         }
       }
@@ -42,7 +47,10 @@
   };
 
   ExemplarSelectorSet.prototype.queryAll = function(context) {
-    var i, obj, els, matches = [];
+    var i,
+      obj,
+      els,
+      matches = [];
     for (i = 0; i < this.selectors.length; i++) {
       obj = this.selectors[i];
       els = this.querySelectorAll(obj.selector, context);
@@ -59,7 +67,9 @@
   };
 
   ExemplarSelectorSet.prototype.matches = function(el) {
-    var i, obj, matches = [];
+    var i,
+      obj,
+      matches = [];
     for (i = 0; i < this.selectors.length; i++) {
       obj = this.selectors[i];
       if (el && this.matchesSelector(el, obj.selector)) {

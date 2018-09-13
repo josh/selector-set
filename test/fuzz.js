@@ -1,8 +1,7 @@
 (function() {
-  'use strict';
+  "use strict";
 
   var testCount = 100;
-
 
   function seededRandomFn(seed) {
     function random() {
@@ -28,7 +27,7 @@
   while (--c) {
     var s = String.fromCharCode(c);
     // var m = s.match(/^[\w\u00c0-\uFFFF\-]$/);
-    var m = s.match(/^[\wa-zA-Z0-9\-]$/);
+    var m = s.match(/^[\wa-zA-Z0-9-]$/);
     if (m) {
       alpha[s] = c;
     }
@@ -53,14 +52,17 @@
     });
 
     retry(function() {
-      el.className = [randomId(rand), randomId(rand), randomId(rand)].join(' ');
+      el.className = [randomId(rand), randomId(rand), randomId(rand)].join(" ");
     });
 
     retry(function() {
       el.setAttribute(randomId(rand), randomId(rand));
     });
     retry(function() {
-      el.setAttribute(randomId(rand), [randomId(rand), randomId(rand)].join(' '));
+      el.setAttribute(
+        randomId(rand),
+        [randomId(rand), randomId(rand)].join(" ")
+      );
     });
 
     return el;
@@ -93,19 +95,19 @@
       var i = Math.floor(rand() * 1000) % len;
       var attr = el.attributes[i];
 
-      if (rand() > 0.25 && attr.name === 'id') {
-        sel = '#' + attr.value;
-      } else if (rand() > 0.25 && attr.name === 'class') {
-        sel = '.' + attr.value.split(' ')[0];
+      if (rand() > 0.25 && attr.name === "id") {
+        sel = "#" + attr.value;
+      } else if (rand() > 0.25 && attr.name === "class") {
+        sel = "." + attr.value.split(" ")[0];
       } else {
-        sel = '[' + attr.name + '="' + attr.value + '"]';
+        sel = "[" + attr.name + '="' + attr.value + '"]';
       }
     } else {
       sel = el.nodeName.toLowerCase();
     }
 
     try {
-      if (SelectorSet.prototype.matchesSelector(document.body, sel+',*')) {
+      if (SelectorSet.prototype.matchesSelector(document.body, sel + ",*")) {
         return sel;
       }
     } catch (err) {
@@ -116,7 +118,8 @@
   function randomSelectorsForRoot(rand, el) {
     var sels = [];
 
-    var i, els = el.getElementsByTagName('*');
+    var i,
+      els = el.getElementsByTagName("*");
     for (i = 0; i < els.length; i++) {
       var sel = randomSelector(rand, els[i]);
       if (sel) {
@@ -126,7 +129,6 @@
 
     return sels;
   }
-
 
   if (!window.sessionStorage.seed) {
     window.sessionStorage.seed = Math.random();
@@ -139,20 +141,20 @@
 
     function testFn(seed) {
       return function() {
+        // eslint-disable-next-line no-invalid-this
         callback.call(this, seededRandomFn(seed));
       };
     }
 
     for (i = 0; i < testCount; i++) {
       seed = suiteRand();
-      QUnit.test(testName + ' (' + seed + ')', testFn(seed));
+      QUnit.test(testName + " (" + seed + ")", testFn(seed));
     }
   }
 
   function testEqual(actualObj, expectedObj) {
     function deepEqual(callback) {
-      var actualValue, expectedValue,
-          actualError, expectedError;
+      var actualValue, expectedValue, actualError, expectedError;
 
       try {
         actualValue = callback(actualObj);
@@ -175,14 +177,13 @@
     return deepEqual;
   }
 
-
-  test('match', function(rand) {
+  test("match", function(rand) {
     var expectedSet = new ExemplarSelectorSet();
     var actualSet = new SelectorSet();
     var deepEqual = testEqual(actualSet, expectedSet);
 
     var root = randomTree(rand);
-    var els = root.getElementsByTagName('*');
+    var els = root.getElementsByTagName("*");
     var sels = randomSelectorsForRoot(rand, root);
 
     deepEqual(function(set) {
@@ -209,7 +210,7 @@
     }
   });
 
-  test('queryAll', function(rand) {
+  test("queryAll", function(rand) {
     var expectedSet = new ExemplarSelectorSet();
     var actualSet = new SelectorSet();
     var deepEqual = testEqual(actualSet, expectedSet);
