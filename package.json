@@ -7,7 +7,7 @@
     "type": "git",
     "url": "http://github.com/josh/selector-set.git"
   },
-  "main": "selector-set.js",
+  "main": "./dist/selector-set.js",
   "module": "selector-set.next.js",
   "jsnext:main": "selector-set.next.js",
   "devDependencies": {
@@ -16,15 +16,18 @@
     "d3": "^3.5.10",
     "eslint": "^5.5.0",
     "eslint-plugin-github": "^1.2.2",
-    "qunitjs": "^1.20.0"
+    "qunitjs": "^1.20.0",
+    "rollup": "^0.65.2"
   },
   "scripts": {
-    "pretest": "eslint --report-unused-disable-directives selector-set.next.js test/",
-    "test": "./script/test"
+    "build": "rollup -c && cp selector-set.next.js.flow dist/selector-set.js.flow",
+    "pretest": "npm run build && eslint --report-unused-disable-directives .",
+    "test": "./script/test",
+    "prepublish": "npm run build"
   },
   "files": [
-    "selector-set.js.flow",
-    "selector-set.js",
+    "dist/selector-set.js.flow",
+    "dist/selector-set.js",
     "selector-set.next.js.flow",
     "selector-set.next.js"
   ]

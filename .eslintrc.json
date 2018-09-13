@@ -7,9 +7,18 @@
   "extends": [
     "plugin:github/browser"
   ],
-  "rules": {
-  },
   "overrides": [
+    {
+      "files": ["dist/selector-set.js"],
+      "env": {
+        "browser": true,
+        "amd": true
+      },
+      "rules": {
+        "no-invalid-this": "off",
+        "prettier/prettier": "off"
+      }
+    },
     {
       "files": ["test/**/*.js"],
       "env": {
