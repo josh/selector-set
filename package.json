@@ -12,13 +12,15 @@
   "jsnext:main": "selector-set.next.js",
   "devDependencies": {
     "benchmark": "^1.0.0",
+    "chrome-remote-interface": "^0.26.1",
     "d3": "^3.5.10",
     "eslint": "^5.5.0",
     "eslint-plugin-github": "^1.2.2",
     "qunitjs": "^1.20.0"
   },
   "scripts": {
-    "test": "eslint --report-unused-disable-directives selector-set.next.js test/"
+    "pretest": "eslint --report-unused-disable-directives selector-set.next.js test/",
+    "test": "./script/test"
   },
   "files": [
     "selector-set.js.flow",
