@@ -1,6 +1,6 @@
-/* @flow */
+/* @flow strict */
 
-declare class SelectorSet<T: any> {
+declare class SelectorSet<T> {
   static (): SelectorSet<T>;
   constructor(): void;
 
