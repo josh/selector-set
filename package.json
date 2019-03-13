@@ -10,6 +10,7 @@
   "main": "selector-set.js",
   "module": "selector-set.next.js",
   "jsnext:main": "selector-set.next.js",
+  "types": "selector-set.d.ts",
   "devDependencies": {
     "benchmark": "^1.0.0",
     "bower": "~1.4.1",
@@ -26,8 +27,10 @@
     "test": "grunt test"
   },
   "files": [
+    "selector-set.d.ts",
     "selector-set.js.flow",
     "selector-set.js",
+    "selector-set.next.d.ts",
     "selector-set.next.js.flow",
     "selector-set.next.js"
   ]
