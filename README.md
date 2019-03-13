@@ -36,10 +36,10 @@ set.matches(el);
 
 ## Installation
 
-Available on [Bower](http://bower.io) as **selector-set**.
+Available on npm as **selector-set**.
 
 ```
-$ bower install selector-set
+$ npm install selector-set
 ```
 
 Alternatively you can download the single `selector-set.js` file. There are no additional dependencies.
@@ -62,7 +62,7 @@ document.addEventListener('DOMContentLoaded', function() {
   if (el = document.querySelector('form.signup')) {
     // ...
   }
-  
+
   if (el = document.querySelector('#sidebar')) {
     // ...
   }
