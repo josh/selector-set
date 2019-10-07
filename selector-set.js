@@ -330,7 +330,7 @@
       }
     }
     this.size -= Object.keys(removedIds).length;
-    this.selectors = this.selectors.filter(selector => removedSelectors[selector])
+    this.selectors = this.selectors.filter(function (selector) { return removedSelectors[selector] })
   };
 
   // Sort by id property handler.
