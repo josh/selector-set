@@ -304,6 +304,7 @@
     var indexes = this.activeIndexes;
     var removedIds = {};
     var removeAll = arguments.length === 1;
+    var selectors = this.selectors;
 
     selectorIndexes = parseSelectorIndexes(this.indexes, selector);
     for (i = 0; i < selectorIndexes.length; i++) {
@@ -320,7 +321,7 @@
               obj = objs[k];
               if (obj.selector === selector && (removeAll || obj.data === data)) {
                 objs.splice(k, 1);
-                removedIds[obj.id] = true;
+                removedIds[obj.id] = obj.selector;
               }
             }
           }
@@ -328,8 +329,11 @@
         }
       }
     }
-
     this.size -= Object.keys(removedIds).length;
+    Object.values(removedIds).forEach(function (selector) {
+      let idx = selectors.indexOf(selector)
+      if (idx >= 0) selectors.splice(idx, 1)
+    })
   };
 
   // Sort by id property handler.

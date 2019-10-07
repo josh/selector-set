@@ -44,5 +44,7 @@
 
     set.remove('#bar');
     equal(set.size, 0);
+
+    equal(set.selectors.length, 0);
   });
 })();
