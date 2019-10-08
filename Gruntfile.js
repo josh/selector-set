@@ -84,26 +84,6 @@ module.exports = function(grunt) {
         }
       }
     },
-    'saucelabs-qunit': {
-      all: {
-        options: {
-          urls: ['http://127.0.0.1:9999/test/test-exemplar.html', 'http://127.0.0.1:9999/test/test.html'],
-          tunnelTimeout: 5,
-          build: process.env.TRAVIS_JOB_ID,
-          concurrency: 1,
-          browsers: [
-            { browserName: 'chrome', platform: 'Windows 8.1' },
-            { browserName: 'firefox', platform: 'Linux' },
-            { browserName: 'internet explorer', version: '11', platform: 'Windows 8.1' },
-            { browserName: 'internet explorer', version: '10', platform: 'Windows 8' },
-            { browserName: 'internet explorer', version: '9', platform: 'Windows 7' },
-            { browserName: 'safari', version: '7', platform: 'OS X 10.9' },
-            { browserName: 'safari', version: '6', platform: 'OS X 10.8' },
-            { browserName: 'safari', version: '5', platform: 'OS X 10.6' }
-          ]
-        }
-      }
-    },
     watch: {
       grunt: {
         files: ['<%= jshint.grunt.src %>'],
@@ -124,11 +104,9 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-qunit');
   grunt.loadNpmTasks('grunt-contrib-watch');
-  grunt.loadNpmTasks('grunt-saucelabs');
 
   grunt.registerTask('test', ['jshint', 'qunit:all']);
   grunt.registerTask('fuzz', ['jshint:fuzz', 'qunit:fuzz']);
-  grunt.registerTask('sauce', ['connect', 'saucelabs-qunit']);
-  grunt.registerTask('travis', ['test', 'sauce']);
+  grunt.registerTask('travis', ['test']);
   grunt.registerTask('default', ['jshint']);
 };
