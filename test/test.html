@@ -1,45 +1,45 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <meta charset="utf-8">
-  <title>Test Suite</title>
-  <link rel="stylesheet" href="../node_modules/qunitjs/qunit/qunit.css">
-</head>
-<body>
-  <div id="qunit"></div>
-  <div id="qunit-fixture">
-    <div id="fixture1">
-      <foo></foo>
-      <div id="foo"></div>
-      <div class="foo"></div>
-      <div foo="bar"></div>
+  <head>
+    <meta charset="utf-8" />
+    <title>Test Suite</title>
+    <link rel="stylesheet" href="../node_modules/qunitjs/qunit/qunit.css" />
+  </head>
+  <body>
+    <div id="qunit"></div>
+    <div id="qunit-fixture">
+      <div id="fixture1">
+        <foo></foo>
+        <div id="foo"></div>
+        <div class="foo"></div>
+        <div foo="bar"></div>
+      </div>
+
+      <div id="fixture2">
+        <foo id="foo" class="foo" foo="bar"></foo>
+        <div foo="#bar"></div>
+        <div foo=".bar"></div>
+      </div>
+
+      <div id="fixture-props">
+        <div id="prototype"></div>
+        <div id="constructor"></div>
+        <div class="hasOwnProperty isPrototypeOf"></div>
+      </div>
+
+      <div id="fixture-svg">
+        <svg width="200" height="200">
+          <circle class="dot" r="3" cx="20" cy="20"></circle>
+        </svg>
+      </div>
     </div>
 
-    <div id="fixture2">
-      <foo id="foo" class="foo" foo="bar"></foo>
-      <div foo="#bar"></div>
-      <div foo=".bar"></div>
-    </div>
+    <script src="../node_modules/qunitjs/qunit/qunit.js"></script>
 
-    <div id="fixture-props">
-      <div id="prototype"></div>
-      <div id="constructor"></div>
-      <div class="hasOwnProperty isPrototypeOf"></div>
-    </div>
+    <script src="../selector-set.js"></script>
 
-    <div id="fixture-svg">
-      <svg width="200" height="200">
-        <circle class="dot" r="3" cx="20" cy="20"></circle>
-      </svg>
-    </div>
-  </div>
-
-  <script src="../node_modules/qunitjs/qunit/qunit.js"></script>
-
-  <script src="../selector-set.js"></script>
-
-  <script src="./unit/add.js"></script>
-  <script src="./unit/matches.js"></script>
-  <script src="./unit/queryall.js"></script>
-</body>
+    <script src="./unit/add.js"></script>
+    <script src="./unit/matches.js"></script>
+    <script src="./unit/queryall.js"></script>
+  </body>
 </html>

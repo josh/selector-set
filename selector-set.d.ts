@@ -16,10 +16,18 @@ declare module 'selector-set' {
     add(selector: string, data: T): void;
     remove(selector: string, data?: T): void;
 
-    matches(el: Element): Array<{selector: string, data: T}>;
-    queryAll(context: Element): Array<{selector: string, data: T, elements: Array<Element>}>;
+    matches(el: Element): Array<{ selector: string; data: T }>;
+    queryAll(
+      context: Element
+    ): Array<{ selector: string; data: T; elements: Array<Element> }>;
 
-    logDefaultIndexUsed: ({ selector, data }: { selector: string, data: T }) => void;
+    logDefaultIndexUsed: ({
+      selector,
+      data
+    }: {
+      selector: string;
+      data: T;
+    }) => void;
   }
 
   export default SelectorSet;

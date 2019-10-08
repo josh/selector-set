@@ -30,10 +30,15 @@
 
   ExemplarSelectorSet.prototype.remove = function(selector, data) {
     if (typeof selector === 'string') {
-      var obj, selectors = [], i = this.selectors.length;
+      var obj,
+        selectors = [],
+        i = this.selectors.length;
       while (i--) {
         obj = this.selectors[i];
-        if (obj.selector !== selector || (arguments.length === 2 && obj.data !== data)) {
+        if (
+          obj.selector !== selector ||
+          (arguments.length === 2 && obj.data !== data)
+        ) {
           selectors.push(obj);
         }
       }
@@ -42,7 +47,10 @@
   };
 
   ExemplarSelectorSet.prototype.queryAll = function(context) {
-    var i, obj, els, matches = [];
+    var i,
+      obj,
+      els,
+      matches = [];
     for (i = 0; i < this.selectors.length; i++) {
       obj = this.selectors[i];
       els = this.querySelectorAll(obj.selector, context);
@@ -59,7 +67,9 @@
   };
 
   ExemplarSelectorSet.prototype.matches = function(el) {
-    var i, obj, matches = [];
+    var i,
+      obj,
+      matches = [];
     for (i = 0; i < this.selectors.length; i++) {
       obj = this.selectors[i];
       if (el && this.matchesSelector(el, obj.selector)) {

@@ -1,78 +1,77 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <meta charset="utf-8">
-  <title>Performance</title>
+  <head>
+    <meta charset="utf-8" />
+    <title>Performance</title>
 
-  <style>
-    body {
-      font: 10px sans-serif;
-      width: 800px;
-    }
-
-    #graph {
-      margin: 20px 30px;
-    }
-
-    .axis path,
-    .axis line {
-      fill: none;
-      stroke: #000;
-      shape-rendering: crispEdges;
-    }
-
-    .line {
-      fill: none;
-      stroke: steelblue;
-      stroke-width: 1.5px;
-    }
-
-    select {
-      float: right;
-    }
-  </style>
-</head>
-<body>
-  <svg id="graph" width="600" height="300">
-  </svg>
-  <select id="benchmarks"></select>
-
-  <script src="../node_modules/d3/d3.js"></script>
-  <script src="../node_modules/benchmark/benchmark.js"></script>
-  <script src="../selector-set.js"></script>
-  <script src="./exemplar-selector-set.js"></script>
-  <script src="./perf.js"></script>
-  <script>
-    Benchmark.options.async = true;
-    Benchmark.options.maxTime = 1;
-
-    var draw = perf.graph(document.getElementById('graph'));
-    var suite = [];
-
-    function redraw() {
-      if (suite.running) {
-        draw(suite);
-        requestAnimationFrame(redraw);
+    <style>
+      body {
+        font: 10px sans-serif;
+        width: 800px;
       }
-    }
 
-    var select = document.getElementById('benchmarks');
-    for (var i = 0; i < perf.benchmarks.length; i++) {
-      var option = document.createElement('option');
-      option.value = i;
-      option.textContent = perf.benchmarks[i].name;
-      select.appendChild(option);
-    }
-    select.onchange = function() {
-      window.location.hash = select.value;
-    };
-    window.onhashchange = function() {
-      select.value = window.location.hash.slice(1);
-      var benchmark = perf.benchmarks[select.value];
-      suite = benchmark.suite.run();
-      redraw()
-    }
-    window.onhashchange();
-  </script>
-</body>
+      #graph {
+        margin: 20px 30px;
+      }
+
+      .axis path,
+      .axis line {
+        fill: none;
+        stroke: #000;
+        shape-rendering: crispEdges;
+      }
+
+      .line {
+        fill: none;
+        stroke: steelblue;
+        stroke-width: 1.5px;
+      }
+
+      select {
+        float: right;
+      }
+    </style>
+  </head>
+  <body>
+    <svg id="graph" width="600" height="300"></svg>
+    <select id="benchmarks"></select>
+
+    <script src="../node_modules/d3/d3.js"></script>
+    <script src="../node_modules/benchmark/benchmark.js"></script>
+    <script src="../selector-set.js"></script>
+    <script src="./exemplar-selector-set.js"></script>
+    <script src="./perf.js"></script>
+    <script>
+      Benchmark.options.async = true;
+      Benchmark.options.maxTime = 1;
+
+      var draw = perf.graph(document.getElementById('graph'));
+      var suite = [];
+
+      function redraw() {
+        if (suite.running) {
+          draw(suite);
+          requestAnimationFrame(redraw);
+        }
+      }
+
+      var select = document.getElementById('benchmarks');
+      for (var i = 0; i < perf.benchmarks.length; i++) {
+        var option = document.createElement('option');
+        option.value = i;
+        option.textContent = perf.benchmarks[i].name;
+        select.appendChild(option);
+      }
+      select.onchange = function() {
+        window.location.hash = select.value;
+      };
+      window.onhashchange = function() {
+        select.value = window.location.hash.slice(1);
+        var benchmark = perf.benchmarks[select.value];
+        suite = benchmark.suite.run();
+        redraw();
+      };
+      window.onhashchange();
+    </script>
+  </body>
 </html>

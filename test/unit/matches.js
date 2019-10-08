@@ -455,8 +455,8 @@
 
     var n = 1000;
     while (n--) {
-      set.add('#a'+Math.floor(Math.random()*1000000000));
-      set.add('.b'+Math.floor(Math.random()*1000000000));
+      set.add('#a' + Math.floor(Math.random() * 1000000000));
+      set.add('.b' + Math.floor(Math.random() * 1000000000));
     }
 
     var fixture1 = document.getElementById('fixture1');

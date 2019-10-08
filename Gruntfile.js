@@ -33,19 +33,19 @@ module.exports = function(grunt) {
         options: {
           strict: false,
           globals: {
-            'define': false,
-            'module': false
+            define: false,
+            module: false
           }
         }
       },
       test: {
         options: {
           globals: {
-            'SelectorSet': false,
-            'module': false,
-            'test': false,
-            'ok': false,
-            'equal': false
+            SelectorSet: false,
+            module: false,
+            test: false,
+            ok: false,
+            equal: false
           }
         },
         src: ['test/unit/*.js']
@@ -53,9 +53,9 @@ module.exports = function(grunt) {
       fuzz: {
         options: {
           globals: {
-            'SelectorSet': false,
-            'ExemplarSelectorSet': false,
-            'QUnit': false
+            SelectorSet: false,
+            ExemplarSelectorSet: false,
+            QUnit: false
           }
         },
         src: ['test/fuzz.js']
@@ -63,10 +63,10 @@ module.exports = function(grunt) {
       perf: {
         options: {
           globals: {
-            'Benchmark': false,
-            'd3': false,
-            'SelectorSet': false,
-            'ExemplarSelectorSet': false
+            Benchmark: false,
+            d3: false,
+            SelectorSet: false,
+            ExemplarSelectorSet: false
           }
         },
         src: ['test/perf.js']
