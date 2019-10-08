@@ -75,18 +75,9 @@ module.exports = function(grunt) {
     qunit: {
       all: ['test/test-exemplar.html', 'test/test.html'],
       fuzz: ['test/test-fuzz.html']
-    },
-    connect: {
-      server: {
-        options: {
-          base: '',
-          port: 9999
-        }
-      }
     }
   });
 
-  grunt.loadNpmTasks('grunt-contrib-connect');
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-qunit');
 
