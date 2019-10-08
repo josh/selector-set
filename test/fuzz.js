@@ -189,10 +189,10 @@
       return set.size;
     });
 
+    var i;
     function setAdd(set) {
       return set.add(sels[i]);
     }
-    var i;
     for (i = 0; i < sels.length; i++) {
       deepEqual(setAdd);
     }
@@ -221,10 +221,10 @@
       return set.size;
     });
 
+    var i;
     function setAdd(set) {
       return set.add(sels[i]);
     }
-    var i;
     for (i = 0; i < sels.length; i++) {
       deepEqual(setAdd);
     }
