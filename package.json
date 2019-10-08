@@ -19,7 +19,6 @@
     "grunt-contrib-connect": "~0.6.0",
     "grunt-contrib-jshint": "~0.7.0",
     "grunt-contrib-qunit": "~0.3.0",
-    "grunt-contrib-watch": "~0.5.3",
     "qunitjs": "^1.20.0"
   },
   "scripts": {

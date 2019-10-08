@@ -83,27 +83,12 @@ module.exports = function(grunt) {
           port: 9999
         }
       }
-    },
-    watch: {
-      grunt: {
-        files: ['<%= jshint.grunt.src %>'],
-        tasks: ['jshint:grunt']
-      },
-      src: {
-        files: ['<%= jshint.src.src %>'],
-        tasks: ['jshint:src', 'qunit:all']
-      },
-      test: {
-        files: ['<%= jshint.test.src %>', 'test/*.html'],
-        tasks: ['jshint:test', 'qunit:all']
-      }
     }
   });
 
   grunt.loadNpmTasks('grunt-contrib-connect');
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-qunit');
-  grunt.loadNpmTasks('grunt-contrib-watch');
 
   grunt.registerTask('test', ['jshint', 'qunit:all']);
   grunt.registerTask('fuzz', ['jshint:fuzz', 'qunit:fuzz']);
