@@ -3,7 +3,6 @@
 
   var testCount = 100;
 
-
   function seededRandomFn(seed) {
     function random() {
       seed = (seed * 9301 + 49297) % 233280;
@@ -60,7 +59,10 @@
       el.setAttribute(randomId(rand), randomId(rand));
     });
     retry(function() {
-      el.setAttribute(randomId(rand), [randomId(rand), randomId(rand)].join(' '));
+      el.setAttribute(
+        randomId(rand),
+        [randomId(rand), randomId(rand)].join(' ')
+      );
     });
 
     return el;
@@ -105,7 +107,7 @@
     }
 
     try {
-      if (SelectorSet.prototype.matchesSelector(document.body, sel+',*')) {
+      if (SelectorSet.prototype.matchesSelector(document.body, sel + ',*')) {
         return sel;
       }
     } catch (err) {
@@ -116,7 +118,8 @@
   function randomSelectorsForRoot(rand, el) {
     var sels = [];
 
-    var i, els = el.getElementsByTagName('*');
+    var i,
+      els = el.getElementsByTagName('*');
     for (i = 0; i < els.length; i++) {
       var sel = randomSelector(rand, els[i]);
       if (sel) {
@@ -126,7 +129,6 @@
 
     return sels;
   }
-
 
   if (!window.sessionStorage.seed) {
     window.sessionStorage.seed = Math.random();
@@ -151,8 +153,7 @@
 
   function testEqual(actualObj, expectedObj) {
     function deepEqual(callback) {
-      var actualValue, expectedValue,
-          actualError, expectedError;
+      var actualValue, expectedValue, actualError, expectedError;
 
       try {
         actualValue = callback(actualObj);
@@ -175,7 +176,6 @@
     return deepEqual;
   }
 
-
   test('match', function(rand) {
     var expectedSet = new ExemplarSelectorSet();
     var actualSet = new SelectorSet();
@@ -189,10 +189,10 @@
       return set.size;
     });
 
+    var i;
     function setAdd(set) {
       return set.add(sels[i]);
     }
-    var i;
     for (i = 0; i < sels.length; i++) {
       deepEqual(setAdd);
     }
@@ -221,10 +221,10 @@
       return set.size;
     });
 
+    var i;
     function setAdd(set) {
       return set.add(sels[i]);
     }
-    var i;
     for (i = 0; i < sels.length; i++) {
       deepEqual(setAdd);
     }

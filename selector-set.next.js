@@ -23,11 +23,12 @@ export default function SelectorSet() {
 
 // Detect prefixed Element#matches function.
 var docElem = window.document.documentElement;
-var matches = (docElem.matches ||
-                docElem.webkitMatchesSelector ||
-                docElem.mozMatchesSelector ||
-                docElem.oMatchesSelector ||
-                docElem.msMatchesSelector);
+var matches =
+  docElem.matches ||
+  docElem.webkitMatchesSelector ||
+  docElem.mozMatchesSelector ||
+  docElem.oMatchesSelector ||
+  docElem.msMatchesSelector;
 
 // Public: Check if element matches selector.
 //
@@ -53,7 +54,6 @@ SelectorSet.prototype.querySelectorAll = function(selectors, context) {
   return context.querySelectorAll(selectors);
 };
 
-
 // Public: Array of indexes.
 //
 // name     - Unique String name
@@ -70,7 +70,7 @@ SelectorSet.prototype.indexes.push({
   name: 'ID',
   selector: function matchIdSelector(sel) {
     var m;
-    if (m = sel.match(idRe)) {
+    if ((m = sel.match(idRe))) {
       return m[0].slice(1);
     }
   },
@@ -87,7 +87,7 @@ SelectorSet.prototype.indexes.push({
   name: 'CLASS',
   selector: function matchClassSelector(sel) {
     var m;
-    if (m = sel.match(classRe)) {
+    if ((m = sel.match(classRe))) {
       return m[0].slice(1);
     }
   },
@@ -111,7 +111,7 @@ SelectorSet.prototype.indexes.push({
   name: 'TAG',
   selector: function matchTagSelector(sel) {
     var m;
-    if (m = sel.match(tagRe)) {
+    if ((m = sel.match(tagRe))) {
       return m[0].toUpperCase();
     }
   },
@@ -130,7 +130,6 @@ SelectorSet.prototype.indexes['default'] = {
     return [true];
   }
 };
-
 
 // Use ES Maps when supported
 var Map;
@@ -151,7 +150,6 @@ if (typeof window.Map === 'function') {
   })();
 }
 
-
 // Regexps adopted from Sizzle
 //   https://github.com/jquery/sizzle/blob/1.7/sizzle.js
 //
@@ -166,17 +164,23 @@ function parseSelectorIndexes(allIndexes, selector) {
   allIndexes = allIndexes.slice(0).concat(allIndexes['default']);
 
   var allIndexesLen = allIndexes.length,
-      i, j, m, dup, rest = selector,
-      key, index, indexes = [];
+    i,
+    j,
+    m,
+    dup,
+    rest = selector,
+    key,
+    index,
+    indexes = [];
 
   do {
     chunker.exec('');
-    if (m = chunker.exec(rest)) {
+    if ((m = chunker.exec(rest))) {
       rest = m[3];
       if (m[2] || !rest) {
         for (i = 0; i < allIndexesLen; i++) {
           index = allIndexes[i];
-          if (key = index.selector(m[1])) {
+          if ((key = index.selector(m[1]))) {
             j = indexes.length;
             dup = false;
             while (j--) {
@@ -186,7 +190,7 @@ function parseSelectorIndexes(allIndexes, selector) {
               }
             }
             if (!dup) {
-              indexes.push({index: index, key: key});
+              indexes.push({ index: index, key: key });
             }
             break;
           }
@@ -235,10 +239,16 @@ SelectorSet.prototype.logDefaultIndexUsed = function() {};
 //
 // Returns nothing.
 SelectorSet.prototype.add = function(selector, data) {
-  var obj, i, indexProto, key, index, objs,
-      selectorIndexes, selectorIndex,
-      indexes = this.activeIndexes,
-      selectors = this.selectors;
+  var obj,
+    i,
+    indexProto,
+    key,
+    index,
+    objs,
+    selectorIndexes,
+    selectorIndex,
+    indexes = this.activeIndexes,
+    selectors = this.selectors;
 
   if (typeof selector !== 'string') {
     return;
@@ -341,7 +351,8 @@ SelectorSet.prototype.queryAll = function(context) {
     return [];
   }
 
-  var matches = {}, results = [];
+  var matches = {},
+    results = [];
   var els = this.querySelectorAll(this.selectors.join(', '), context);
 
   var i, j, len, len2, el, m, match, obj;
@@ -380,14 +391,16 @@ SelectorSet.prototype.matches = function(el) {
   }
 
   var i, j, k, len, len2, len3, index, keys, objs, obj, id;
-  var indexes = this.activeIndexes, matchedIds = {}, matches = [];
+  var indexes = this.activeIndexes,
+    matchedIds = {},
+    matches = [];
 
   for (i = 0, len = indexes.length; i < len; i++) {
     index = indexes[i];
     keys = index.element(el);
     if (keys) {
       for (j = 0, len2 = keys.length; j < len2; j++) {
-        if (objs = index.map.get(keys[j])) {
+        if ((objs = index.map.get(keys[j]))) {
           for (k = 0, len3 = objs.length; k < len3; k++) {
             obj = objs[k];
             id = obj.id;

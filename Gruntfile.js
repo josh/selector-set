@@ -29,16 +29,23 @@ module.exports = function(grunt) {
         }
       },
       src: {
-        src: ['selector-set.js']
+        src: ['selector-set.js'],
+        options: {
+          strict: false,
+          globals: {
+            define: false,
+            module: false
+          }
+        }
       },
       test: {
         options: {
           globals: {
-            'SelectorSet': false,
-            'module': false,
-            'test': false,
-            'ok': false,
-            'equal': false
+            SelectorSet: false,
+            module: false,
+            test: false,
+            ok: false,
+            equal: false
           }
         },
         src: ['test/unit/*.js']
@@ -46,9 +53,9 @@ module.exports = function(grunt) {
       fuzz: {
         options: {
           globals: {
-            'SelectorSet': false,
-            'ExemplarSelectorSet': false,
-            'QUnit': false
+            SelectorSet: false,
+            ExemplarSelectorSet: false,
+            QUnit: false
           }
         },
         src: ['test/fuzz.js']
@@ -56,72 +63,43 @@ module.exports = function(grunt) {
       perf: {
         options: {
           globals: {
-            'Benchmark': false,
-            'd3': false,
-            'SelectorSet': false,
-            'ExemplarSelectorSet': false
+            Benchmark: false,
+            d3: false,
+            SelectorSet: false,
+            ExemplarSelectorSet: false
           }
         },
         src: ['test/perf.js']
       }
     },
+    prettier: {
+      options: {
+        singleQuote: true
+      },
+      all: {
+        src: [
+          '.github/**/*.yml',
+          '*.flow',
+          '*.js',
+          '*.json',
+          '*.md',
+          '*.ts',
+          'test/**/*.html',
+          'test/**/*.js'
+        ]
+      }
+    },
     qunit: {
       all: ['test/test-exemplar.html', 'test/test.html'],
       fuzz: ['test/test-fuzz.html']
-    },
-    connect: {
-      server: {
-        options: {
-          base: '',
-          port: 9999
-        }
-      }
-    },
-    'saucelabs-qunit': {
-      all: {
-        options: {
-          urls: ['http://127.0.0.1:9999/test/test-exemplar.html', 'http://127.0.0.1:9999/test/test.html'],
-          tunnelTimeout: 5,
-          build: process.env.TRAVIS_JOB_ID,
-          concurrency: 1,
-          browsers: [
-            { browserName: 'chrome', platform: 'Windows 8.1' },
-            { browserName: 'firefox', platform: 'Linux' },
-            { browserName: 'internet explorer', version: '11', platform: 'Windows 8.1' },
-            { browserName: 'internet explorer', version: '10', platform: 'Windows 8' },
-            { browserName: 'internet explorer', version: '9', platform: 'Windows 7' },
-            { browserName: 'safari', version: '7', platform: 'OS X 10.9' },
-            { browserName: 'safari', version: '6', platform: 'OS X 10.8' },
-            { browserName: 'safari', version: '5', platform: 'OS X 10.6' }
-          ]
-        }
-      }
-    },
-    watch: {
-      grunt: {
-        files: ['<%= jshint.grunt.src %>'],
-        tasks: ['jshint:grunt']
-      },
-      src: {
-        files: ['<%= jshint.src.src %>'],
-        tasks: ['jshint:src', 'qunit:all']
-      },
-      test: {
-        files: ['<%= jshint.test.src %>', 'test/*.html'],
-        tasks: ['jshint:test', 'qunit:all']
-      }
     }
   });
 
-  grunt.loadNpmTasks('grunt-contrib-connect');
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-qunit');
-  grunt.loadNpmTasks('grunt-contrib-watch');
-  grunt.loadNpmTasks('grunt-saucelabs');
+  grunt.loadNpmTasks('grunt-prettier');
 
   grunt.registerTask('test', ['jshint', 'qunit:all']);
   grunt.registerTask('fuzz', ['jshint:fuzz', 'qunit:fuzz']);
-  grunt.registerTask('sauce', ['connect', 'saucelabs-qunit']);
-  grunt.registerTask('travis', ['test', 'sauce']);
-  grunt.registerTask('default', ['jshint']);
+  grunt.registerTask('default', ['prettier', 'jshint']);
 };
