@@ -72,6 +72,23 @@ module.exports = function(grunt) {
         src: ['test/perf.js']
       }
     },
+    prettier: {
+      options: {
+        singleQuote: true
+      },
+      all: {
+        src: [
+          '.github/**/*.yml',
+          '*.flow',
+          '*.js',
+          '*.json',
+          '*.md',
+          '*.ts',
+          'test/**/*.html',
+          'test/**/*.js'
+        ]
+      }
+    },
     qunit: {
       all: ['test/test-exemplar.html', 'test/test.html'],
       fuzz: ['test/test-fuzz.html']
@@ -80,8 +97,9 @@ module.exports = function(grunt) {
 
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-qunit');
+  grunt.loadNpmTasks('grunt-prettier');
 
   grunt.registerTask('test', ['jshint', 'qunit:all']);
   grunt.registerTask('fuzz', ['jshint:fuzz', 'qunit:fuzz']);
-  grunt.registerTask('default', ['jshint']);
+  grunt.registerTask('default', ['prettier', 'jshint']);
 };
