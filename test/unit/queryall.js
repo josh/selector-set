@@ -151,4 +151,43 @@
     equal(results[1].elements.length, 1);
     equal(results[1].elements[0], circle);
   });
+
+  test('add/remove data', function() {
+    var set = new SelectorSet();
+    var fixture1 = document.getElementById('fixture1');
+
+    set.add('#foo', 123);
+    var results = set.queryAll(fixture1);
+    equal(results.length, 1);
+    equal(results[0].selector, '#foo');
+    equal(results[0].data, 123);
+
+    set.add('#bar', 123);
+    results = set.queryAll(fixture1);
+    equal(results.length, 1);
+    equal(results[0].selector, '#foo');
+    equal(results[0].data, 123);
+
+    set.add('#foo', 456);
+    results = set.queryAll(fixture1);
+    equal(results.length, 2);
+    equal(results[0].selector, '#foo');
+    equal(results[1].selector, '#foo');
+
+    set.remove('#bar', 456);
+    results = set.queryAll(fixture1);
+    equal(results.length, 2);
+    equal(results[0].selector, '#foo');
+    equal(results[1].selector, '#foo');
+
+    set.remove('#foo', 456);
+    results = set.queryAll(fixture1);
+    equal(results.length, 1);
+    equal(results[0].selector, '#foo');
+    equal(results[0].data, 123);
+
+    set.remove('#foo', 123);
+    results = set.queryAll(fixture1);
+    equal(results.length, 0);
+  });
 })();
