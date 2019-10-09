@@ -14,6 +14,9 @@ export default function SelectorSet() {
   // Internal: Array of String selectors in the set
   this.selectors = [];
 
+  // Internal: Map of selector ids to objects
+  this.selectorObjects = {};
+
   // Internal: All Object index String names mapping to Index objects.
   this.indexes = Object.create(this.indexes);
 
@@ -248,7 +251,8 @@ SelectorSet.prototype.add = function(selector, data) {
     selectorIndexes,
     selectorIndex,
     indexes = this.activeIndexes,
-    selectors = this.selectors;
+    selectors = this.selectors,
+    selectorObjects = this.selectorObjects;
 
   if (typeof selector !== 'string') {
     return;
@@ -259,6 +263,7 @@ SelectorSet.prototype.add = function(selector, data) {
     selector: selector,
     data: data
   };
+  selectorObjects[obj.id] = obj;
 
   selectorIndexes = parseSelectorIndexes(this.indexes, selector);
   for (i = 0; i < selectorIndexes.length; i++) {
@@ -299,10 +304,19 @@ SelectorSet.prototype.remove = function(selector, data) {
     return;
   }
 
-  var selectorIndexes, selectorIndex, i, j, k, selIndex, objs, obj;
-  var indexes = this.activeIndexes;
-  var removedIds = {};
-  var removeAll = arguments.length === 1;
+  var selectorIndexes,
+    selectorIndex,
+    i,
+    j,
+    k,
+    selIndex,
+    objs,
+    obj,
+    indexes = this.activeIndexes,
+    selectors = (this.selectors = []),
+    selectorObjects = this.selectorObjects,
+    removedIds = {},
+    removeAll = arguments.length === 1;
 
   selectorIndexes = parseSelectorIndexes(this.indexes, selector);
   for (i = 0; i < selectorIndexes.length; i++) {
@@ -328,7 +342,14 @@ SelectorSet.prototype.remove = function(selector, data) {
     }
   }
 
-  this.size -= Object.keys(removedIds).length;
+  for (i in removedIds) {
+    delete selectorObjects[i];
+    this.size--;
+  }
+
+  for (i in selectorObjects) {
+    selectors.push(selectorObjects[i].selector);
+  }
 };
 
 // Sort by id property handler.
